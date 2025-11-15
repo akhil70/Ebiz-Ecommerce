@@ -1,0 +1,148 @@
+.client_section {
+  width: 100%;
+  background-color: #f8f8f8;
+  padding: 100px 20px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Heading with red underline */
+.heading_container h2 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #0b2c3d;
+  margin-bottom: 10px;
+}
+
+.heading_underline {
+  width: 90px;
+  height: 4px;
+  background-color: #f7444e;
+  margin: 0 auto 50px;
+  border-radius: 3px;
+}
+
+/* Wrapper for testimonial + arrows */
+.testimonial_wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* Testimonial content box */
+.testimonial_content {
+  max-width: 700px;
+  transition: all 0.6s ease;
+}
+
+.img_box {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto 20px;
+  border: 5px solid #f7444e;
+}
+
+.img_box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.testimonial_content h5 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: 5px;
+}
+
+.testimonial_content h6 {
+  color: #f7444e;
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+
+.testimonial_content p {
+  font-size: 1rem;
+  color: #333;
+  line-height: 1.7;
+  margin: 0 auto;
+  max-width: 600px;
+}
+
+/* ✅ Red circular arrow buttons closer to image */
+.arrow_btn {
+  background-color: #f7444e;
+  border: none;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+/* White arrows centered */
+.arrow_btn i {
+  color: #fff;
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.arrow_btn:hover {
+  background-color: #d7333c;
+  transform: translateY(-50%) scale(1.1);
+}
+
+/* ✅ Moved arrows closer to content */
+.arrow_btn.left {
+  left: 33%;
+}
+
+.arrow_btn.right {
+  right: 33%;
+}
+
+/* Fade animation when sliding */
+.fade {
+  animation: fadeIn 0.6s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .arrow_btn.left {
+    left: 22%;
+  }
+  .arrow_btn.right {
+    right: 22%;
+  }
+}
+
+@media (max-width: 768px) {
+  .arrow_btn {
+    position: static;
+    transform: none;
+    margin: 10px;
+  }
+}

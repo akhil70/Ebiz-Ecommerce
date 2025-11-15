@@ -1,11 +1,14 @@
 import logo from './logo.svg';
 import './App.css';
 import "./style.css";
-import { Header } from "./Header";
+// import { Header } from "./Header";
+import HomePage from "./Homepage";
+
 function App() {
   return (
     <div className="min-h-screen bg-white">
-       <Header />
+       {/* <Header /> */}
+       <HomePage/>
     </div>
   );
 }
