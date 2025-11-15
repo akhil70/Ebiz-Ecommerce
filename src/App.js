@@ -4,6 +4,7 @@ import "./style.css";
 // import { Header } from "./Header";
 import HomePage from "./Homepage";
 import LoginForm from './LoginAcess/LoginForm';
+import ProductDetail from './Components/ProductDetail';
 
 function App() {
   return (
@@ -12,7 +13,8 @@ function App() {
         {/* <Header /> */}
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginForm />} />
+          <Route path="/login" element={<LoginForm />} /> 
+           <Route path="/product" element={<ProductDetail />} />
         </Routes>
       </div>
     </BrowserRouter>

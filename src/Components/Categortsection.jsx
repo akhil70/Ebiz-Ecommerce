@@ -36,7 +36,7 @@ const CategorySection = () => {
         <div className="heading_container heading_center">
           <h2>
             Our <span>Products</span>
-             <div className="heading_underline"></div>
+            <div className="heading_underline"></div>
           </h2>
         </div>
 
@@ -47,7 +47,7 @@ const CategorySection = () => {
                 <div className="option_container">
                   <div className="options">
                     <a href="#" className="option1">Add To Cart</a>
-                    <a href="#" className="option2">Buy Now</a>
+                    <a href="/product" className="option2">Buy Now</a>
                   </div>
                 </div>
 
