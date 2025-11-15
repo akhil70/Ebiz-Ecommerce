@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./style.css";
-import { ShoppingCart, Search, Menu, X } from "lucide-react";
+import { ShoppingCart, Search, Menu, X, LogIn } from "lucide-react";
 import loginIllustration from "./images/fammmlogo.png";
 
 export const Header = () => {
@@ -9,14 +9,14 @@ export const Header = () => {
 
   const handleLinkClick = (link) => {
     setActiveLink(link);
-    setMenuOpen(false); 
+    setMenuOpen(false);
   };
 
   return (
     <header className="header_section">
       <div className="container-fluid">
         <nav className="navbar custom_nav-container">
-         
+
           <a className="navbar-brand" href="#">
             <img
               src={loginIllustration}
@@ -25,7 +25,7 @@ export const Header = () => {
             />
           </a>
 
-         
+
           <button
             className="navbar-toggler"
             type="button"
@@ -34,7 +34,7 @@ export const Header = () => {
             {menuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
 
-          
+
           <div
             className={`navbar-menu ${menuOpen ? "show" : ""}`}
             id="navbarSupportedContent"
@@ -52,9 +52,8 @@ export const Header = () => {
 
               <li className="nav-item dropdown">
                 <a
-                  className={`nav-link ${
-                    activeLink === "pages" ? "active" : ""
-                  } dropdown-toggle`}
+                  className={`nav-link ${activeLink === "pages" ? "active" : ""
+                    } dropdown-toggle`}
                   href="#pages"
                   onClick={() => handleLinkClick("pages")}
                 >
@@ -72,9 +71,8 @@ export const Header = () => {
 
               <li className="nav-item">
                 <a
-                  className={`nav-link ${
-                    activeLink === "products" ? "active" : ""
-                  }`}
+                  className={`nav-link ${activeLink === "products" ? "active" : ""
+                    }`}
                   href="#products"
                   onClick={() => handleLinkClick("products")}
                 >
@@ -94,9 +92,8 @@ export const Header = () => {
 
               <li className="nav-item">
                 <a
-                  className={`nav-link ${
-                    activeLink === "contact" ? "active" : ""
-                  }`}
+                  className={`nav-link ${activeLink === "contact" ? "active" : ""
+                    }`}
                   href="#contact"
                   onClick={() => handleLinkClick("contact")}
                 >
@@ -104,7 +101,7 @@ export const Header = () => {
                 </a>
               </li>
 
-             
+
               <li className="nav-item">
                 <a
                   className={`nav-link ${activeLink === "cart" ? "active" : ""}`}
@@ -115,16 +112,15 @@ export const Header = () => {
                 </a>
               </li>
 
-              
+
               <li className="nav-item">
                 <a
-                  className={`nav-link ${
-                    activeLink === "search" ? "active" : ""
-                  }`}
-                  href="#search"
+                  className={`nav-link ${activeLink === "search" ? "active" : ""
+                    }`}
+                  href="/login"
                   onClick={() => handleLinkClick("search")}
                 >
-                  <Search size={20} stroke="black" />
+                  <LogIn size={20} stroke="black" />
                 </a>
               </li>
             </ul>
