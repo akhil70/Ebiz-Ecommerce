@@ -5,6 +5,7 @@ import "./style.css";
 import HomePage from "./Homepage";
 import LoginForm from './LoginAcess/LoginForm';
 import ProductDetail from './Components/ProductDetail';
+import ShoppingCart from './Components/ShoppingCart';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginForm />} /> 
            <Route path="/product" element={<ProductDetail />} />
+            <Route path="/cart" element={<ShoppingCart />} />
         </Routes>
       </div>
     </BrowserRouter>

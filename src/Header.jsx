@@ -105,7 +105,7 @@ export const Header = () => {
               <li className="nav-item">
                 <a
                   className={`nav-link ${activeLink === "cart" ? "active" : ""}`}
-                  href="#cart"
+                  href="/cart"
                   onClick={() => handleLinkClick("cart")}
                 >
                   <ShoppingCart size={20} fill="black" stroke="black" />

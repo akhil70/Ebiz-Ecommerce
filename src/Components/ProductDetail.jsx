@@ -4,12 +4,14 @@ import { Search, ChevronLeft, ChevronRight, Check } from 'lucide-react';
 import { Header } from '../Header';
 import Footer from './Footer';
 import LastFooter from './LastFooter';
+import { useNavigate } from "react-router-dom";
 
 export default function ProductDetail() {
     const [mainImage, setMainImage] = useState('/polo-tshirt-green.jpg');
     const [selectedSize, setSelectedSize] = useState('M');
     const [selectedColor, setSelectedColor] = useState('purple');
     const [quantity, setQuantity] = useState(2);
+    const navigate = useNavigate();
 
     const thumbnails = [
         '/polo-tshirt-green.jpg',
@@ -36,6 +38,7 @@ export default function ProductDetail() {
 
     const handleAddToCart = () => {
         console.log('Added to cart:', { selectedSize, selectedColor, quantity });
+        navigate("/cart");
         // Add your cart logic here
     };
 
