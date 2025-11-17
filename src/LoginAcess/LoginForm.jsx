@@ -1,78 +1,77 @@
-import { useState } from 'react';
-import './LoginForm.css';
-import { User, Lock, Mountain } from 'lucide-react';
+import { useState } from "react";
+import "./LoginForm.css";
 
-export default function LoginForm() {
+import login from "../images/loginimage.jpg";
+
+import logo from "../images/test.jpg";
+import { useNavigate } from "react-router-dom";
+
+export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
+  
+  const [error, setError] = useState('');
+
+  const navigate = useNavigate();
 
   const handleSubmit = () => {
-    console.log('Login submitted:', { username, password, rememberMe });
-    // Add your login logic here
+    const dummyUser = "admin";
+    const dummyPass = "admin";
+
+    if (username === dummyUser && password === dummyPass) {
+      setError("");
+      navigate("/admin");
+    } else {
+      setError("Invalid username or password");
+    }
+  };
+
+  // 🔥 LOGIN WHEN PRESS ENTER
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleSubmit();
+    }
   };
 
   return (
-    <div className="login-container">
-      <div className="login-card">
-        {/* Logo */}
-        <div className="logo-circle">
-          <Mountain size={48} className="logo-icon" />
-        </div>
+    <div style={{ "background": "url(" + logo + ") ", "backgroundSize": "cover", "overflowX": "hidden", height: "950px", overflowY: "hidden" }}>
 
-        {/* Title */}
-        <h1 className="login-title">LOG IN</h1>
+      <div className="login-wrapper">
 
-        {/* Form Fields */}
-        <div className="login-form">
-          {/* Username Field */}
-          <div className="input-group">
-            <User className="input-icon" size={20} />
-            <input
+        <div className="login-card">
+
+          <h2 className="login-title">Sign In With Your Account</h2>
+
+          <img src={login} alt="login" className="login-image" />
+
+          <form onSubmit={handleSubmit}>
+          <input
               type="text"
               placeholder="Username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="input-field"
+              className="login-input"
+              onKeyDown={handleKeyPress}   // <-- Enter works here too
             />
-          </div>
 
-          {/* Password Field */}
-          <div className="input-group">
-            <Lock className="input-icon" size={20} />
-            <input
+             <input
               type="password"
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="input-field"
+              className="login-input"
+              onKeyDown={handleKeyPress}   // <-- Enter triggers login
             />
-          </div>
 
-          {/* Remember Me Checkbox */}
-          <div className="checkbox-group">
-            <input
-              type="checkbox"
-              id="remember"
-              checked={rememberMe}
-              onChange={(e) => setRememberMe(e.target.checked)}
-              className="checkbox-input"
-            />
-            <label htmlFor="remember" className="checkbox-label">
-              Remember me
-            </label>
-          </div>
+            <button type="submit" className="login-btn" onClick={handleSubmit}>
+              Login
+            </button>
 
-          {/* Login Button */}
-          <button onClick={handleSubmit} className="login-button">
-            Login
-          </button>
+            <hr className="login-separator" />
+          </form>
+
         </div>
-
-        {/* Forgot Password Link */}
-        <a href="#" className="forgot-password">
-          Forgot Password?
-        </a>
       </div>
     </div>
   );

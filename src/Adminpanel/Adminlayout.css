@@ -1,0 +1,103 @@
+/* Layout Wrapper */
+.admin-container {
+  display: flex;
+  height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 240px;
+  background-color: #000;
+  color: white;
+  padding: 20px;
+  transition: width 0.3s ease;
+  overflow: hidden;
+}
+
+.sidebar.closed {
+  width: 70px;
+}
+
+.sidebar-title {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 25px;
+  white-space: nowrap;
+}
+
+.menu-list {
+  list-style: none;
+  padding: 0;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #ddd;
+  padding: 12px 10px;
+  text-decoration: none;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.menu-item:hover {
+  background-color: #222;
+  color: #fff;
+}
+
+.sidebar.closed .menu-item span {
+  display: none;
+}
+
+/* Main Area */
+.main-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #f4f5f7;
+}
+
+/* Top Bar */
+.topbar {
+  height: 58px;
+  background: white;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px;
+}
+
+.toggle-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+/* Avatar on Top Right */
+.top-right {
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+}
+
+/* Page Content */
+.content {
+  flex: 1;
+  padding: 25px;
+}
+
+/* Footer — WHITE */
+.footer {
+  background: white;
+  padding: 12px;
+  text-align: center;
+  color: #555;
+  border-top: 1px solid #ddd;
+}

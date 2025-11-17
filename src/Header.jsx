@@ -3,6 +3,9 @@ import "./style.css";
 import { ShoppingCart, Search, Menu, X, LogIn } from "lucide-react";
 import loginIllustration from "./images/fammmlogo.png";
 
+import { NavLink } from "react-router-dom";
+import HomePage from "./Homepage";
+
 export const Header = () => {
   const [activeLink, setActiveLink] = useState("home");
   const [menuOpen, setMenuOpen] = useState(false);
@@ -40,7 +43,7 @@ export const Header = () => {
             id="navbarSupportedContent"
           >
             <ul className="navbar-nav">
-              <li className="nav-item">
+              {/* <li className="nav-item">
                 <a
                   className={`nav-link ${activeLink === "home" ? "active" : ""}`}
                   href="#home"
@@ -48,7 +51,17 @@ export const Header = () => {
                 >
                   HOME
                 </a>
+              </li> */}
+              <li className="nav-item">
+                <NavLink
+                  to="/"
+                  className={`nav-link ${activeLink === "home" ? "active" : ""}`}
+                  onClick={() => handleLinkClick("home")}
+                >
+                  HOME
+                </NavLink>
               </li>
+
 
               <li className="nav-item dropdown">
                 <a

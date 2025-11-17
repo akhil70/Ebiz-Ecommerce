@@ -7,6 +7,9 @@ import LoginForm from './LoginAcess/LoginForm';
 import ProductDetail from './Components/ProductDetail';
 import ShoppingCart from './Components/ShoppingCart';
 
+import AdminLayout from "./Adminpanel/Adminlayout";
+import Dashboard from "./Adminpanel/dashboard";
+
 function App() {
   return (
     <BrowserRouter>
@@ -14,9 +17,13 @@ function App() {
         {/* <Header /> */}
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginForm />} /> 
-           <Route path="/product" element={<ProductDetail />} />
-            <Route path="/cart" element={<ShoppingCart />} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/product" element={<ProductDetail />} />
+          <Route path="/cart" element={<ShoppingCart />} />
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<Dashboard />} />
+          </Route>
+
         </Routes>
       </div>
     </BrowserRouter>

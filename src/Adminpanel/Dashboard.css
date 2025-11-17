@@ -1,0 +1,22 @@
+.dashboard-container {
+  text-align: center;
+  margin-top: 60px;
+}
+
+.welcome-title {
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.branch-subtitle {
+  font-size: 18px;
+  margin-top: 5px;
+  color: #444;
+}
+
+.pending-text {
+  margin-top: 30px;
+  color: red;
+  font-size: 18px;
+  font-weight: 500;
+}
