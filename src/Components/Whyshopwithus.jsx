@@ -1,7 +1,12 @@
 import React from "react";
 import "./whyshopwithus.css";
-import { FaTruck, FaShippingFast } from "react-icons/fa";
-import { MdVerified } from "react-icons/md";
+
+import truckIcon from "../images/truckicon.png";
+import freeIcon from "../images/freeicon.png";
+import qualityIcon from "../images/qualityicon.png";
+
+
+
 
 const WhyShopWithUs = () => {
   return (
@@ -13,11 +18,12 @@ const WhyShopWithUs = () => {
         </div>
 
         <div className="row">
-          {/* Card 1 */}
+
+          {/* CARD 1 */}
           <div className="col-md-4">
             <div className="box">
               <div className="img-box">
-                <FaTruck className="icon" size={48} />
+                <img src={truckIcon} alt="Fast Delivery" className="icon-img" />
               </div>
               <div className="detail-boxs">
                 <h5>Fast Delivery</h5>
@@ -26,12 +32,14 @@ const WhyShopWithUs = () => {
             </div>
           </div>
 
-          {/* Card 2 */}
+
+          {/* CARD 2 */}
           <div className="col-md-4">
             <div className="box">
               <div className="img-box">
-                <FaShippingFast className="icon" size={48} />
+                <img src={freeIcon} alt="Free Shipping" className="icon-img" />
               </div>
+
               <div className="detail-boxs">
                 <h5>Free Shipping</h5>
                 <p>Variations of passages of Lorem Ipsum available</p>
@@ -39,11 +47,11 @@ const WhyShopWithUs = () => {
             </div>
           </div>
 
-          {/* Card 3 */}
+          {/* CARD 3 */}
           <div className="col-md-4">
             <div className="box">
               <div className="img-box">
-                <MdVerified className="icon" size={48} />
+                <img src={qualityIcon} alt="Best Quality" className="icon-img" />
               </div>
               <div className="detail-boxs">
                 <h5>Best Quality</h5>
@@ -51,6 +59,12 @@ const WhyShopWithUs = () => {
               </div>
             </div>
           </div>
+
+
+
+
+          
+
         </div>
       </div>
     </section>
