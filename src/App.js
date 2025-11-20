@@ -9,7 +9,8 @@ import ShoppingCart from './Components/ShoppingCart';
 
 import AdminLayout from "./Adminpanel/Adminlayout";
 import Dashboard from "./Adminpanel/dashboard";
-import Users from './Adminpanel/Users';
+import Users from './Adminpanel/Users/Users';
+import AddUser from './Adminpanel/Users/AddUser';
 
 function App() {
   return (
@@ -26,6 +27,9 @@ function App() {
           </Route>
            <Route path="/Users" element={<AdminLayout />}>
             <Route index element={<Users />} />
+          </Route>
+           <Route path="/AddUser" element={<AdminLayout />}>
+            <Route index element={<AddUser />} />
           </Route>
 
         </Routes>
