@@ -9,7 +9,7 @@ export default function AdminTopbar({ toggleSidebar }) {
   const goToProfile = () => navigate("/profile");
   const logoutUser = () => {
     localStorage.clear();
-    navigate("/login");
+    navigate("/");
   };
 
   return (

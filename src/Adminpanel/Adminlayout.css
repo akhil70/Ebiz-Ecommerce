@@ -2,6 +2,7 @@
 .admin-container {
   display: flex;
   height: 100vh;
+  overflow: hidden; /* Prevent scrolling on container */
 }
 
 /* Sidebar */
@@ -12,6 +13,10 @@
   padding: 20px;
   transition: width 0.3s ease;
   overflow: hidden;
+  flex-shrink: 0; /* Prevent sidebar from shrinking */
+  height: 100vh; /* Full height */
+  position: sticky;
+  top: 0;
 }
 
 .sidebar.closed {
@@ -56,9 +61,11 @@
   display: flex;
   flex-direction: column;
   background: #f4f5f7;
+  height: 100vh; /* Full height */
+  overflow: hidden; /* Prevent overflow on main area */
 }
 
-/* Top Bar */
+/* Top Bar - Fixed */
 .topbar {
   height: 58px;
   background: white;
@@ -67,6 +74,10 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 18px;
+  flex-shrink: 0; /* Prevent topbar from shrinking */
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .toggle-btn {
@@ -79,31 +90,53 @@
 .top-right {
   display: flex;
   align-items: center;
+  position: relative;
 }
 
 .avatar {
   width: 36px;
   height: 36px;
   border-radius: 50%;
+  cursor: pointer;
 }
 
-/* Page Content */
+/* Page Content - Scrollable */
 .content {
   flex: 1;
   padding: 25px;
+  overflow-y: auto; /* Enable vertical scrolling */
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+  height: calc(100vh - 58px - 45px); /* Full height minus topbar and footer */
 }
 
-/* Footer — WHITE */
+/* Custom scrollbar styling (optional) */
+.content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.content::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.content::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Footer - Fixed */
 .footer {
- background: white;
+  background: white;
   padding: 12px;
   text-align: center;
-  color: white;
+  color: #333;
   border-top: 1px solid #ddd;
+  flex-shrink: 0; /* Prevent footer from shrinking */
+  height: 45px;
 }
-
-
-
 
 /* Dropdown container */
 .profile-dropdown {
@@ -130,6 +163,7 @@
   font-size: 14px;
   color: #333;
   cursor: pointer;
+  text-align: left;
 }
 
 /* Hover style */
@@ -150,3 +184,26 @@
   color: #666;
 }
 
+/* Responsive Design */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 999;
+    transform: translateX(-100%);
+  }
+  
+  .sidebar.open {
+    transform: translateX(0);
+  }
+  
+  .sidebar.closed {
+    transform: translateX(-100%);
+    width: 240px;
+  }
+  
+  .main-area {
+    width: 100%;
+  }
+}

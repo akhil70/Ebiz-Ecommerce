@@ -12,6 +12,7 @@ export default function AdminSidebar({ isOpen }) {
             <LayoutDashboard size={18} /> Dashboard
           </Link>
         </li>
+        
       </ul>
     </aside>
   );
