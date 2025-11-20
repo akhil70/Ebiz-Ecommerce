@@ -1,6 +1,7 @@
 import React from "react";
 import "./categorysection.css";
 
+// Import images
 import p1 from "../images/p1.png";
 import p2 from "../images/p2.png";
 import p3 from "../images/p3.png";
@@ -35,30 +36,28 @@ const CategorySection = () => {
       <div className="container">
         <div className="heading_container heading_center">
           <h2>
-            Our <span>Products</span>
+            Our <span>products</span>
             <div className="heading_underline"></div>
           </h2>
         </div>
 
-        <div className="row">
+        <div className="product_grid">
           {products.map((product) => (
-            <div key={product.id} className="col-sm-6 col-md-4 col-lg-4">
-              <div className="box">
-                <div className="option_container">
-                  <div className="options">
-                    <a href="#" className="option1">Add To Cart</a>
-                    <a href="/product" className="option2">Buy Now</a>
-                  </div>
+            <div key={product.id} className="product_card">
+              <div className="option_container">
+                <div className="options">
+                  <a href="#" className="option1">Add To Cart</a>
+                  <a href="/product" className="option2">Buy Now</a>
                 </div>
+              </div>
 
-                <div className="img-box">
-                  <img src={product.img} alt={product.name} />
-                </div>
+              <div className="img-boxs">
+                <img src={product.img} alt={product.name} />
+              </div>
 
-                <div className="detail-box">
-                  <h5>{product.name}</h5>
-                  <h6>{product.price}</h6>
-                </div>
+              <div className="detail-box">
+                <h5>{product.name}</h5>
+                <h6>{product.price}</h6>
               </div>
             </div>
           ))}
