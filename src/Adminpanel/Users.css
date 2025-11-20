@@ -1,0 +1,147 @@
+/* --- Root Card Styling --- */
+.recent-purchases-card {
+  font-family: Arial, sans-serif;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  max-width: 1200px;
+  margin: 30px auto;
+}
+
+/* --- Header Styling --- */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 20px;
+}
+
+.card-header h2 {
+  font-size: 1.5em;
+  color: #333;
+  margin: 0;
+}
+
+.header-actions .action-button {
+  background: none;
+  border: 1px solid #ddd;
+  padding: 8px 12px;
+  margin-left: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  color: #555;
+}
+
+.header-actions .new-button {
+  background-color: #007bff; /* Blue for New button */
+  color: white;
+  border-color: #007bff;
+}
+
+/* --- Table Styling --- */
+.table-container {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+thead {
+  border-bottom: 1px solid #eee;
+  color: #6c757d; /* Light gray for header text */
+  font-weight: 600;
+}
+
+th, td {
+  padding: 12px 15px;
+  vertical-align: middle;
+}
+
+/* Table rows styling */
+tbody tr {
+  border-bottom: 1px solid #f8f9fa; /* Very light border between rows */
+}
+
+tbody tr:last-child {
+  border-bottom: none;
+}
+
+/* Specific Column Widths/Styles */
+.checkbox-col { width: 30px; padding-left: 0; padding-right: 0; text-align: center; }
+.dots-col { width: 20px; text-align: right; cursor: pointer; color: #6c757d; }
+.amount-col { font-weight: 600; }
+
+/* Link/Name styles */
+.customer-name, .email-address {
+  color: #007bff;
+  cursor: pointer;
+  text-decoration: none;
+}
+.customer-name:hover, .email-address:hover {
+  text-decoration: underline;
+}
+
+/* --- Payment Status Pill Styling --- */
+.payment-pill {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+}
+
+.payment-pill::before {
+  content: '✓'; /* Checkmark for success/blocked for consistency */
+  margin-right: 5px;
+  font-size: 1em;
+}
+
+.payment-pill.success {
+  background-color: #e6f7ee; /* Light green background */
+  color: #28a745; /* Green text */
+}
+.payment-pill.blocked {
+  background-color: #fcebeb; /* Light red/gray background */
+  color: #dc3545; /* Red text */
+}
+.payment-pill.pending {
+  background-color: #fff8e1; /* Light yellow background */
+  color: #ffc107; /* Yellow/Orange text */
+}
+
+.payment-pill.pending::before {
+    content: '='; /* Placeholder icon for pending */
+}
+
+/* --- Footer (Pagination) Styling --- */
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+  margin-top: 10px;
+  font-size: 0.9em;
+  color: #6c757d;
+}
+
+.pagination-buttons .pagination-button {
+  padding: 8px 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 5px;
+  background-color: white;
+}
+
+.pagination-buttons .next-button {
+  background-color: #007bff; /* Blue for Next button */
+  color: white;
+  border-color: #007bff;
+}

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { LayoutDashboard } from "lucide-react";
+import { LayoutDashboard,SquareUser } from "lucide-react";
 
 export default function AdminSidebar({ isOpen }) {
   return (
@@ -8,8 +8,11 @@ export default function AdminSidebar({ isOpen }) {
 
       <ul className="menu-list">
         <li>
-          <Link to="/admin" className="menu-item">
+          <Link to="/Dashboard" className="menu-item">
             <LayoutDashboard size={18} /> Dashboard
+          </Link> 
+           <Link to="/Users" className="menu-item">
+            <LayoutDashboard size={18} /> Users
           </Link>
         </li>
         

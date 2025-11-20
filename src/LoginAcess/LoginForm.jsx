@@ -21,7 +21,7 @@ export default function Login() {
 
     if (username === dummyUser && password === dummyPass) {
       setError("");
-      navigate("/admin");
+      navigate("/Dashboard");
     } else {
       setError("Invalid username or password");
     }
