@@ -1,61 +1,33 @@
 import { useState } from "react";
-import { Outlet, Link } from "react-router-dom";
+import { Outlet } from "react-router-dom";
+
+
+import AdminTopbar from "./Admintopbar";
+import AdminFooter from "./Adminfooter";
+import AdminSidebar from "./Adminsidebar";
+
 import "./Adminlayout.css";
-import {
-  LayoutDashboard, Menu
-} from "lucide-react";
 
 export default function AdminLayout() {
-
-  const [isOpen, setIsOpen] = useState(true);  // Sidebar toggle
+  const [isOpen, setIsOpen] = useState(true);
 
   return (
     <div className="admin-container">
-
-      {/* Sidebar */}
-      <aside className={`sidebar ${isOpen ? "open" : "closed"}`}>
-        <div className="sidebar-title">FAMMS</div>
-
-        <ul className="menu-list">
-          <li><Link to="/admin" className="menu-item"><LayoutDashboard size={18}/> Dashboard</Link></li>
-         
-        </ul>
-      </aside>
-
-      {/* Main Area */}
+      
+    
+      <AdminSidebar isOpen={isOpen} />
+      
+     
       <div className="main-area">
+        <AdminTopbar toggleSidebar={() => setIsOpen(!isOpen)} />
 
-        {/* Top Navbar */}
-        <header className="topbar">
-
-          {/* Sidebar Toggle Button */}
-          <button
-            className="toggle-btn"
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            <Menu size={24} />
-          </button>
-
-          <div className="top-right">
-            <img
-              className="avatar"
-              src="https://i.pravatar.cc/40"
-              alt="avatar"
-            />
-          </div>
-        </header>
-
-        {/* Page Content */}
         <main className="content">
           <Outlet />
         </main>
 
-        {/* Footer */}
-        <footer className="footer">
-          Copyright © FAMMS 2025. All rights reserved.
-        </footer>
-
+        <AdminFooter />
       </div>
+
     </div>
   );
 }
