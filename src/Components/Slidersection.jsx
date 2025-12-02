@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import sliderImg from "../images/slider-bgecomm.jpg"; // adjust path if needed
+import sliderImg from "../images/slider-bgecomm.jpg"; 
 import "./slidersection.css";
 
-const slides = [1, 2, 3]; // identical slides for soft sliding illusion
+const slides = [1, 2, 3]; // soft sliding illusion
 
 const SliderSection = () => {
   const [current, setCurrent] = useState(0);
@@ -15,12 +15,16 @@ const SliderSection = () => {
   }, []);
 
   return (
-    <section
-      className="slider_section"
-      style={{ backgroundImage: `url(${sliderImg})` }}
-    >
+    <section className="slider_section">
+      {/* FULL IMAGE BACKGROUND (sharp & full quality) */}
+      <div className="slider_bg_box">
+        <img src={sliderImg} alt="Slider Background" />
+      </div>
+
+      {/* Light overlay */}
       <div className="overlay"></div>
 
+      {/* Content */}
       <div className="content_wrapper">
         <div key={current} className="detail_box slide_effect">
           <h1>
@@ -39,6 +43,7 @@ const SliderSection = () => {
           </a>
         </div>
 
+        {/* Dots */}
         <div className="carousel_indicators">
           {slides.map((_, i) => (
             <span

@@ -1,3 +1,4 @@
+/* Main section */
 .slider_section {
   position: relative;
   width: 100%;
@@ -5,12 +6,28 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  background-size: cover;
-  background-position: right center;
-  background-repeat: no-repeat;
   overflow: hidden;
 }
 
+/* Background Image Holder */
+.slider_bg_box {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.slider_bg_box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;   /* keep head fully visible */
+}
+
+
+/* Overlay */
 .overlay {
   position: absolute;
   inset: 0;
@@ -18,6 +35,7 @@
   z-index: 1;
 }
 
+/* Text Box Wrapper */
 .content_wrapper {
   position: relative;
   z-index: 2;
@@ -50,7 +68,7 @@
   margin-bottom: 30px;
 }
 
-/* Slide feel animation */
+/* Slide animation */
 .slide_effect {
   animation: fadeSlide 1s ease-in-out;
 }
