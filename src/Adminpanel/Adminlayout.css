@@ -1,20 +1,20 @@
-/* Layout Wrapper */
+
 .admin-container {
   display: flex;
   height: 100vh;
-  overflow: hidden; /* Prevent scrolling on container */
+  overflow: hidden; 
 }
 
-/* Sidebar */
+
 .sidebar {
   width: 240px;
   background-color: #000;
   color: white;
   padding: 20px;
-  transition: width 0.3s ease;
+  transition: 0.3s ease;
   overflow: hidden;
-  flex-shrink: 0; /* Prevent sidebar from shrinking */
-  height: 100vh; /* Full height */
+  flex-shrink: 0;
+  height: 100vh;
   position: sticky;
   top: 0;
 }
@@ -55,17 +55,17 @@
   display: none;
 }
 
-/* Main Area */
+
 .main-area {
   flex: 1;
   display: flex;
   flex-direction: column;
   background: #f4f5f7;
-  height: 100vh; /* Full height */
-  overflow: hidden; /* Prevent overflow on main area */
+  height: 100vh;
+  overflow: hidden;
 }
 
-/* Top Bar - Fixed */
+
 .topbar {
   height: 58px;
   background: white;
@@ -74,19 +74,21 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 18px;
-  flex-shrink: 0; /* Prevent topbar from shrinking */
+  flex-shrink: 0;
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 2000 !important; 
 }
 
 .toggle-btn {
   background: transparent;
   border: none;
   cursor: pointer;
+  position: relative;
+  z-index: 3000 !important; 
 }
 
-/* Avatar on Top Right */
+
 .top-right {
   display: flex;
   align-items: center;
@@ -100,16 +102,16 @@
   cursor: pointer;
 }
 
-/* Page Content - Scrollable */
+
 .content {
   flex: 1;
   padding: 25px;
-  overflow-y: auto; /* Enable vertical scrolling */
-  overflow-x: hidden; /* Prevent horizontal scrolling */
-  height: calc(100vh - 58px - 45px); /* Full height minus topbar and footer */
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: calc(100vh - 58px - 45px);
 }
 
-/* Custom scrollbar styling (optional) */
+
 .content::-webkit-scrollbar {
   width: 8px;
 }
@@ -127,18 +129,18 @@
   background: #555;
 }
 
-/* Footer - Fixed */
+
 .footer {
   background: white;
   padding: 12px;
   text-align: center;
   color: #333;
   border-top: 1px solid #ddd;
-  flex-shrink: 0; /* Prevent footer from shrinking */
+  flex-shrink: 0;
   height: 45px;
 }
 
-/* Dropdown container */
+
 .profile-dropdown {
   position: absolute;
   top: 48px;
@@ -151,7 +153,6 @@
   z-index: 1000;
 }
 
-/* Dropdown item */
 .drop-item {
   width: 100%;
   display: flex;
@@ -166,12 +167,10 @@
   text-align: left;
 }
 
-/* Hover style */
 .drop-item:hover {
   background: #f5f5f5;
 }
 
-/* Divider */
 .drop-divider {
   width: 100%;
   height: 1px;
@@ -179,30 +178,32 @@
   margin: 6px 0;
 }
 
-/* Icons */
 .drop-icon {
   color: #666;
 }
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
+
   .sidebar {
     position: fixed;
     left: 0;
     top: 0;
-    z-index: 999;
+    width: 240px;
+    height: 100vh;
+    z-index: 999; 
     transform: translateX(-100%);
   }
-  
+
   .sidebar.open {
     transform: translateX(0);
   }
-  
+
   .sidebar.closed {
     transform: translateX(-100%);
     width: 240px;
   }
-  
+
   .main-area {
     width: 100%;
   }
