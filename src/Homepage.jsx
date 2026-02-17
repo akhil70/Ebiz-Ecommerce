@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Header } from "./Header";
+import SubHeader from "./SubHeader";
 import SliderSection from "./Components/Slidersection";
 import WhyShopWithUs from "./Components/Whyshopwithus";
 import ArrivalSection from "./Components/Arrivalsection";
@@ -14,18 +15,20 @@ import SocialMediaGallery from "./Components/SocialMediaGallery";
 const HomePage = () => {
   return (
     <div className="font-sans text-gray-800">
-      <Header/>
-      <SliderSection/>
-      <WhyShopWithUs/>
+      <Header />
+      <SubHeader />
+
+      <SliderSection />
+      <WhyShopWithUs />
       <ProductCollections />
-      <ArrivalSection/>
-      <CategorySection/>
-      <SubscribeSection/>
-      <ClientSection/>
+      <ArrivalSection />
+      <CategorySection />
+      <SubscribeSection />
+      <ClientSection />
       <SocialMediaGallery />
-      <Footer/>
+      <Footer />
       <LastFooter />
-     
+
     </div>
   );
 };
