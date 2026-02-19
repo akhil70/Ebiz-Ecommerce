@@ -35,8 +35,8 @@ const SubHeader = () => {
         { name: "Kids & Toys", id: "kids", content: null },
         { name: "Home & Kitchen", id: "home", content: null },
         { name: "Beauty & Health", id: "beauty", content: null },
-        { name: "Home & Kitchen", id: "home", content: null },
-        { name: "Beauty & Health", id: "beauty", content: null },
+        { name: "Home & Kitchen", id: "hoome", content: null },
+        { name: "Beauty & Health", id: "beeauty", content: null },
     ];
 
     return (

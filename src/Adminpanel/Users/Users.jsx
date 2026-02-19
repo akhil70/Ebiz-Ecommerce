@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Users.css';
 import { useNavigate } from "react-router-dom";
+import AddUser from './AddUser'; // Import the form component
 
 
 const users = [
@@ -25,14 +26,18 @@ const StatusPill = ({ status }) => {
 
 const Users = () => {
   const navigate = useNavigate();
+  const [isAddUserOpen, setIsAddUserOpen] = useState(false); // State for modal
+
   return (
     <div className="recent-purchases-card">
+      {/* Add User Sidebar Modal */}
+      <AddUser isOpen={isAddUserOpen} onClose={() => setIsAddUserOpen(false)} />
 
       {/* Header Section */}
       <div className="card-header">
         <h2>User List</h2>
         <div className="header-actions">
-          <button className="action-button new-button" onClick={() => navigate("/AddUser")}>+ New User</button>
+          <button className="action-button new-button" onClick={() => setIsAddUserOpen(true)}>+ New User</button>
         </div>
       </div>
 

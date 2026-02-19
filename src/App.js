@@ -11,6 +11,8 @@ import AdminLayout from "./Adminpanel/Adminlayout";
 import Dashboard from "./Adminpanel/dashboard";
 import Users from './Adminpanel/Users/Users';
 import AddUser from './Adminpanel/Users/AddUser';
+import Category from './Adminpanel/Category/Category';
+import AddCategory from './Adminpanel/Category/AddCategory';
 
 function App() {
   return (
@@ -25,11 +27,18 @@ function App() {
           <Route path="/Dashboard" element={<AdminLayout />}>
             <Route index element={<Dashboard />} />
           </Route>
-           <Route path="/Users" element={<AdminLayout />}>
+          <Route path="/Users" element={<AdminLayout />}>
             <Route index element={<Users />} />
           </Route>
-           <Route path="/AddUser" element={<AdminLayout />}>
+
+          <Route path="/AddUser" element={<AdminLayout />}>
             <Route index element={<AddUser />} />
+          </Route>
+          <Route path="/Category" element={<AdminLayout />}>
+            <Route index element={<Category />} />
+          </Route>
+          <Route path="/AddCategory" element={<AdminLayout />}>
+            <Route index element={<AddCategory />} />
           </Route>
 
         </Routes>
