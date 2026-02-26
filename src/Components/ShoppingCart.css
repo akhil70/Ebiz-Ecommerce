@@ -56,6 +56,7 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .remove-button {
@@ -262,7 +263,7 @@
   }
 
   .cart-table {
-    min-width: 600px;
+    min-width: 520px;
   }
 
   .cart-table th,

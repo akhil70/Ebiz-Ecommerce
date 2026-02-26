@@ -35,8 +35,13 @@ export default function Login() {
   };
 
   return (
-    <div style={{ "background": "url(" + logo + ") ", "backgroundSize": "cover", "overflowX": "hidden", height: "950px", overflowY: "hidden" }}>
-
+    <div
+      className="login-page"
+      style={{
+        backgroundImage: `url(${logo})`,
+        overflowX: "hidden"
+      }}
+    >
       <div className="login-wrapper">
 
         <div className="login-card">

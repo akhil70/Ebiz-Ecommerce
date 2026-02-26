@@ -6,17 +6,29 @@ body {
     font-family: Arial, sans-serif;
 }
 
+/* Page background + centering */
+.login-page {
+    min-height: 100vh;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+}
+
 /* Center card like screenshot */
 .login-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    width: 100%;
 }
 
 /* Card style EXACTLY like your screenshot */
 .login-card {
-    width: 400px;
+    width: 100%;
+    max-width: 400px;
     background-color: #ffffff;
     padding: 40px 35px;
     border-radius: 12px;
@@ -76,4 +88,34 @@ body {
     margin-top: 25px;
     border: none;
     border-bottom: 1px solid #ccc;
+}
+
+@media (max-width: 600px) {
+    .login-card {
+        padding: 28px 22px;
+    }
+
+    .login-title {
+        font-size: 20px;
+    }
+
+    .login-image {
+        max-height: 200px;
+    }
+}
+
+@media (max-width: 420px) {
+    .login-card {
+        padding: 22px 18px;
+    }
+
+    .login-title {
+        font-size: 18px;
+    }
+
+    .login-input,
+    .login-btn {
+        height: 42px;
+        font-size: 14px;
+    }
 }

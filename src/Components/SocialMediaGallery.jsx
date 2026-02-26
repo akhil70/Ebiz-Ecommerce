@@ -5,7 +5,7 @@ export default function SocialMediaGallery() {
   const galleryItems = [
     {
       id: 1,
-      image: '/instagram-01.jpg',
+      image: './instagram-01.jpg',
       label: 'Fashion',
       showIcon: true
     },

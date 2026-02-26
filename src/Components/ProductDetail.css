@@ -354,6 +354,15 @@
     padding: 1rem;
   }
 
+  .breadcrumb {
+    flex-wrap: wrap;
+    row-gap: 0.25rem;
+  }
+
+  .price-section {
+    flex-wrap: wrap;
+  }
+
   .product-title {
     font-size: 1.5rem;
   }
@@ -369,5 +378,41 @@
 
   .add-to-cart-button {
     width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .product-info {
+    position: static;
+  }
+
+  .navigation-arrows {
+    position: static;
+    justify-content: flex-end;
+    margin-bottom: 0.75rem;
+  }
+
+  .size-selection,
+  .color-selection {
+    flex-wrap: wrap;
+  }
+
+  .thumbnails {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+  }
+
+  .quantity-selector input {
+    width: 52px;
+  }
+}
+
+@media (max-width: 420px) {
+  .thumbnails {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .price-range {
+    font-size: 1.25rem;
   }
 }

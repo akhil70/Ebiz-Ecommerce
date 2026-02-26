@@ -24,6 +24,8 @@ function App() {
           <Route path="/login" element={<LoginForm />} />
           <Route path="/product" element={<ProductDetail />} />
           <Route path="/cart" element={<ShoppingCart />} />
+
+          {/* ============= ADMIN PANEL ================ */}
           <Route path="/Dashboard" element={<AdminLayout />}>
             <Route index element={<Dashboard />} />
           </Route>

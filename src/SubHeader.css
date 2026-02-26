@@ -11,6 +11,67 @@
     /* Matching the font usage in the project if possible */
 }
 
+.subheader-mobile-bar {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+}
+
+.subheader-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+.subheader-toggle {
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    border-radius: 8px;
+    width: 40px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.subheader-toggle-icon {
+    position: relative;
+    width: 18px;
+    height: 12px;
+    display: inline-block;
+}
+
+.subheader-toggle-icon::before,
+.subheader-toggle-icon::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #333;
+    transition: transform 0.2s ease, top 0.2s ease;
+}
+
+.subheader-toggle-icon::before {
+    top: 0;
+}
+
+.subheader-toggle-icon::after {
+    top: 10px;
+}
+
+.subheader-toggle-icon.open::before {
+    top: 5px;
+    transform: rotate(45deg);
+}
+
+.subheader-toggle-icon.open::after {
+    top: 5px;
+    transform: rotate(-45deg);
+}
+
 .subheader-list {
     display: flex;
     list-style: none;
@@ -112,4 +173,45 @@
 .dropdown-item:hover {
     color: #333;
     font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    .subheader-container {
+        top: 56px;
+    }
+
+    .subheader-mobile-bar {
+        display: flex;
+    }
+
+    .subheader-list {
+        display: none;
+        flex-direction: column;
+        padding: 8px 16px 16px;
+        border-top: 1px solid #eee;
+    }
+
+    .subheader-list.open {
+        display: flex;
+    }
+
+    .subheader-item {
+        width: 100%;
+        padding: 12px 0;
+    }
+
+    .subheader-item.active {
+        border-bottom: none;
+    }
+
+    .subheader-dropdown {
+        position: static;
+        box-shadow: none;
+        border: 1px solid #eee;
+        margin-top: 10px;
+        min-width: 0;
+        width: 100%;
+        flex-direction: column;
+        gap: 16px;
+    }
 }
