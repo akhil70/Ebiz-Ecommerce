@@ -1,44 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './SubHeader.css';
+import API from './Utils/AxiosConfig';
 
 const SubHeader = () => {
     const [hoveredCategory, setHoveredCategory] = useState(null);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [categories, setCategories] = useState([]);
 
-    const categories = [
-        {
-            name: "Popular",
-            id: "popular",
-            content: {
-                featured: [
-                    "Smartphones",
-                    "Top Brands",
-                    "Shimla Apples"
-                ],
-                allPopular: [
-                    "Jewellery",
-                    "Men Fashion",
-                    "Kids",
-                    "Footwear",
-                    "Beauty & Personal Care",
-                    "Grocery",
-                    "Electronics",
-                    "Innerwear & Nightwear",
-                    "Kitchen & Appliances",
-                    "Bags & Luggage"
-                ]
+    useEffect(() => {
+        const fetchCategoriesWithSub = async () => {
+            try {
+                const response = await API.get('/categories/with-subcategories');
+                console.log("Categories with Subcategories:", response.data);
+                setCategories(response.data);
+            } catch (error) {
+                console.error("Error fetching categories with subcategories:", error);
             }
-        },
-        { name: "Kurti, Saree & Lehenga", id: "ethnic", content: null },
-        { name: "Women Western", id: "western", content: null },
-        { name: "Lingerie", id: "lingerie", content: null },
-        { name: "Men", id: "men", content: null },
-        { name: "Kids & Toys", id: "kids", content: null },
-        { name: "Home & Kitchen", id: "home", content: null },
-        { name: "Beauty & Health", id: "beauty", content: null },
-        { name: "Home & Kitchen", id: "hoome", content: null },
-        { name: "Beauty & Health", id: "beeauty", content: null },
-    ];
+        };
+        fetchCategoriesWithSub();
+    }, []);
 
     return (
         <div className="subheader-container">
@@ -63,7 +43,7 @@ const SubHeader = () => {
                         onMouseEnter={() => setHoveredCategory(category.id)}
                         onMouseLeave={() => setHoveredCategory(null)}
                         onClick={() => {
-                            if (!category.content) return;
+                            if (!category.subcategory || category.subcategory.length === 0) return;
                             setHoveredCategory((current) =>
                                 current === category.id ? null : category.id
                             );
@@ -71,22 +51,16 @@ const SubHeader = () => {
                     >
                         <span className="category-name">{category.name}</span>
 
-                        {/* Show dropdown only if it has content (specifically "Popular" for now as per request) */}
-                        {category.content && hoveredCategory === category.id && (
+                        {/* Show dropdown if it has subcategories */}
+                        {category.subcategory && category.subcategory.length > 0 && hoveredCategory === category.id && (
                             <div className="subheader-dropdown">
                                 <div className="dropdown-column">
-                                    <h4 className="dropdown-heading featured">Featured On Meesho</h4>
+                                    <h4 className="dropdown-heading">{category.name}</h4>
                                     <ul className="dropdown-list">
-                                        {category.content.featured.map((item, index) => (
-                                            <li key={index} className="dropdown-item">{item}</li>
-                                        ))}
-                                    </ul>
-                                </div>
-                                <div className="dropdown-column">
-                                    <h4 className="dropdown-heading">All Popular</h4>
-                                    <ul className="dropdown-list">
-                                        {category.content.allPopular.map((item, index) => (
-                                            <li key={index} className="dropdown-item">{item}</li>
+                                        {category.subcategory.map((sub) => (
+                                            <li key={sub.id} className="dropdown-item">
+                                                {sub.name}
+                                            </li>
                                         ))}
                                     </ul>
                                 </div>

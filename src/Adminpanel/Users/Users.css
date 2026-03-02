@@ -35,7 +35,8 @@
 }
 
 .header-actions .new-button {
-  background-color: #007bff; /* Blue for New button */
+  background-color: #007bff;
+  /* Blue for New button */
   color: white;
   border-color: #007bff;
 }
@@ -53,18 +54,21 @@ table {
 
 thead {
   border-bottom: 1px solid #eee;
-  color: #6c757d; /* Light gray for header text */
+  color: #6c757d;
+  /* Light gray for header text */
   font-weight: 600;
 }
 
-th, td {
+th,
+td {
   padding: 12px 15px;
   vertical-align: middle;
 }
 
 /* Table rows styling */
 tbody tr {
-  border-bottom: 1px solid #f8f9fa; /* Very light border between rows */
+  border-bottom: 1px solid #f8f9fa;
+  /* Very light border between rows */
 }
 
 tbody tr:last-child {
@@ -72,17 +76,34 @@ tbody tr:last-child {
 }
 
 /* Specific Column Widths/Styles */
-.checkbox-col { width: 30px; padding-left: 0; padding-right: 0; text-align: center; }
-.dots-col { width: 20px; text-align: right; cursor: pointer; color: #6c757d; }
-.amount-col { font-weight: 600; }
+.checkbox-col {
+  width: 30px;
+  padding-left: 0;
+  padding-right: 0;
+  text-align: center;
+}
+
+.dots-col {
+  width: 20px;
+  text-align: right;
+  cursor: pointer;
+  color: #6c757d;
+}
+
+.amount-col {
+  font-weight: 600;
+}
 
 /* Link/Name styles */
-.customer-name, .email-address {
+.customer-name,
+.email-address {
   color: #007bff;
   cursor: pointer;
   text-decoration: none;
 }
-.customer-name:hover, .email-address:hover {
+
+.customer-name:hover,
+.email-address:hover {
   text-decoration: underline;
 }
 
@@ -97,26 +118,36 @@ tbody tr:last-child {
 }
 
 .payment-pill::before {
-  content: '✓'; /* Checkmark for success/blocked for consistency */
+  content: '✓';
+  /* Checkmark for success/blocked for consistency */
   margin-right: 5px;
   font-size: 1em;
 }
 
 .payment-pill.success {
-  background-color: #e6f7ee; /* Light green background */
-  color: #28a745; /* Green text */
+  background-color: #e6f7ee;
+  /* Light green background */
+  color: #28a745;
+  /* Green text */
 }
+
 .payment-pill.blocked {
-  background-color: #fcebeb; /* Light red/gray background */
-  color: #dc3545; /* Red text */
+  background-color: #fcebeb;
+  /* Light red/gray background */
+  color: #dc3545;
+  /* Red text */
 }
+
 .payment-pill.pending {
-  background-color: #fff8e1; /* Light yellow background */
-  color: #ffc107; /* Yellow/Orange text */
+  background-color: #fff8e1;
+  /* Light yellow background */
+  color: #ffc107;
+  /* Yellow/Orange text */
 }
 
 .payment-pill.pending::before {
-    content: '='; /* Placeholder icon for pending */
+  content: '=';
+  /* Placeholder icon for pending */
 }
 
 /* --- Footer (Pagination) Styling --- */
@@ -141,7 +172,58 @@ tbody tr:last-child {
 }
 
 .pagination-buttons .next-button {
-  background-color: #007bff; /* Blue for Next button */
+  background-color: #007bff;
+  /* Blue for Next button */
   color: white;
   border-color: #007bff;
+}
+
+/* --- Switch Toggle Styling --- */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 34px;
+  height: 20px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 20px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 14px;
+  width: 14px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked+.slider {
+  background-color: #4f46e5;
+}
+
+input:focus+.slider {
+  box-shadow: 0 0 1px #4f46e5;
+}
+
+input:checked+.slider:before {
+  transform: translateX(14px);
 }

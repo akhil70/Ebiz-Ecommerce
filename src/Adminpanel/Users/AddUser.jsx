@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { X } from "lucide-react";
 import "../AdminForm.css"; // Import the common CSS
+import API from "../../Utils/AxiosConfig";
 
 const AddUser = ({ isOpen, onClose, onSave }) => {
   const [formData, setFormData] = useState({
@@ -34,15 +35,20 @@ const AddUser = ({ isOpen, onClose, onSave }) => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("User submitted:", formData);
 
-    // Simulate API call success
-    alert("User details submitted successfully!");
-
-    if (onSave) onSave(formData);
-    onClose(); // Close the sidebar
+    try {
+      const response = await API.post('/users', formData);
+      console.log("Response:", response.data);
+      alert("User details submitted successfully!");
+      if (onSave) onSave(response.data);
+      onClose(); // Close the sidebar
+    } catch (error) {
+      console.error("Error submitting user:", error);
+      alert("Failed to submit user details. Please try again.");
+    }
   };
 
   if (!isOpen) return null; // Don't render if closed

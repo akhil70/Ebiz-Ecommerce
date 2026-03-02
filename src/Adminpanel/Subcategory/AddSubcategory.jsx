@@ -4,66 +4,63 @@ import "../AdminForm.css"; // Import the common CSS
 import API from "../../Utils/AxiosConfig";
 import toast from 'react-hot-toast';
 
-const AddCategory = ({ isOpen, onClose, onSave, categoryId }) => {
+const AddSubcategory = ({ isOpen, onClose, onSave, subcategoryId }) => {
     const [formData, setFormData] = useState({
         name: "",
         slug: "",
-        parentId: "",
+        categoryId: "",
         image: null,
-        description: "",
         status: 1,
     });
-    const [brands, setBrands] = useState([]);
+    const [categories, setCategories] = useState([]);
 
-    // Fetch brands for the parentId dropdown
+    // Fetch categories for the categoryId dropdown
     useEffect(() => {
-        const fetchBrands = async () => {
+        const fetchCategories = async () => {
             try {
-                const response = await API.get('/brands');
-                setBrands(response.data);
+                const response = await API.get('/categories');
+                setCategories(response.data);
             } catch (error) {
-                console.error("Error fetching brands for category dropdown:", error);
+                console.error("Error fetching categories for subcategory dropdown:", error);
             }
         };
         if (isOpen) {
-            fetchBrands();
+            fetchCategories();
         }
     }, [isOpen]);
 
     // Reset form or fetch details when opened
     useEffect(() => {
-        if (isOpen && categoryId) {
-            const fetchCategoryDetails = async () => {
-                const loadingToast = toast.loading('Fetching category details...');
+        if (isOpen && subcategoryId) {
+            const fetchDetails = async () => {
+                const loadingToast = toast.loading('Fetching details...');
                 try {
-                    const response = await API.get(`/categories/${categoryId}`);
+                    const response = await API.get(`/subcategories/${subcategoryId}`);
                     const data = response.data;
                     setFormData({
                         name: data.name || "",
                         slug: data.slug || "",
-                        parentId: data.parentId || "",
+                        categoryId: data.categoryId || "",
                         image: data.image || null,
-                        description: data.description || "",
                         status: data.status ?? 1,
                     });
                     toast.dismiss(loadingToast);
                 } catch (error) {
-                    console.error("Error fetching category details:", error);
-                    toast.error("Failed to load category details", { id: loadingToast });
+                    console.error("Error fetching subcategory details:", error);
+                    toast.error("Failed to load details", { id: loadingToast });
                 }
             };
-            fetchCategoryDetails();
+            fetchDetails();
         } else if (isOpen) {
             setFormData({
                 name: "",
                 slug: "",
-                parentId: "",
+                categoryId: "",
                 image: null,
-                description: "",
                 status: 1,
             });
         }
-    }, [isOpen, categoryId]);
+    }, [isOpen, subcategoryId]);
 
     const handleChange = (e) => {
         const { name, type, checked, value, files } = e.target;
@@ -76,8 +73,8 @@ const AddCategory = ({ isOpen, onClose, onSave, categoryId }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const actionText = categoryId ? 'Updating' : 'Creating';
-        const loadingToast = toast.loading(`${actionText} category...`);
+        const actionText = subcategoryId ? 'Updating' : 'Creating';
+        const loadingToast = toast.loading(`${actionText} subcategory...`);
 
         try {
             let imageBase64 = typeof formData.image === 'string' ? formData.image : "";
@@ -93,27 +90,26 @@ const AddCategory = ({ isOpen, onClose, onSave, categoryId }) => {
             const payload = {
                 name: formData.name,
                 slug: formData.slug,
-                parentId: formData.parentId,
-                description: formData.description,
+                categoryId: formData.categoryId,
                 image: imageBase64,
                 status: Number(formData.status)
             };
 
-            console.log(`Submitting Category (${categoryId ? 'PUT' : 'POST'}):`, payload);
+            console.log(`Submitting Subcategory (${subcategoryId ? 'PUT' : 'POST'}):`, payload);
 
             let response;
-            if (categoryId) {
-                response = await API.put(`/categories/${categoryId}`, payload);
+            if (subcategoryId) {
+                response = await API.put(`/subcategories/${subcategoryId}`, payload);
             } else {
-                response = await API.post('/categories', payload);
+                response = await API.post('/subcategories', payload);
             }
 
-            toast.success(`Category ${categoryId ? 'updated' : 'created'} successfully!`, { id: loadingToast });
+            toast.success(`Subcategory ${subcategoryId ? 'updated' : 'created'} successfully!`, { id: loadingToast });
             if (onSave) onSave(response.data);
             onClose();
         } catch (error) {
-            console.error(`Error ${categoryId ? 'updating' : 'creating'} category:`, error);
-            toast.error(error.response?.data?.message || `Failed to ${categoryId ? 'update' : 'create'} category`, { id: loadingToast });
+            console.error(`Error ${subcategoryId ? 'updating' : 'creating'} subcategory:`, error);
+            toast.error(error.response?.data?.message || `Failed to ${subcategoryId ? 'update' : 'create'} subcategory`, { id: loadingToast });
         }
     };
 
@@ -124,31 +120,31 @@ const AddCategory = ({ isOpen, onClose, onSave, categoryId }) => {
             <div className="sidebar-overlay" onClick={onClose}></div>
             <div className="sidebar-container">
                 <div className="sidebar-header">
-                    <h2 className="sidebar-title">{categoryId ? 'Update Category' : 'New Category'}</h2>
+                    <h2 className="sidebar-title">{subcategoryId ? 'Update Subcategory' : 'New Subcategory'}</h2>
                     <button className="close-btn" onClick={onClose}>
                         <X size={20} />
                     </button>
                 </div>
 
                 <div className="sidebar-content">
-                    <form id="add-category-form" onSubmit={handleSubmit} className="admin-form">
+                    <form id="add-subcategory-form" onSubmit={handleSubmit} className="admin-form">
 
-                        {/* Parent Brand Dropdown */}
-                        {/* <div className="form-group">
-                            <label className="form-label">Parent Brand *</label>
+                        {/* Parent Category Dropdown */}
+                        <div className="form-group">
+                            <label className="form-label">Parent Category *</label>
                             <select
-                                name="parentId"
-                                value={formData.parentId}
+                                name="categoryId"
+                                value={formData.categoryId}
                                 onChange={handleChange}
                                 required
                                 className="form-input"
                             >
-                                <option value="">Select Brand</option>
-                                {brands.map(brand => (
-                                    <option key={brand.id} value={brand.id}>{brand.name}</option>
+                                <option value="">Select Category</option>
+                                {categories.map(cat => (
+                                    <option key={cat.id} value={cat.id}>{cat.name}</option>
                                 ))}
                             </select>
-                        </div> */}
+                        </div>
 
                         {/* Name */}
                         <div className="form-group">
@@ -156,7 +152,7 @@ const AddCategory = ({ isOpen, onClose, onSave, categoryId }) => {
                             <input
                                 type="text"
                                 name="name"
-                                placeholder="Category Name"
+                                placeholder="Subcategory Name"
                                 value={formData.name}
                                 onChange={handleChange}
                                 required
@@ -170,7 +166,7 @@ const AddCategory = ({ isOpen, onClose, onSave, categoryId }) => {
                             <input
                                 type="text"
                                 name="slug"
-                                placeholder="category-slug"
+                                placeholder="subcategory-slug"
                                 value={formData.slug}
                                 onChange={handleChange}
                                 required
@@ -180,7 +176,7 @@ const AddCategory = ({ isOpen, onClose, onSave, categoryId }) => {
 
                         {/* Image */}
                         <div className="form-group">
-                            <label className="form-label">Category Image</label>
+                            <label className="form-label">Subcategory Image</label>
                             <input
                                 type="file"
                                 name="image"
@@ -198,19 +194,6 @@ const AddCategory = ({ isOpen, onClose, onSave, categoryId }) => {
                                     />
                                 </div>
                             )}
-                        </div>
-
-                        {/* Description */}
-                        <div className="form-group">
-                            <label className="form-label">Description</label>
-                            <textarea
-                                name="description"
-                                rows="3"
-                                placeholder="Category Description"
-                                value={formData.description}
-                                onChange={handleChange}
-                                className="form-textarea"
-                            />
                         </div>
 
                         {/* Status */}
@@ -231,8 +214,8 @@ const AddCategory = ({ isOpen, onClose, onSave, categoryId }) => {
 
                 <div className="sidebar-footer">
                     <button type="button" className="btn-cancel" onClick={onClose}>Cancel</button>
-                    <button type="submit" form="add-category-form" className="btn-submit">
-                        {categoryId ? 'Update' : 'Save'}
+                    <button type="submit" form="add-subcategory-form" className="btn-submit">
+                        {subcategoryId ? 'Update' : 'Save'}
                     </button>
                 </div>
             </div>
@@ -240,4 +223,4 @@ const AddCategory = ({ isOpen, onClose, onSave, categoryId }) => {
     );
 };
 
-export default AddCategory;
+export default AddSubcategory;

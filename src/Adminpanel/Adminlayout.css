@@ -1,54 +1,81 @@
-
 .admin-container {
   display: flex;
   height: 100vh;
-  overflow: hidden; 
+  overflow: hidden;
 }
 
 
 .sidebar {
-  width: 240px;
-  background-color: #000;
-  color: white;
-  padding: 20px;
-  transition: 0.3s ease;
+  width: 260px;
+  background-color: #ffffff;
+  color: #333;
+  padding: 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
   flex-shrink: 0;
   height: 100vh;
   position: sticky;
   top: 0;
+  border-right: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
 }
 
 .sidebar.closed {
-  width: 70px;
+  width: 76px;
+}
+
+.sidebar.closed .sidebar-title {
+  padding: 25px 0;
+  text-align: center;
+  font-size: 18px;
 }
 
 .sidebar-title {
-  font-size: 22px;
-  font-weight: bold;
-  margin-bottom: 25px;
+  font-size: 24px;
+  font-weight: 800;
+  padding: 25px 25px;
+  margin-bottom: 5px;
+  color: #4f46e5;
+  letter-spacing: -0.5px;
   white-space: nowrap;
 }
 
 .menu-list {
   list-style: none;
-  padding: 0;
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .menu-item {
   display: flex;
   align-items: center;
   gap: 12px;
-  color: #ddd;
-  padding: 12px 10px;
+  color: #6b7280;
+  padding: 12px 14px;
   text-decoration: none;
-  border-radius: 6px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
   white-space: nowrap;
 }
 
 .menu-item:hover {
-  background-color: #222;
-  color: #fff;
+  background-color: #f3f4f6;
+  color: #111827;
+}
+
+.menu-item.active {
+  background-color: #eef2ff;
+  color: #4f46e5;
+  font-weight: 600;
+}
+
+.menu-item.active svg {
+  color: #4f46e5;
 }
 
 .sidebar.closed .menu-item span {
@@ -77,7 +104,7 @@
   flex-shrink: 0;
   position: sticky;
   top: 0;
-  z-index: 2000 !important; 
+  z-index: 2000 !important;
 }
 
 .toggle-btn {
@@ -85,7 +112,7 @@
   border: none;
   cursor: pointer;
   position: relative;
-  z-index: 3000 !important; 
+  z-index: 3000 !important;
 }
 
 
@@ -134,10 +161,11 @@
   background: white;
   padding: 12px;
   text-align: center;
-  color: #333;
-  border-top: 1px solid #ddd;
+  color: #6b7280;
+  border-top: 1px solid #e5e7eb;
   flex-shrink: 0;
   height: 45px;
+  font-size: 13px;
 }
 
 
@@ -191,7 +219,7 @@
     top: 0;
     width: 240px;
     height: 100vh;
-    z-index: 999; 
+    z-index: 999;
     transform: translateX(-100%);
   }
 

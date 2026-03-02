@@ -10,7 +10,7 @@ export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
-  
+
   const [error, setError] = useState('');
 
   const navigate = useNavigate();
@@ -51,7 +51,7 @@ export default function Login() {
           <img src={login} alt="login" className="login-image" />
 
           <form onSubmit={handleSubmit}>
-          <input
+            <input
               type="text"
               placeholder="Username"
               value={username}
@@ -60,7 +60,7 @@ export default function Login() {
               onKeyDown={handleKeyPress}   // <-- Enter works here too
             />
 
-             <input
+            <input
               type="password"
               placeholder="Password"
               value={password}

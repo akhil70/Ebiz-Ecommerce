@@ -13,10 +13,21 @@ import Users from './Adminpanel/Users/Users';
 import AddUser from './Adminpanel/Users/AddUser';
 import Category from './Adminpanel/Category/Category';
 import AddCategory from './Adminpanel/Category/AddCategory';
+import Brands from './Adminpanel/Brands/Brands';
+import AddBrand from './Adminpanel/Brands/AddBrand';
+import Testimonials from './Adminpanel/Testimonials/Testimonials';
+import AddTestimonial from './Adminpanel/Testimonials/AddTestimonial';
+import Subcategory from './Adminpanel/Subcategory/Subcategory';
+import AddSubcategory from './Adminpanel/Subcategory/AddSubcategory';
+import Products from './Adminpanel/Products/Products';
+import AddProduct from './Adminpanel/Products/AddProduct';
+
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   return (
     <BrowserRouter>
+      <Toaster position="top-right" reverseOrder={false} />
       <div className="min-h-screen bg-white">
         {/* <Header /> */}
         <Routes>
@@ -41,6 +52,27 @@ function App() {
           </Route>
           <Route path="/AddCategory" element={<AdminLayout />}>
             <Route index element={<AddCategory />} />
+          </Route>
+          <Route path="/Brands" element={<AdminLayout />}>
+            <Route index element={<Brands />} />
+          </Route>
+          <Route path="/AddBrand" element={<AdminLayout />}>
+            <Route index element={<AddBrand />} />
+          </Route>
+          <Route path="/Testimonials" element={<AdminLayout />}>
+            <Route index element={<Testimonials />} />
+          </Route>
+          <Route path="/AddTestimonial" element={<AdminLayout />}>
+            <Route index element={<AddTestimonial />} />
+          </Route>
+          <Route path="/Subcategory" element={<AdminLayout />}>
+            <Route index element={<Subcategory />} />
+          </Route>
+          <Route path="/Products" element={<AdminLayout />}>
+            <Route index element={<Products />} />
+          </Route>
+          <Route path="/AddProduct" element={<AdminLayout />}>
+            <Route index element={<AddProduct />} />
           </Route>
 
         </Routes>

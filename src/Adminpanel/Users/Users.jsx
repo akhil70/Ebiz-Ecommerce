@@ -2,17 +2,12 @@ import React, { useState } from 'react';
 import './Users.css';
 import { useNavigate } from "react-router-dom";
 import AddUser from './AddUser'; // Import the form component
+import API from "../../Utils/AxiosConfig";
+import { useEffect } from "react";
+import NoData from '../Components/NoData';
 
 
-const users = [
-  { id: 1, name: 'John Doe', email: 'john@gmail.com', role: 'Admin', status: 'Active' },
-  { id: 2, name: 'Sylvia Plath', email: 'sylvia@mail.ru', role: 'Editor', status: 'Active' },
-  { id: 3, name: 'Edgar Allan Poe', email: 'edgar@yahoo.com', role: 'Viewer', status: 'Blocked' },
-  { id: 4, name: 'William Yeats', email: 'william@gmail.com', role: 'Editor', status: 'Active' },
-  { id: 5, name: 'Rabindranath Tagore', email: 'tagore@twitter.com', role: 'Viewer', status: 'Blocked' },
-  { id: 6, name: 'Emily Dickinson', email: 'emily@gmail.com', role: 'Admin', status: 'Pending' },
-  { id: 7, name: 'Giovanni Boccaccio', email: 'giovanni@outlook.com', role: 'Viewer', status: 'Active' },
-];
+/* Initial placeholder users removed - now fetching from API */
 
 // Status pill component
 const StatusPill = ({ status }) => {
@@ -27,6 +22,26 @@ const StatusPill = ({ status }) => {
 const Users = () => {
   const navigate = useNavigate();
   const [isAddUserOpen, setIsAddUserOpen] = useState(false); // State for modal
+  const [userList, setUserList] = useState([]); // State for fetched users
+  const [loading, setLoading] = useState(true);
+
+  // Fetch users from API
+  const fetchUsers = async () => {
+    try {
+      setLoading(true);
+      const response = await API.get('/users');
+      setUserList(response.data);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      // Fallback to empty list or keep previous
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
   return (
     <div className="recent-purchases-card">
@@ -55,16 +70,26 @@ const Users = () => {
             </tr>
           </thead>
           <tbody>
-            {users.map(user => (
-              <tr key={user.id}>
-                <td className="checkbox-col"><input type="checkbox" /></td>
-                <td className="customer-name">{user.name}</td>
-                <td className="email-address">{user.email}</td>
-                <td>{user.role}</td>
-                <td><StatusPill status={user.status} /></td>
-                <td className="dots-col">...</td>
+            {loading ? (
+              <tr><td colSpan="6" style={{ textAlign: "center", padding: "20px" }}>Loading users...</td></tr>
+            ) : userList.length === 0 ? (
+              <tr>
+                <td colSpan="6" style={{ padding: "0" }}>
+                  <NoData message="No users found." />
+                </td>
               </tr>
-            ))}
+            ) : (
+              userList.map(user => (
+                <tr key={user.id}>
+                  <td className="checkbox-col"><input type="checkbox" /></td>
+                  <td className="customer-name">{user.name}</td>
+                  <td className="email-address">{user.email}</td>
+                  <td>{user.role}</td>
+                  <td><StatusPill status={user.status} /></td>
+                  <td className="dots-col">...</td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
