@@ -15,9 +15,9 @@ export default function ProductDetail() {
 
     const thumbnails = [
         '/polo-tshirt-green.jpg',
-        '/polo-tshirt-green.jpg',
-        '/polo-tshirt-green.jpg',
-        '/polo-tshirt-green.jpg'
+        '/polo-tshirt-grey.jpg',
+        '/polo-tshirt-purple.jpg',
+        '/polo-tshirt.jpg'
     ];
 
     const sizes = ['M', 'L', 'XL'];
@@ -50,6 +50,7 @@ export default function ProductDetail() {
                     {/* Left Side - Image Gallery */}
                     <div className="image-gallery">
                         <div className="main-image-wrapper">
+                            <div className="badge">Sale</div>
                             <button className="zoom-button">
                                 <Search size={20} />
                             </button>

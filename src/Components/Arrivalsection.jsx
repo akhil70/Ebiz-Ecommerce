@@ -1,6 +1,7 @@
 import React from "react";
 import "./arrivalsection.css";
 import arrivalImg from "../images/arrival-bg.png"; // adjust path
+import { Link } from "react-router-dom";
 
 const ArrivalSection = () => {
   return (
@@ -18,9 +19,9 @@ const ArrivalSection = () => {
             Tenetur commodi, nisi rem vel, ea eaque ab ipsa, autem similique ex
             unde!
           </p>
-          <a href="#" className="arrival_btn">
+          <Link to="/shop" className="arrival_btn">
             Shop Now
-          </a>
+          </Link>
         </div>
       </div>
     </section>

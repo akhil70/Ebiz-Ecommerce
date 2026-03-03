@@ -6,6 +6,7 @@ import HomePage from "./Homepage";
 import LoginForm from './LoginAcess/LoginForm';
 import ProductDetail from './Components/ProductDetail';
 import ShoppingCart from './Components/ShoppingCart';
+import ProductListing from './Components/ProductListing';
 
 import AdminLayout from "./Adminpanel/Adminlayout";
 import Dashboard from "./Adminpanel/dashboard";
@@ -35,6 +36,7 @@ function App() {
           <Route path="/login" element={<LoginForm />} />
           <Route path="/product" element={<ProductDetail />} />
           <Route path="/cart" element={<ShoppingCart />} />
+          <Route path="/shop" element={<ProductListing />} />
 
           {/* ============= ADMIN PANEL ================ */}
           <Route path="/Dashboard" element={<AdminLayout />}>

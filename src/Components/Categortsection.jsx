@@ -1,5 +1,6 @@
 import React from "react";
 import "./categorysection.css";
+import { Link } from "react-router-dom";
 
 // Import images
 import p1 from "../images/p1.png";
@@ -46,8 +47,8 @@ const CategorySection = () => {
             <div key={product.id} className="product_card">
               <div className="option_container">
                 <div className="options">
-                  <a href="#" className="option1">Add To Cart</a>
-                  <a href="/product" className="option2">Buy Now</a>
+                  <Link to="/shop" className="option1">Add To Cart</Link>
+                  <Link to="/product" className="option2">Buy Now</Link>
                 </div>
               </div>
 
@@ -64,7 +65,7 @@ const CategorySection = () => {
         </div>
 
         <div className="btn-box">
-          <a href="#">View All Products</a>
+          <Link to="/shop">View All Products</Link>
         </div>
       </div>
     </section>
