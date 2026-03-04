@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./style.css";
-import { ShoppingCart, Search, Menu, X, LogIn } from "lucide-react";
+import { ShoppingCart, Search, Menu, X, LogIn, User, ClipboardList } from "lucide-react";
 import loginIllustration from "./images/fammmlogo.png";
 
 import { NavLink } from "react-router-dom";
@@ -116,24 +116,45 @@ export const Header = () => {
 
 
               <li className="nav-item">
+                <div className="profile-nav-container">
+                  <div className="nav-icon-group">
+                    <User size={20} stroke="black" />
+                    <span>Profile</span>
+                  </div>
+
+                  <div className="profile-popup">
+                    <div className="popup-header">
+                      <h3>Hello User</h3>
+                      <p>To access your Ebizz account</p>
+                    </div>
+                    <button className="signup-btn">Sign Up</button>
+                    <div className="popup-divider"></div>
+                    <ul className="popup-menu">
+                      <li>
+                        <a href="/orders">
+                          <ClipboardList size={18} />
+                          My Orders
+                        </a>
+                      </li>
+                    </ul>
+                    <div className="popup-divider"></div>
+                    <div className="popup-footer">
+                      <a href="/delete-account" className="delete-link">Delete Account</a>
+                    </div>
+                  </div>
+                </div>
+              </li>
+
+              <li className="nav-item">
                 <a
                   className={`nav-link ${activeLink === "cart" ? "active" : ""}`}
                   href="/cart"
                   onClick={() => handleLinkClick("cart")}
                 >
-                  <ShoppingCart size={20} fill="black" stroke="black" />
-                </a>
-              </li>
-
-
-              <li className="nav-item">
-                <a
-                  className={`nav-link ${activeLink === "search" ? "active" : ""
-                    }`}
-                  href="/login"
-                  onClick={() => handleLinkClick("search")}
-                >
-                  <LogIn size={20} stroke="black" />
+                  <div className="nav-icon-group">
+                    <ShoppingCart size={20} fill="black" stroke="black" />
+                    <span>Cart</span>
+                  </div>
                 </a>
               </li>
             </ul>
