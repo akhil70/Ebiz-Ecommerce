@@ -22,6 +22,7 @@ import Subcategory from './Adminpanel/Subcategory/Subcategory';
 import AddSubcategory from './Adminpanel/Subcategory/AddSubcategory';
 import Products from './Adminpanel/Products/Products';
 import AddProduct from './Adminpanel/Products/AddProduct';
+import Filters from './Adminpanel/Filters/Filters';
 
 import { Toaster } from 'react-hot-toast';
 
@@ -75,6 +76,9 @@ function App() {
           </Route>
           <Route path="/AddProduct" element={<AdminLayout />}>
             <Route index element={<AddProduct />} />
+          </Route>
+          <Route path="/Filters" element={<AdminLayout />}>
+            <Route index element={<Filters />} />
           </Route>
 
         </Routes>

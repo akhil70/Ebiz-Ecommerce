@@ -1,4 +1,3 @@
-import { NavLink } from "react-router-dom";
 import {
   LayoutDashboard,
   Users,
@@ -7,8 +6,10 @@ import {
   Box,
   ShoppingBag,
   MessageSquare,
-  ChevronRight
+  ChevronRight,
+  Filter
 } from "lucide-react";
+import { NavLink } from "react-router-dom";
 
 export default function AdminSidebar({ isOpen }) {
   return (
@@ -44,6 +45,11 @@ export default function AdminSidebar({ isOpen }) {
         <li>
           <NavLink to="/Products" className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}>
             <ShoppingBag size={18} /> <span>Product</span>
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/Filters" className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}>
+            <Filter size={18} /> <span>Filters</span>
           </NavLink>
         </li>
         <li>
