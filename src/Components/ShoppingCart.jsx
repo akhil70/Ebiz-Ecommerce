@@ -1,29 +1,48 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './ShoppingCart.css';
 import { X } from 'lucide-react';
 import { Header } from '../Header';
 import Footer from './Footer';
 import LastFooter from './LastFooter';
+import { PublicAPI } from '../Utils/AxiosConfig';
 
 export default function ShoppingCart() {
-    const [cartItems, setCartItems] = useState([
-        {
-            id: 1,
-            name: 'Essential Polos',
-            variant: 'Medium, Purple',
-            price: 80.00,
-            quantity: 4,
-            image: '/polo-tshirt-green.jpg'
-        },
-        {
-            id: 2,
-            name: 'Cream T-Shirt',
-            variant: 'Large, Blue',
-            price: 60.00,
-            quantity: 1,
-            image: '/polo-tshirt-green.jpg'
-        }
-    ]);
+    const [cartItems, setCartItems] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
+
+    const mapCartItem = (item) => {
+        const product = item.product || item.productDetails || {};
+        return {
+            id: item.id || item.cartItemId || item.productId,
+            name: item.name || item.productName || product.name || 'Product',
+            variant: item.variant || item.size || item.color || '',
+            price: Number(item.price ?? item.unitPrice ?? product.price ?? 0),
+            quantity: Number(item.quantity ?? item.qty ?? 1),
+            image: item.image || item.imageUrl || product.thumbnail || (product.images && product.images[0]) || '/polo-tshirt-green.jpg'
+        };
+    };
+
+    useEffect(() => {
+        const fetchCart = async () => {
+            try {
+                setLoading(true);
+                setError('');
+                const response = await PublicAPI.get('/cart');
+                const data = Array.isArray(response.data)
+                    ? response.data
+                    : response.data?.data ?? response.data?.items ?? [];
+                setCartItems(data.map(mapCartItem));
+            } catch (err) {
+                console.error('Error fetching cart:', err);
+                setError('Failed to load cart items.');
+                setCartItems([]);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchCart();
+    }, []);
 
     const updateQuantity = (id, type) => {
         setCartItems(cartItems.map(item => {
@@ -72,47 +91,67 @@ export default function ShoppingCart() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {cartItems.map((item) => (
-                                    <tr key={item.id}>
-                                        <td className="product-cell">
-                                            <button
-                                                className="remove-button"
-                                                onClick={() => removeItem(item.id)}
-                                            >
-                                                <X size={16} />
-                                            </button>
-                                            <img src={item.image} alt={item.name} className="product-image" />
-                                            <div className="product-info">
-                                                <span className="product-name">{item.name}</span>
-                                                <span className="product-variant"> - {item.variant}</span>
-                                            </div>
+                                {loading ? (
+                                    <tr>
+                                        <td colSpan={4} style={{ textAlign: 'center', padding: '24px', color: '#666' }}>
+                                            Loading cart...
                                         </td>
-                                        <td className="price-cell">₹{item.price.toFixed(2)}</td>
-                                        <td className="quantity-cell">
-                                            <div className="quantity-controls">
-                                                <button
-                                                    onClick={() => updateQuantity(item.id, 'decrement')}
-                                                    className="quantity-button"
-                                                >
-                                                    -
-                                                </button>
-                                                <input
-                                                    type="number"
-                                                    value={item.quantity}
-                                                    readOnly
-                                                    className="quantity-input"
-                                                />
-                                                <button
-                                                    onClick={() => updateQuantity(item.id, 'increment')}
-                                                    className="quantity-button"
-                                                >
-                                                    +
-                                                </button>
-                                            </div>
-                                        </td>
-                                        <td className="subtotal-cell">₹{calculateSubtotal(item.price, item.quantity)}</td>
                                     </tr>
-                                ))}
+                                ) : error ? (
+                                    <tr>
+                                        <td colSpan={4} style={{ textAlign: 'center', padding: '24px', color: '#b42318' }}>
+                                            {error}
+                                        </td>
+                                    </tr>
+                                ) : cartItems.length === 0 ? (
+                                    <tr>
+                                        <td colSpan={4} style={{ textAlign: 'center', padding: '24px', color: '#666' }}>
+                                            Your cart is empty.
+                                        </td>
+                                    </tr>
+                                ) : (
+                                    cartItems.map((item) => (
+                                        <tr key={item.id}>
+                                            <td className="product-cell">
+                                                <button
+                                                    className="remove-button"
+                                                    onClick={() => removeItem(item.id)}
+                                                >
+                                                    <X size={16} />
+                                                </button>
+                                                <img src={item.image} alt={item.name} className="product-image" />
+                                                <div className="product-info">
+                                                    <span className="product-name">{item.name}</span>
+                                                    {item.variant && <span className="product-variant"> - {item.variant}</span>}
+                                                </div>
+                                            </td>
+                                            <td className="price-cell">₹{item.price.toFixed(2)}</td>
+                                            <td className="quantity-cell">
+                                                <div className="quantity-controls">
+                                                    <button
+                                                        onClick={() => updateQuantity(item.id, 'decrement')}
+                                                        className="quantity-button"
+                                                    >
+                                                        -
+                                                    </button>
+                                                    <input
+                                                        type="number"
+                                                        value={item.quantity}
+                                                        readOnly
+                                                        className="quantity-input"
+                                                    />
+                                                    <button
+                                                        onClick={() => updateQuantity(item.id, 'increment')}
+                                                        className="quantity-button"
+                                                    >
+                                                        +
+                                                    </button>
+                                                </div>
+                                            </td>
+                                            <td className="subtotal-cell">₹{calculateSubtotal(item.price, item.quantity)}</td>
+                                        </tr>
+                                    ))
+                                )}
                             </tbody>
                         </table>
                     </div>

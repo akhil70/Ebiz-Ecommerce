@@ -5,7 +5,7 @@ import { Header } from '../Header';
 import Footer from './Footer';
 import LastFooter from './LastFooter';
 import { useNavigate, useSearchParams } from "react-router-dom";
-import API from '../Utils/AxiosConfig';
+import API, { PublicAPI } from '../Utils/AxiosConfig';
 
 const COLOR_CODES = {
     purple: '#7c7eb8', dark: '#4a5568', green: '#7c9473', blue: '#4a90d9',
@@ -69,9 +69,20 @@ export default function ProductDetail() {
         else if (type === 'decrement' && quantity > 1) setQuantity(q => q - 1);
     };
 
-    const handleAddToCart = () => {
-        console.log('Added to cart:', { productId, selectedSize, selectedColor, quantity });
-        navigate("/cart");
+    const handleAddToCart = async () => {
+        if (!productId) return;
+        try {
+            const payload = {
+                productId: String(productId),
+                quantity,
+                selectedSize,
+                selectedColor
+            };
+            await PublicAPI.post('/cart/add', payload);
+            navigate("/cart");
+        } catch (error) {
+            console.error('Error adding to cart:', error);
+        }
     };
 
     if (loading) {
