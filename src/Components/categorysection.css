@@ -29,8 +29,8 @@
 /* Product Grid */
 .product_grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 40px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
   max-width: 1100px;
   margin: auto;
 }
@@ -39,23 +39,22 @@
 .product_card {
   position: relative;
   background: white;
-  border-radius: 12px;
+  border-radius: 10px;
   overflow: hidden;
   transition: 0.3s ease;
-  height: 320px;
-  padding: 25px;
+  height: 220px;
+  padding: 16px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-
 }
 
 .product_card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-4px);
 }
 
 /* Image Area */
 .img-boxs {
   width: 100%;
-  height: 180px;
+  height: 110px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -63,15 +62,12 @@
 }
 
 .img-boxs img {
-  max-height: 150px;
+  max-height: 90px;
   width: auto;
   object-fit: contain;
-
-
   transition: 0.3s ease;
   opacity: 1;
 }
-
 
 .product_card:hover .img-boxs img {
   opacity: 0.25;
@@ -81,27 +77,38 @@
 .detail-box {
   display: flex;
   justify-content: space-between;
-  margin-top: 60px;
+  align-items: center;
+  margin-top: 20px;
 }
 
 .detail-box h5 {
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 600;
 }
 
 .detail-box h6 {
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 700;
   color: #f7444e;
 }
 
+.category-shop-link {
+  font-size: 14px;
+  font-weight: 600;
+  color: #f7444e;
+  text-decoration: none;
+}
+
+.category-shop-link:hover {
+  text-decoration: underline;
+}
 
 .option_container {
   position: absolute;
-  top: 10;
+  top: 0;
   left: 0;
   width: 100%;
-  height: 230px;
+  height: 160px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -120,17 +127,17 @@
 .options {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
   pointer-events: auto;
 }
 
 /* Buttons */
 .option1,
 .option2 {
-  padding: 12px 40px;
+  padding: 8px 24px;
   border-radius: 50px;
-  font-size: 16px;
-  font-weight: 400;
+  font-size: 13px;
+  font-weight: 500;
   text-align: center;
   text-decoration: none;
   cursor: pointer;
@@ -177,6 +184,12 @@
 
 /* Responsive */
 @media (max-width: 992px) {
+  .product_grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
   .product_grid {
     grid-template-columns: repeat(2, 1fr);
   }

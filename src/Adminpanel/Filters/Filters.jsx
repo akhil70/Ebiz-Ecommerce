@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Edit2, Trash2, Filter as FilterIcon } from "lucide-react";
 import '../Users/Users.css'; // Reusing Users CSS for consistency
 import AddFilter from './AddFilter';
+import API from '../../Utils/AxiosConfig';
 import toast from 'react-hot-toast';
-import { showDeleteConfirmation } from '../../Utils/confirmActions';
+import { showDeleteConfirmation, showStatusConfirmation } from '../../Utils/confirmActions';
 import NoData from '../Components/NoData';
 
 const StatusPill = ({ status }) => {
@@ -13,24 +14,40 @@ const StatusPill = ({ status }) => {
     return <span className={className}>{text}</span>;
 };
 
+// Map API response to UI format (filterName -> name, filterOptions -> options)
+const mapApiToUi = (item) => ({
+    id: item.id,
+    name: item.filterName ?? item.name,
+    options: item.filterOptions ?? item.options ?? [],
+    status: item.status ?? 1
+});
+
 const Filters = () => {
     const [isAddFilterOpen, setIsAddFilterOpen] = useState(false);
     const [editingFilterId, setEditingFilterId] = useState(null);
+    const [filterList, setFilterList] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    // Static data as requested
-    const [filterList, setFilterList] = useState([
-        { id: 1, name: "Color", options: ["Red", "Blue", "White"], status: 1 },
-        { id: 2, name: "Size", options: ["S", "M", "L", "XL"], status: 1 },
-        { id: 3, name: "Material", options: ["Cotton", "Polyester", "Wool"], status: 1 }
-    ]);
-
-    const handleSave = (newData) => {
-        if (editingFilterId) {
-            setFilterList(prev => prev.map(f => f.id === editingFilterId ? { ...newData, id: editingFilterId } : f));
-        } else {
-            const newFilter = { ...newData, id: filterList.length + 1 };
-            setFilterList(prev => [...prev, newFilter]);
+    const fetchFilters = async () => {
+        try {
+            setLoading(true);
+            const response = await API.get('/filters');
+            const data = Array.isArray(response.data) ? response.data : response.data?.data ?? [];
+            setFilterList(data.map(mapApiToUi));
+        } catch (error) {
+            console.error("Error fetching filters:", error);
+            toast.error(error.response?.data?.message || 'Failed to fetch filters');
+        } finally {
+            setLoading(false);
         }
+    };
+
+    useEffect(() => {
+        fetchFilters();
+    }, []);
+
+    const handleSave = () => {
+        fetchFilters();
         setEditingFilterId(null);
     };
 
@@ -46,12 +63,42 @@ const Filters = () => {
 
     const confirmDelete = (id) => {
         showDeleteConfirmation(
-            'Are you sure you want to delete this filter?',
-            () => {
-                setFilterList(prev => prev.filter(f => f.id !== id));
-                toast.success('Filter deleted (Static Mode)');
-            }
+            'Are you sure you want to permanently delete this filter?',
+            () => executeDelete(id)
         );
+    };
+
+    const executeDelete = async (id) => {
+        const loadingToast = toast.loading('Deleting filter...');
+        try {
+            await API.delete(`/filters/${id}/hard`);
+            toast.success('Filter permanently deleted.', { id: loadingToast });
+            setFilterList(prev => prev.filter(f => f.id !== id));
+        } catch (error) {
+            console.error("Delete Error:", error);
+            toast.error(error.response?.data?.message || 'Failed to delete filter', { id: loadingToast });
+        }
+    };
+
+    const handleStatusToggle = (id) => {
+        showStatusConfirmation(
+            "Change filter status?",
+            () => executeStatusToggle(id)
+        );
+    };
+
+    const executeStatusToggle = async (id) => {
+        const loadingToast = toast.loading('Updating status...');
+        try {
+            await API.delete(`/filters/${id}/soft`);
+            toast.success('Status updated successfully.', { id: loadingToast });
+            setFilterList(prev => prev.map(f =>
+                f.id === id ? { ...f, status: f.status === 1 ? 0 : 1 } : f
+            ));
+        } catch (error) {
+            console.error("Status Toggle Error:", error);
+            toast.error(error.response?.data?.message || 'Failed to update status', { id: loadingToast });
+        }
     };
 
     return (
@@ -76,7 +123,7 @@ const Filters = () => {
                 <table>
                     <thead>
                         <tr>
-                            <th style={{ width: '80px' }}>ID</th>
+                           
                             <th>Filter Name</th>
                             <th>Options</th>
                             <th>Status</th>
@@ -84,7 +131,9 @@ const Filters = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {filterList.length === 0 ? (
+                        {loading ? (
+                            <tr><td colSpan="5" style={{ textAlign: "center", padding: "20px" }}>Loading filters...</td></tr>
+                        ) : filterList.length === 0 ? (
                             <tr>
                                 <td colSpan="5" style={{ padding: "0" }}>
                                     <NoData message="No filters found. Start by adding a new one!" />
@@ -93,11 +142,11 @@ const Filters = () => {
                         ) : (
                             filterList.map(item => (
                                 <tr key={item.id}>
-                                    <td>#{item.id}</td>
+                                  
                                     <td className="customer-name">{item.name}</td>
                                     <td>
                                         <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap' }}>
-                                            {item.options.map((opt, i) => (
+                                            {(item.options || []).map((opt, i) => (
                                                 <span
                                                     key={i}
                                                     style={{
@@ -116,6 +165,14 @@ const Filters = () => {
                                     <td><StatusPill status={item.status} /></td>
                                     <td className="dots-col">
                                         <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
+                                            <label className="switch">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={item.status === 1}
+                                                    onChange={() => handleStatusToggle(item.id)}
+                                                />
+                                                <span className="slider round"></span>
+                                            </label>
                                             <Edit2
                                                 size={16}
                                                 style={{ cursor: 'pointer', color: '#4f46e5' }}

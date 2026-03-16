@@ -19,7 +19,7 @@ const ArrivalSection = () => {
             Tenetur commodi, nisi rem vel, ea eaque ab ipsa, autem similique ex
             unde!
           </p>
-          <Link to="/shop" className="arrival_btn">
+          <Link to="/shop?isNewArrival=true" className="arrival_btn">
             Shop Now
           </Link>
         </div>

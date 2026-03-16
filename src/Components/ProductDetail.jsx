@@ -1,46 +1,113 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './ProductDetail.css';
-import { Search, ChevronLeft, ChevronRight, Check } from 'lucide-react';
+import { Search, Check } from 'lucide-react';
 import { Header } from '../Header';
 import Footer from './Footer';
 import LastFooter from './LastFooter';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import API from '../Utils/AxiosConfig';
+
+const COLOR_CODES = {
+    purple: '#7c7eb8', dark: '#4a5568', green: '#7c9473', blue: '#4a90d9',
+    red: '#e53e3e', white: '#f7fafc', black: '#2d3748', grey: '#718096', gray: '#718096'
+};
 
 export default function ProductDetail() {
-    const [mainImage, setMainImage] = useState('/polo-tshirt-green.jpg');
-    const [selectedSize, setSelectedSize] = useState('M');
-    const [selectedColor, setSelectedColor] = useState('purple');
-    const [quantity, setQuantity] = useState(2);
+    const [searchParams] = useSearchParams();
+    const productId = searchParams.get('id');
     const navigate = useNavigate();
 
-    const thumbnails = [
-        '/polo-tshirt-green.jpg',
-        '/polo-tshirt-grey.jpg',
-        '/polo-tshirt-purple.jpg',
-        '/polo-tshirt.jpg'
-    ];
+    const [product, setProduct] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [mainImage, setMainImage] = useState('');
+    const [selectedSize, setSelectedSize] = useState('');
+    const [selectedColor, setSelectedColor] = useState('');
+    const [quantity, setQuantity] = useState(1);
 
-    const sizes = ['M', 'L', 'XL'];
+    useEffect(() => {
+        if (!productId) {
+            setLoading(false);
+            return;
+        }
+        const fetchProduct = async () => {
+            try {
+                setLoading(true);
+                const response = await API.get(`/products/${productId}`);
+                const data = response.data;
+                setProduct(data);
+                const images = [data.thumbnail, ...(data.images || [])].filter(Boolean);
+                setMainImage(images[0] || '');
+                const sizeStocks = data.sizeStocks || [];
+                if (sizeStocks.length > 0) setSelectedSize(sizeStocks[0].size || '');
+                const attrs = data.attributes || {};
+                const colorKeys = Object.keys(attrs).filter(k => /color/i.test(k));
+                if (colorKeys.length > 0) setSelectedColor(attrs[colorKeys[0]] || '');
+            } catch (error) {
+                console.error("Error fetching product:", error);
+                setProduct(null);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchProduct();
+    }, [productId]);
 
-    const colors = [
-        { name: 'purple', code: '#7c7eb8' },
-        { name: 'dark', code: '#4a5568' },
-        { name: 'green', code: '#7c9473' }
-    ];
+    const thumbnails = product
+        ? [product.thumbnail, ...(product.images || [])].filter(Boolean)
+        : [];
+
+    const sizes = (product?.sizeStocks || []).map(s => s.size).filter(Boolean);
+
+    const colors = product?.attributes
+        ? Object.entries(product.attributes)
+            .filter(([k]) => /color/i.test(k))
+            .map(([_, v]) => ({ name: String(v), code: COLOR_CODES[String(v).toLowerCase()] || '#718096' }))
+        : [];
 
     const handleQuantityChange = (type) => {
-        if (type === 'increment') {
-            setQuantity(quantity + 1);
-        } else if (type === 'decrement' && quantity > 1) {
-            setQuantity(quantity - 1);
-        }
+        if (type === 'increment') setQuantity(q => q + 1);
+        else if (type === 'decrement' && quantity > 1) setQuantity(q => q - 1);
     };
 
     const handleAddToCart = () => {
-        console.log('Added to cart:', { selectedSize, selectedColor, quantity });
+        console.log('Added to cart:', { productId, selectedSize, selectedColor, quantity });
         navigate("/cart");
-        // Add your cart logic here
     };
+
+    if (loading) {
+        return (
+            <>
+                <Header />
+                <div className="product-detail-container">
+                    <div className="loading-state">
+                        <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>⋯</div>
+                        <p>Loading product...</p>
+                    </div>
+                </div>
+                <Footer />
+                <LastFooter />
+            </>
+        );
+    }
+
+    if (!productId || !product) {
+        return (
+            <>
+                <Header />
+                <div className="product-detail-container">
+                    <div className="error-state">
+                        <p>Product not found.</p>
+                        <button onClick={() => navigate('/shop')}>Back to Shop</button>
+                    </div>
+                </div>
+                <Footer />
+                <LastFooter />
+            </>
+        );
+    }
+
+    const displayPrice = product.discountPrice > 0 ? product.discountPrice : product.price;
+    const hasDiscount = product.discountPrice > 0 && product.discountPrice < product.price;
 
     return (
         <>
@@ -50,100 +117,102 @@ export default function ProductDetail() {
                     {/* Left Side - Image Gallery */}
                     <div className="image-gallery">
                         <div className="main-image-wrapper">
-                            <div className="badge">Sale</div>
+                            {hasDiscount && <div className="badge">Sale</div>}
                             <button className="zoom-button">
                                 <Search size={20} />
                             </button>
-                            <img src={mainImage} alt="Product" className="main-image" />
+                            <img
+                                src={mainImage || 'https://via.placeholder.com/400?text=Product'}
+                                alt={product.name}
+                                className="main-image"
+                                onError={(e) => { e.target.src = 'https://via.placeholder.com/400?text=Product'; }}
+                            />
                         </div>
 
-                        <div className="thumbnails">
-                            {thumbnails.map((thumb, index) => (
-                                <img
-                                    key={index}
-                                    src={thumb}
-                                    alt={`Thumbnail ${index + 1}`}
-                                    className={`thumbnail ${mainImage === thumb ? 'active' : ''}`}
-                                    onClick={() => setMainImage(thumb)}
-                                />
-                            ))}
-                        </div>
+                        {thumbnails.length > 1 && (
+                            <div className="thumbnails">
+                                {thumbnails.map((thumb, index) => (
+                                    <img
+                                        key={index}
+                                        src={thumb}
+                                        alt={`Thumbnail ${index + 1}`}
+                                        className={`thumbnail ${mainImage === thumb ? 'active' : ''}`}
+                                        onClick={() => setMainImage(thumb)}
+                                    />
+                                ))}
+                            </div>
+                        )}
                     </div>
 
                     {/* Right Side - Product Info */}
                     <div className="product-info">
                         {/* Breadcrumb */}
                         <div className="breadcrumb">
-                            <span>Home</span>
+                            <span onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>Home</span>
                             <span className="separator">/</span>
-                            <span>Men</span>
+                            <span onClick={() => navigate('/shop')} style={{ cursor: 'pointer' }}>Shop</span>
                             <span className="separator">/</span>
-                            <span className="current">Essential Polos</span>
+                            <span className="current">{product.name}</span>
                         </div>
 
-                        {/* Navigation Arrows */}
-                        <div className="navigation-arrows">
-                            <button className="nav-arrow">
-                                <ChevronLeft size={20} />
-                            </button>
-                            <button className="nav-arrow">
-                                <ChevronRight size={20} />
-                            </button>
-                        </div>
-
-                        <p className="category">Men</p>
-                        <h1 className="product-title">Essential Polos</h1>
+                        <p className="category">Product</p>
+                        <h1 className="product-title">{product.name}</h1>
 
                         <div className="price-section">
-                            <span className="price-range">₹80.00 – ₹90.00</span>
+                            <span className="price-range">
+                                ₹{Number(displayPrice).toFixed(2)}
+                                {hasDiscount && (
+                                    <span className="price-original">₹{Number(product.price).toFixed(2)}</span>
+                                )}
+                            </span>
                             <span className="free-shipping">& Free Shipping</span>
                         </div>
 
-                        <p className="product-description">
-                            Elevate your everyday style with our Essential Polos, the perfect blend of
-                            comfort and sophistication. Crafted from premium, breathable fabric, these
-                            polos offer a tailored fit that's ideal for both casual outings and smart-casual
-                            settings. Designed with classic collars and subtle detailing, they bring timeless
-                            appeal to your wardrobe. Available in a range of versatile colors, they pair
-                            effortlessly with jeans, chinos, or shorts. Whether you're heading to the office
-                            or a weekend brunch, Essential Polos keep you looking sharp and feeling
-                            comfortable all day long.
-                        </p>
+                        {product.description && (
+                            <p className="product-description">{product.description}</p>
+                        )}
 
                         {/* Size Selection */}
-                        <div className="size-selection">
-                            {sizes.map((size) => (
-                                <button
-                                    key={size}
-                                    className={`size-button ${selectedSize === size ? 'active' : ''}`}
-                                    onClick={() => setSelectedSize(size)}
-                                >
-                                    {size}
-                                </button>
-                            ))}
-                        </div>
+                        {sizes.length > 0 && (
+                            <div className="size-selection">
+                                <span className="section-label">Size</span>
+                                {sizes.map((size) => (
+                                    <button
+                                        key={size}
+                                        className={`size-button ${selectedSize === size ? 'active' : ''}`}
+                                        onClick={() => setSelectedSize(size)}
+                                    >
+                                        {size}
+                                    </button>
+                                ))}
+                            </div>
+                        )}
 
                         {/* Color Selection */}
-                        <div className="color-selection">
-                            {colors.map((color) => (
-                                <button
-                                    key={color.name}
-                                    className={`color-button ${selectedColor === color.name ? 'active' : ''}`}
-                                    style={{ backgroundColor: color.code }}
-                                    onClick={() => setSelectedColor(color.name)}
-                                />
-                            ))}
-                            <button className="clear-button">CLEAR</button>
-                        </div>
+                        {colors.length > 0 && (
+                            <div className="color-selection">
+                                <span className="section-label">Color</span>
+                                {colors.map((color) => (
+                                    <button
+                                        key={color.name}
+                                        className={`color-button ${selectedColor === color.name ? 'active' : ''}`}
+                                        style={{ backgroundColor: color.code }}
+                                        onClick={() => setSelectedColor(color.name)}
+                                        title={color.name}
+                                    />
+                                ))}
+                                <button className="clear-button" onClick={() => setSelectedColor('')}>CLEAR</button>
+                            </div>
+                        )}
 
                         {/* Price and Quantity */}
                         <div className="purchase-section">
-                            <p className="current-price">₹80.00</p>
+                            <p className="current-price">₹{Number(displayPrice).toFixed(2)}</p>
 
                             <div className="quantity-cart">
                                 <div className="quantity-selector">
                                     <button onClick={() => handleQuantityChange('decrement')}>-</button>
-                                    <input type="number" value={quantity} readOnly />
+                                    <input type="number" value={quantity} readOnly min="1" />
                                     <button onClick={() => handleQuantityChange('increment')}>+</button>
                                 </div>
 
@@ -155,8 +224,8 @@ export default function ProductDetail() {
 
                         {/* Product Meta */}
                         <div className="product-meta">
-                            <p><strong>SKU:</strong> N/A</p>
-                            <p><strong>Category:</strong> Men</p>
+                            {product.sku && <p><strong>SKU:</strong> {product.sku}</p>}
+                            {product.stock !== undefined && <p><strong>Stock:</strong> {product.stock}</p>}
                         </div>
 
                         {/* Guarantees */}

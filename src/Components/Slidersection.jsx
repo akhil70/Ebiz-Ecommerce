@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import sliderImg from "../images/slider-bgecomm.jpg"; 
 import "./slidersection.css";
 
@@ -38,9 +39,9 @@ const SliderSection = () => {
             suscipit fugiat molestias, veniam, vel architecto veritatis delectus
             repellat modi impedit sequi.
           </p>
-          <a href="#" className="btn1">
+          <Link to="/shop" className="btn1">
             Shop Now
-          </a>
+          </Link>
         </div>
 
         {/* Dots */}

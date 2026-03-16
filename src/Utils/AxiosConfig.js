@@ -1,19 +1,21 @@
 import axios from 'axios';
 
-// Create an axios instance with a base URL
+const API_BASE = 'https://valley-moms-awards-represent.trycloudflare.com';
+
+// Admin API (for admin panel)
 const API = axios.create({
-  baseURL: 'https://incurred-sacred-classes-gui.trycloudflare.com/api/admin',
+  baseURL: `${API_BASE}/api/admin`,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-/* 
-  If you actually meant localhost:300 (port 300), change the baseURL above.
-  To use this in your components:
-  import API from '../Utils/AxiosConfig';
-  
-  API.get('/users').then(...)
-*/
+// Public API (for storefront - products, etc.)
+export const PublicAPI = axios.create({
+  baseURL: `${API_BASE}/api`,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
 
 export default API;

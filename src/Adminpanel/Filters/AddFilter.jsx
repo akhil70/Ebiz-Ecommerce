@@ -1,26 +1,38 @@
 import React, { useState, useEffect } from "react";
 import { X, Plus, Trash2 } from "lucide-react";
 import "../AdminForm.css";
+import API from "../../Utils/AxiosConfig";
 import toast from 'react-hot-toast';
 
 const AddFilter = ({ isOpen, onClose, onSave, filterId }) => {
     const [formData, setFormData] = useState({
         name: "",
-        options: [""], // Initial single input for filter options
+        options: [""],
         status: 1,
     });
 
-    // Reset form when opened
+    // Reset form or fetch filter details when opened
     useEffect(() => {
         if (isOpen) {
             if (filterId) {
-                // Static data for editing simulation
-                const staticData = {
-                    1: { name: "Color", options: ["Red", "Blue", "White"], status: 1 },
-                    2: { name: "Size", options: ["S", "M", "L", "XL"], status: 1 }
+                const fetchFilterDetails = async () => {
+                    const loadingToast = toast.loading('Fetching filter details...');
+                    try {
+                        const response = await API.get(`/filters/${filterId}`);
+                        const data = response.data;
+                        const options = data.filterOptions ?? data.options ?? [];
+                        setFormData({
+                            name: data.filterName ?? data.name ?? "",
+                            options: options.length > 0 ? options : [""],
+                            status: data.status ?? 1,
+                        });
+                        toast.dismiss(loadingToast);
+                    } catch (error) {
+                        console.error("Error fetching filter details:", error);
+                        toast.error("Failed to load filter details", { id: loadingToast });
+                    }
                 };
-                const data = staticData[filterId] || { name: "", options: [""], status: 1 };
-                setFormData(data);
+                fetchFilterDetails();
             } else {
                 setFormData({
                     name: "",
@@ -54,28 +66,42 @@ const AddFilter = ({ isOpen, onClose, onSave, filterId }) => {
         }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Basic validation
         if (!formData.name.trim()) {
             toast.error("Filter name is required");
             return;
         }
-        if (formData.options.some(opt => !opt.trim())) {
-            toast.error("All options must be filled");
+        const filterOptions = formData.options.filter(opt => opt.trim());
+        if (filterOptions.length === 0) {
+            toast.error("At least one option is required");
             return;
         }
+
+        const payload = {
+            status: formData.status,
+            filterName: formData.name.trim(),
+            filterOptions,
+        };
 
         const actionText = filterId ? 'Updating' : 'Creating';
         const loadingToast = toast.loading(`${actionText} filter...`);
 
-        // Simulate API call
-        setTimeout(() => {
-            toast.success(`Filter ${filterId ? 'updated' : 'created'} successfully! (Static Mode)`, { id: loadingToast });
-            if (onSave) onSave(formData);
+        try {
+            if (filterId) {
+                await API.put(`/filters/${filterId}`, payload);
+                toast.success('Filter updated successfully.', { id: loadingToast });
+            } else {
+                await API.post('/filters', payload);
+                toast.success('Filter created successfully.', { id: loadingToast });
+            }
+            if (onSave) onSave();
             onClose();
-        }, 800);
+        } catch (error) {
+            console.error("Filter save error:", error);
+            toast.error(error.response?.data?.message || `Failed to ${filterId ? 'update' : 'create'} filter`, { id: loadingToast });
+        }
     };
 
     if (!isOpen) return null;

@@ -1,37 +1,43 @@
 import './SocialMediaGallery.css';
 import { Instagram } from 'lucide-react';
+import instagram01 from '../images/instagram-01.jpg';
+import instagram02 from '../images/instagram-02.jpg';
+import instagram03 from '../images/instagram-03.jpg';
+import instagram04 from '../images/instagram-04.jpg';
+import instagram05 from '../images/instagram-05.jpg';
+import instagram06 from '../images/instagram-06.jpg';
 
 export default function SocialMediaGallery() {
   const galleryItems = [
     {
       id: 1,
-      image: './instagram-01.jpg',
+      image: instagram01,
       label: 'Fashion',
       showIcon: true
     },
     {
       id: 2,
-      image: '/instagram-02.jpg',
+      image: instagram02,
       showIcon: true
     },
     {
       id: 3,
-      image: '/instagram-03.jpg',
+      image: instagram03,
       showIcon: true
     },
     {
       id: 4,
-      image: '/instagram-04.jpg',
+      image: instagram04,
       showIcon: true
     },
     {
       id: 5,
-      image: '/instagram-05.jpg',
+      image: instagram05,
       showIcon: true
     },
     {
       id: 6,
-      image: '/instagram-06.jpg',
+      image: instagram06,
       showIcon: true
     }
   ];

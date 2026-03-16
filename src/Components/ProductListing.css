@@ -6,7 +6,7 @@
 }
 
 .listing-container {
-    max-width: 1400px;
+    max-width: 1600px;
     margin: 0 auto;
     display: flex;
     padding: 2rem;
@@ -55,6 +55,21 @@
     color: #444;
     cursor: pointer;
     font-size: 0.95rem;
+    user-select: none;
+    transition: color 0.2s;
+}
+
+.filter-title:hover {
+    color: #222;
+}
+
+.filter-title--disabled {
+    cursor: default;
+}
+
+.filter-chevron {
+    flex-shrink: 0;
+    transition: transform 0.2s;
 }
 
 .filter-options {

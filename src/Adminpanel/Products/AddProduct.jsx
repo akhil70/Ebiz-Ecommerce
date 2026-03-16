@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { X, Upload, Trash2 } from "lucide-react";
+import { X, Upload, Trash2, Plus } from "lucide-react";
 import "../AdminForm.css"; // Import the common CSS
 import API from "../../Utils/AxiosConfig";
 import toast from 'react-hot-toast';
@@ -19,7 +19,8 @@ const AddProduct = ({ isOpen, onClose, onSave, productId }) => {
         images: [],
         isFeatured: false,
         isNewArrival: false,
-        status: 1, // Common status field for active/inactive
+        status: 1,
+        sizeStocks: [],
     });
 
     const [brands, setBrands] = useState([]);
@@ -70,6 +71,11 @@ const AddProduct = ({ isOpen, onClose, onSave, productId }) => {
                         isFeatured: data.isFeatured || false,
                         isNewArrival: data.isNewArrival || false,
                         status: data.status ?? 1,
+                        sizeStocks: (data.sizeStocks || []).map(s => ({
+                            sizeType: s.sizeType || "",
+                            size: s.size || "",
+                            stock: s.stock ?? ""
+                        })),
                     });
                     toast.dismiss(loadingToast);
                 } catch (error) {
@@ -94,6 +100,7 @@ const AddProduct = ({ isOpen, onClose, onSave, productId }) => {
                 isFeatured: false,
                 isNewArrival: false,
                 status: 1,
+                sizeStocks: [],
             });
         }
     }, [isOpen, productId]);
@@ -118,6 +125,24 @@ const AddProduct = ({ isOpen, onClose, onSave, productId }) => {
         const newImages = [...formData.images];
         newImages.splice(index, 1);
         setFormData({ ...formData, images: newImages });
+    };
+
+    const addSizeStock = () => {
+        setFormData({
+            ...formData,
+            sizeStocks: [...formData.sizeStocks, { sizeType: "", size: "", stock: "" }]
+        });
+    };
+
+    const removeSizeStock = (index) => {
+        const newSizeStocks = formData.sizeStocks.filter((_, i) => i !== index);
+        setFormData({ ...formData, sizeStocks: newSizeStocks });
+    };
+
+    const updateSizeStock = (index, field, value) => {
+        const newSizeStocks = [...formData.sizeStocks];
+        newSizeStocks[index] = { ...newSizeStocks[index], [field]: field === 'stock' ? Number(value) || 0 : value };
+        setFormData({ ...formData, sizeStocks: newSizeStocks });
     };
 
     const convertToBase64 = (file) => {
@@ -166,7 +191,12 @@ const AddProduct = ({ isOpen, onClose, onSave, productId }) => {
                 images: imagesBase64,
                 isFeatured: formData.isFeatured,
                 isNewArrival: formData.isNewArrival,
-                status: Number(formData.status)
+                status: Number(formData.status),
+                sizeStocks: formData.sizeStocks.map(s => ({
+                    sizeType: s.sizeType || "",
+                    size: s.size || "",
+                    stock: Number(s.stock) || ""
+                }))
             };
 
             let response;
@@ -190,7 +220,7 @@ const AddProduct = ({ isOpen, onClose, onSave, productId }) => {
     return (
         <>
             <div className="sidebar-overlay" onClick={onClose}></div>
-            <div className="sidebar-container" style={{ width: '500px' }}>
+            <div className="sidebar-container" style={{ width: '560px' }}>
                 <div className="sidebar-header">
                     <h2 className="sidebar-title">{productId ? 'Update Product' : 'New Product'}</h2>
                     <button className="close-btn" onClick={onClose}>
@@ -251,6 +281,75 @@ const AddProduct = ({ isOpen, onClose, onSave, productId }) => {
                                 <label className="form-label">SKU</label>
                                 <input type="text" name="sku" value={formData.sku} onChange={handleChange} className="form-input" placeholder="SKU-XXXX" />
                             </div>
+                        </div>
+
+                        <div className="form-group">
+                            <label className="form-label">Size & Stock</label>
+                            <p style={{ fontSize: '0.8rem', color: '#666', marginBottom: '8px' }}>Add size variants with individual stock levels</p>
+                            {formData.sizeStocks.map((item, index) => (
+                                <div key={index} style={{ display: 'flex', gap: '8px', alignItems: 'flex-end', marginBottom: '10px' }}>
+                                    <input
+                                        type="text"
+                                        placeholder="Size Type (e.g. Clothing)"
+                                        value={item.sizeType}
+                                        onChange={(e) => updateSizeStock(index, 'sizeType', e.target.value)}
+                                        className="form-input"
+                                        style={{ flex: 1, marginBottom: 0 }}
+                                    />
+                                    <input
+                                        type="text"
+                                        placeholder="Size (e.g. S, M, L)"
+                                        value={item.size}
+                                        onChange={(e) => updateSizeStock(index, 'size', e.target.value)}
+                                        className="form-input"
+                                        style={{ flex: 1, marginBottom: 0 }}
+                                    />
+                                    <input
+                                        type="number"
+                                        placeholder="Stock"
+                                        value={item.stock}
+                                        onChange={(e) => updateSizeStock(index, 'stock', e.target.value)}
+                                        className="form-input"
+                                        style={{ width: '80px', marginBottom: 0 }}
+                                        min="0"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => removeSizeStock(index)}
+                                        style={{
+                                            background: '#ef4444',
+                                            color: 'white',
+                                            border: 'none',
+                                            borderRadius: '4px',
+                                            padding: '8px',
+                                            cursor: 'pointer',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            flexShrink: 0
+                                        }}
+                                    >
+                                        <Trash2 size={16} />
+                                    </button>
+                                </div>
+                            ))}
+                            <button
+                                type="button"
+                                onClick={addSizeStock}
+                                style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '6px',
+                                    background: '#4f46e5',
+                                    color: 'white',
+                                    border: 'none',
+                                    borderRadius: '4px',
+                                    padding: '8px 14px',
+                                    cursor: 'pointer',
+                                    fontSize: '0.9rem'
+                                }}
+                            >
+                                <Plus size={16} /> Add Size Variant
+                            </button>
                         </div>
 
                         <div className="form-group">
