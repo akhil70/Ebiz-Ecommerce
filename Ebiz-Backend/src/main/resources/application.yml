@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: Ebiz-Backend
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/ebiz
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/ebiz
+          
+server:
+  port: 9000
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+springdoc:\n  swagger-ui:\n    path: /swagger-ui.html
+file:
+  upload-dir: uploads/images/
+app:
+  base-url: http://localhost:9001
+
+spring.servlet.multipart.max-file-size: 5MB
+spring.servlet.multipart.max-request-size: 5MB
