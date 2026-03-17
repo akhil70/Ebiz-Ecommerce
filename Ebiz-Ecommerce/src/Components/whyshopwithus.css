@@ -1,0 +1,102 @@
+/* Section */
+.why_section {
+  padding: 80px 0;
+  background: #ffffff;
+  text-align: center;
+}
+
+/* Heading */
+.heading_container h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #002c3e;
+  margin-bottom: 10px;
+}
+
+.underline {
+  width: 90px;
+  height: 4px;
+  background-color: #f7444e;
+  margin: -10px auto 20px auto;
+  border-radius: 3px;
+}
+
+/* Layout */
+.row {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  flex-wrap: wrap;
+}
+
+.col-md-4 {
+  flex: 1 1 300px;
+  max-width: 350px;
+}
+
+/* Card Box */
+.box {
+  background: #002c3e;
+  border-radius: 8px;
+  padding: 50px 25px;
+  color: white;
+  transition: 0.3s ease;
+}
+
+.box:hover {
+  transform: translateY(-8px);
+  background: #02384b;
+}
+
+/* ICON ROUND CIRCLE */
+.img-box {
+  width: 90px;
+  height: 90px;
+  margin: 0 auto 25px;
+color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+.icon-img {
+  width: 55px;
+  height: auto;
+  object-fit: contain;
+  color: #ffffff;
+  fill: #ffffff;
+}
+
+/* ICON SIZE/COLOR */
+.icon {
+  width: 48px;
+  height: 48px;
+  color: #ffffff;
+}
+
+/* Text */
+.detail-boxs h5 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: white;
+}
+
+.detail-boxs p {
+  color: #cccccc;
+  font-size: 0.95rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .why_section {
+    padding: 60px 15px;
+  }
+
+  .heading_container h2 {
+    font-size: 2rem;
+  }
+}

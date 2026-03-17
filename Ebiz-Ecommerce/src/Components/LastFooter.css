@@ -1,0 +1,28 @@
+footer {
+  background-color: #27272a; /* zinc-900 */
+  color: #d1d5db; /* gray-300 */
+  padding: 1.5rem 0; /* py-6 */
+}
+
+footer > div {
+  text-align: center;
+  font-size: 0.875rem; /* text-sm */
+}
+
+footer p {
+  margin: 0;
+}
+
+footer p:nth-child(2) {
+  margin-top: 0.25rem; /* mt-1 */
+}
+
+footer a {
+  color: #ef4444; /* red-500 */
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+
+footer a:hover {
+  color: #f87171; /* red-400 */
+}

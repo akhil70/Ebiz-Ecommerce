@@ -1,0 +1,71 @@
+import './SocialMediaGallery.css';
+import { Instagram } from 'lucide-react';
+import instagram01 from '../images/instagram-01.jpg';
+import instagram02 from '../images/instagram-02.jpg';
+import instagram03 from '../images/instagram-03.jpg';
+import instagram04 from '../images/instagram-04.jpg';
+import instagram05 from '../images/instagram-05.jpg';
+import instagram06 from '../images/instagram-06.jpg';
+
+export default function SocialMediaGallery() {
+  const galleryItems = [
+    {
+      id: 1,
+      image: instagram01,
+      label: 'Fashion',
+      showIcon: true
+    },
+    {
+      id: 2,
+      image: instagram02,
+      showIcon: true
+    },
+    {
+      id: 3,
+      image: instagram03,
+      showIcon: true
+    },
+    {
+      id: 4,
+      image: instagram04,
+      showIcon: true
+    },
+    {
+      id: 5,
+      image: instagram05,
+      showIcon: true
+    },
+    {
+      id: 6,
+      image: instagram06,
+      showIcon: true
+    }
+  ];
+
+  return (
+    <section className="social-media-section">
+      <div className="social-media-header">
+        <h2 className="social-media-title">Social Media</h2>
+        <p className="social-media-subtitle">
+          Details to details is what makes Hexashop different from the other themes.
+        </p>
+      </div>
+
+      <div className="gallery-grid">
+        {galleryItems.map((item) => (
+          <div key={item.id} className="gallery-item">
+            <img src={item.image} alt={item.label || `Gallery item ${item.id}`} />
+            <div className="gallery-overlay">
+              {item.showIcon && (
+                <>
+                  <span className="gallery-label">{item.label}</span>
+                  <Instagram className="instagram-icon" size={24} />
+                </>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}

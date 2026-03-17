@@ -1,0 +1,121 @@
+/* Full page light background */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+}
+
+/* Page background + centering */
+.login-page {
+    min-height: 100vh;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+}
+
+/* Center card like screenshot */
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+/* Card style EXACTLY like your screenshot */
+.login-card {
+    width: 100%;
+    max-width: 400px;
+    background-color: #ffffff;
+    padding: 40px 35px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+/* Title text */
+.login-title {
+    text-align: center;
+    font-size: 22px;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+/* Login illustration */
+.login-image {
+    width: 100%;
+    height: auto;
+    max-height: 250px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 20px auto;
+}
+
+/* Input boxes exactly as shown */
+.login-input {
+    width: 100%;
+    height: 45px;
+    padding: 10px;
+    margin-bottom: 12px;
+    font-family: monospace;
+    font-size: 15px;
+    border: 1px solid #999;
+    border-radius: 4px;
+}
+
+/* Button style EXACT screenshot */
+.login-btn {
+    width: 100%;
+    height: 45px;
+    background-color: #c32714;
+    border: none;
+    color: #fff;
+    font-size: 17px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-top: 5px;
+}
+
+.login-btn:hover {
+    background-color: #a31c10;
+}
+
+/* Separator line */
+.login-separator {
+    width: 100%;
+    margin-top: 25px;
+    border: none;
+    border-bottom: 1px solid #ccc;
+}
+
+@media (max-width: 600px) {
+    .login-card {
+        padding: 28px 22px;
+    }
+
+    .login-title {
+        font-size: 20px;
+    }
+
+    .login-image {
+        max-height: 200px;
+    }
+}
+
+@media (max-width: 420px) {
+    .login-card {
+        padding: 22px 18px;
+    }
+
+    .login-title {
+        font-size: 18px;
+    }
+
+    .login-input,
+    .login-btn {
+        height: 42px;
+        font-size: 14px;
+    }
+}
