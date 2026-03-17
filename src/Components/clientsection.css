@@ -76,6 +76,7 @@
 /* ✅ Red circular arrow buttons closer to image */
 .arrow_btn {
   background-color: #f7444e;
+  color: #fff;
   border: none;
   width: 55px;
   height: 55px;
@@ -93,7 +94,7 @@
 }
 
 /* White arrows centered */
-.arrow_btn i {
+.arrow_btn svg {
   color: #fff;
   font-size: 1.4rem;
   line-height: 1;
