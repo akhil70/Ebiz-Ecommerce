@@ -12,6 +12,7 @@ import AdminLayout from "./Adminpanel/Adminlayout";
 import Dashboard from "./Adminpanel/dashboard";
 import Users from './Adminpanel/Users/Users';
 import Customers from './Adminpanel/Customers/Customers';
+import Orders from './Adminpanel/Orders/Orders';
 import AddUser from './Adminpanel/Users/AddUser';
 import Category from './Adminpanel/Category/Category';
 import AddCategory from './Adminpanel/Category/AddCategory';
@@ -49,6 +50,9 @@ function App() {
           </Route>
           <Route path="/Customers" element={<AdminLayout />}>
             <Route index element={<Customers />} />
+          </Route>
+          <Route path="/Orders" element={<AdminLayout />}>
+            <Route index element={<Orders />} />
           </Route>
 
           <Route path="/AddUser" element={<AdminLayout />}>
