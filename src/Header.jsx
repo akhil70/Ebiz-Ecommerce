@@ -9,18 +9,24 @@ import signupProduct4 from "./images/p6.png";
 
 import { NavLink } from "react-router-dom";
 import HomePage from "./Homepage";
+import { PublicAPI } from "./Utils/AxiosConfig";
 
 export const Header = () => {
   const [activeLink, setActiveLink] = useState("home");
   const [menuOpen, setMenuOpen] = useState(false);
   const [isSignupOpen, setIsSignupOpen] = useState(false);
   const [showLoginHint, setShowLoginHint] = useState(false);
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [email, setEmail] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [password, setPassword] = useState("");
   const [otpSent, setOtpSent] = useState(false);
-  const [generatedOtp, setGeneratedOtp] = useState("");
   const [otpInput, setOtpInput] = useState("");
   const [otpVerified, setOtpVerified] = useState(false);
   const [signupError, setSignupError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const SEND_OTP_URL = "auth/signup/send-otp";
+  const VERIFY_SIGNUP_URL = "auth/signup/verify-otp";
 
   const handleLinkClick = (link) => {
     setActiveLink(link);
@@ -30,46 +36,80 @@ export const Header = () => {
   const openSignup = () => {
     setIsSignupOpen(true);
     setShowLoginHint(false);
-    setPhoneNumber("");
+    setEmail("");
+    setFullName("");
+    setPassword("");
     setOtpSent(false);
-    setGeneratedOtp("");
     setOtpInput("");
     setOtpVerified(false);
     setSignupError("");
+    setIsSubmitting(false);
   };
 
   const closeSignup = () => {
     setIsSignupOpen(false);
   };
 
-  const handleContinue = () => {
-    const cleaned = phoneNumber.replace(/\D/g, "");
-    if (cleaned.length !== 10) {
-      setSignupError("Enter a valid 10-digit mobile number.");
+  const handleContinue = async () => {
+    if (!email.trim()) {
+      setSignupError("Enter your email address.");
       return;
     }
 
-    setOtpSent(true);
-    setOtpVerified(false);
-    setOtpInput("");
+    setIsSubmitting(true);
     setSignupError("");
+
+    try {
+      await PublicAPI.post(SEND_OTP_URL, { email: email.trim() });
+
+      setOtpSent(true);
+      setOtpVerified(false);
+      setOtpInput("");
+    } catch (error) {
+      setSignupError(error?.message || "Unable to send OTP.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const handleVerify = () => {
+  const handleVerify = async () => {
     if (!otpSent) {
       setSignupError("Please request an OTP first.");
       return;
     }
-    if (otpInput.trim() === generatedOtp) {
+    if (!otpInput.trim()) {
+      setSignupError("Enter the OTP sent to your email.");
+      return;
+    }
+    if (!fullName.trim()) {
+      setSignupError("Enter your name.");
+      return;
+    }
+    if (!password.trim()) {
+      setSignupError("Enter a password.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSignupError("");
+
+    try {
+      await PublicAPI.post(VERIFY_SIGNUP_URL, {
+        email: email.trim(),
+        otp: otpInput.trim(),
+        password: password.trim(),
+        name: fullName.trim(),
+        role: "user",
+      });
+
       setOtpVerified(true);
-      setSignupError("");
-    } else {
+    } catch (error) {
       setOtpVerified(false);
-      setSignupError("Invalid OTP. Please try again.");
+      setSignupError(error?.message || "Invalid OTP. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
-
-  const cleanedPhone = phoneNumber.replace(/\D/g, "");
 
   return (
     <header className="header_section">
@@ -251,26 +291,21 @@ export const Header = () => {
 
             <div className="signup-body">
               <h3>Sign Up to view your profile</h3>
-              <div className="signup-fields">
-                <div className="country-code">
-                  <span>Country</span>
-                  <strong>IN +91</strong>
-                </div>
+              {/* <div className="signup-fields"> */}
                 <div className="phone-input">
-                  <label htmlFor="signup-phone">Phone Number</label>
+                  <label htmlFor="signup-email">Email</label>
                   <input
-                    id="signup-phone"
-                    type="tel"
-                    inputMode="numeric"
-                    value={phoneNumber}
-                    onChange={(event) => setPhoneNumber(event.target.value)}
-                    placeholder="Enter mobile number"
+                    id="signup-email"
+                    type="email"
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                    placeholder="Enter email address"
                   />
                 </div>
-              </div>
+              {/* </div> */}
 
-              <button className="signup-continue" onClick={handleContinue}>
-                {otpSent ? "Resend OTP" : "Continue"}
+              <button className="signup-continue" onClick={handleContinue} disabled={isSubmitting}>
+                {isSubmitting ? "Sending..." : otpSent ? "Resend OTP" : "Continue"}
               </button>
               <p className="signup-login-hint">
                 Already have an account?{" "}
@@ -283,15 +318,7 @@ export const Header = () => {
                 </button>
               </p>
 
-              {showLoginHint && (
-                <div className="signup-login-credentials">
-                  <p><strong>Username:</strong> admin</p>
-                  <p><strong>Password:</strong> admin</p>
-                  <NavLink to="/login" className="signup-login-link" onClick={closeSignup}>
-                    Open Login Page
-                  </NavLink>
-                </div>
-              )}
+              
 
               {signupError && <p className="signup-error">{signupError}</p>}
 
@@ -308,13 +335,31 @@ export const Header = () => {
                       onChange={(event) => setOtpInput(event.target.value)}
                       placeholder="6-digit OTP"
                     />
-                    <button className="otp-verify" onClick={handleVerify}>
-                      Verify
+                    <button className="otp-verify" onClick={handleVerify} disabled={isSubmitting}>
+                      {isSubmitting ? "Verifying..." : "Verify"}
                     </button>
                   </div>
                   <p className="otp-helper">
-                    OTP sent to +91 {cleanedPhone}.
+                    OTP sent to {email}.
                   </p>
+                  <div className="otp-row" style={{ marginTop: "12px" }}>
+                    <input
+                      id="signup-name"
+                      type="text"
+                      value={fullName}
+                      onChange={(event) => setFullName(event.target.value)}
+                      placeholder="Full name"
+                    />
+                  </div>
+                  <div className="otp-row" style={{ marginTop: "10px" }}>
+                    <input
+                      id="signup-password"
+                      type="password"
+                      value={password}
+                      onChange={(event) => setPassword(event.target.value)}
+                      placeholder="Create password"
+                    />
+                  </div>
                 </div>
               )}
 

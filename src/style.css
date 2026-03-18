@@ -375,7 +375,7 @@ ul {
 
 .signup-fields {
   display: grid;
-  grid-template-columns: 90px 1fr;
+  grid-template-columns: 1fr;
   gap: 18px;
   align-items: end;
   border-bottom: 1px solid #e2d9e4;
@@ -404,12 +404,17 @@ ul {
 }
 
 .phone-input input {
+  width: 100%;
+  min-width: 0;
   border: none;
+  border-bottom: 1px solid #e4dfe4;
+  border-radius: 0;
+  background: transparent;
   outline: none;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
   color: #1e1e1e;
-  padding: 4px 0 6px;
+  padding: 6px 2px 8px;
 }
 
 .signup-continue {
