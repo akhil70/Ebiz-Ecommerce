@@ -14,6 +14,7 @@ export const Header = () => {
   const [activeLink, setActiveLink] = useState("home");
   const [menuOpen, setMenuOpen] = useState(false);
   const [isSignupOpen, setIsSignupOpen] = useState(false);
+  const [showLoginHint, setShowLoginHint] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [generatedOtp, setGeneratedOtp] = useState("");
@@ -28,6 +29,7 @@ export const Header = () => {
 
   const openSignup = () => {
     setIsSignupOpen(true);
+    setShowLoginHint(false);
     setPhoneNumber("");
     setOtpSent(false);
     setGeneratedOtp("");
@@ -270,6 +272,26 @@ export const Header = () => {
               <button className="signup-continue" onClick={handleContinue}>
                 {otpSent ? "Resend OTP" : "Continue"}
               </button>
+              <p className="signup-login-hint">
+                Already have an account?{" "}
+                <button
+                  type="button"
+                  className="signup-login-hint-btn"
+                  onClick={() => setShowLoginHint((prev) => !prev)}
+                >
+                  Try to login
+                </button>
+              </p>
+
+              {showLoginHint && (
+                <div className="signup-login-credentials">
+                  <p><strong>Username:</strong> admin</p>
+                  <p><strong>Password:</strong> admin</p>
+                  <NavLink to="/login" className="signup-login-link" onClick={closeSignup}>
+                    Open Login Page
+                  </NavLink>
+                </div>
+              )}
 
               {signupError && <p className="signup-error">{signupError}</p>}
 

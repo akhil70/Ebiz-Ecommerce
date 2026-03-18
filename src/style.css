@@ -430,6 +430,46 @@ ul {
   transform: translateY(-1px);
 }
 
+.signup-login-hint {
+  margin: -4px 0 0;
+  font-size: 13px;
+  color: #6f6470;
+}
+
+.signup-login-hint-btn {
+  border: none;
+  background: transparent;
+  color: #9f2089;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+}
+
+.signup-login-credentials {
+  background: #f8f3f8;
+  border: 1px solid #ead9e8;
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.signup-login-credentials p {
+  margin: 0;
+  font-size: 13px;
+  color: #3b2e3a;
+}
+
+.signup-login-link {
+  color: #9f2089;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: underline;
+  width: fit-content;
+}
+
 .signup-error {
   margin: 0;
   color: #b42318;
