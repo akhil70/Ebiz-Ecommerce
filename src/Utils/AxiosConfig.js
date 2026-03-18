@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE = 'https://rentals-opposed-belt-acceptable.trycloudflare.com';
+const API_BASE = 'https://processors-king-tri-city.trycloudflare.com';
 
 const getAuthToken = () => {
   return (

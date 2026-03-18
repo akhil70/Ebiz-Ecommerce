@@ -1,6 +1,7 @@
 import {
   LayoutDashboard,
   Users,
+  User,
   Tag,
   Layers,
   Box,
@@ -20,6 +21,11 @@ export default function AdminSidebar({ isOpen }) {
         <li>
           <NavLink to="/Dashboard" className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}>
             <LayoutDashboard size={18} /> <span>Dashboard</span>
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/Customers" className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}>
+            <User size={18} /> <span>Customers</span>
           </NavLink>
         </li>
         <li>

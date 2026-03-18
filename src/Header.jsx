@@ -46,8 +46,7 @@ export const Header = () => {
       setSignupError("Enter a valid 10-digit mobile number.");
       return;
     }
-    const otp = String(Math.floor(100000 + Math.random() * 900000));
-    setGeneratedOtp(otp);
+
     setOtpSent(true);
     setOtpVerified(false);
     setOtpInput("");
@@ -292,7 +291,7 @@ export const Header = () => {
                     </button>
                   </div>
                   <p className="otp-helper">
-                    OTP sent to +91 {cleanedPhone}. Demo OTP: {generatedOtp}
+                    OTP sent to +91 {cleanedPhone}.
                   </p>
                 </div>
               )}
