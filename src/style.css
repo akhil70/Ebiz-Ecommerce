@@ -417,6 +417,43 @@ ul {
   padding: 6px 2px 8px;
 }
 
+.password-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid #e4dfe4;
+  padding: 2px 0 6px;
+}
+
+.password-field input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1e1e1e;
+  padding: 6px 2px 2px;
+}
+
+.password-toggle {
+  border: none;
+  background: transparent;
+  color: #7b2b69;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.password-toggle:hover {
+  transform: translateY(-1px);
+}
+
 .signup-continue {
   width: 100%;
   background: #9f2089;

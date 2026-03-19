@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./style.css";
-import { ShoppingCart, Search, Menu, X, LogIn, User, ClipboardList } from "lucide-react";
+import { ShoppingCart, Search, Menu, X, LogIn, User, ClipboardList, Eye, EyeOff } from "lucide-react";
 import loginIllustration from "./images/fammmlogo.png";
 import signupProduct1 from "./images/p1.png";
 import signupProduct2 from "./images/p2.png";
@@ -10,12 +10,15 @@ import signupProduct4 from "./images/p6.png";
 import { NavLink } from "react-router-dom";
 import HomePage from "./Homepage";
 import { PublicAPI } from "./Utils/AxiosConfig";
+import { useDispatch } from "react-redux";
+import { setAuth } from "./store/authSlice";
 
 export const Header = () => {
+  const dispatch = useDispatch();
   const [activeLink, setActiveLink] = useState("home");
   const [menuOpen, setMenuOpen] = useState(false);
   const [isSignupOpen, setIsSignupOpen] = useState(false);
-  const [showLoginHint, setShowLoginHint] = useState(false);
+  const [isLoginMode, setIsLoginMode] = useState(false);
   const [email, setEmail] = useState("");
   const [fullName, setFullName] = useState("");
   const [password, setPassword] = useState("");
@@ -24,9 +27,17 @@ export const Header = () => {
   const [otpVerified, setOtpVerified] = useState(false);
   const [signupError, setSignupError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [loginUsername, setLoginUsername] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+  const [loginError, setLoginError] = useState("");
+  const [loginSuccess, setLoginSuccess] = useState(false);
+  const [isLoginSubmitting, setIsLoginSubmitting] = useState(false);
+  const [showLoginPassword, setShowLoginPassword] = useState(false);
+  const [showSignupPassword, setShowSignupPassword] = useState(false);
 
   const SEND_OTP_URL = "auth/signup/send-otp";
   const VERIFY_SIGNUP_URL = "auth/signup/verify-otp";
+  const LOGIN_URL = "auth/login";
 
   const handleLinkClick = (link) => {
     setActiveLink(link);
@@ -35,7 +46,7 @@ export const Header = () => {
 
   const openSignup = () => {
     setIsSignupOpen(true);
-    setShowLoginHint(false);
+    setIsLoginMode(false);
     setEmail("");
     setFullName("");
     setPassword("");
@@ -44,6 +55,13 @@ export const Header = () => {
     setOtpVerified(false);
     setSignupError("");
     setIsSubmitting(false);
+    setLoginUsername("");
+    setLoginPassword("");
+    setLoginError("");
+    setLoginSuccess(false);
+    setIsLoginSubmitting(false);
+    setShowLoginPassword(false);
+    setShowSignupPassword(false);
   };
 
   const closeSignup = () => {
@@ -108,6 +126,57 @@ export const Header = () => {
       setSignupError(error?.message || "Invalid OTP. Please try again.");
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleLogin = async () => {
+    if (!loginUsername.trim()) {
+      setLoginError("Enter your username.");
+      return;
+    }
+    if (!loginPassword.trim()) {
+      setLoginError("Enter your password.");
+      return;
+    }
+
+    setIsLoginSubmitting(true);
+    setLoginError("");
+
+    try {
+      const response = await PublicAPI.post(LOGIN_URL, {
+        username: loginUsername.trim(),
+        password: loginPassword.trim(),
+      });
+
+      const token =
+        response?.data?.token ||
+        response?.data?.accessToken ||
+        response?.data?.authToken ||
+        "";
+      if (token) {
+        localStorage.setItem("token", token);
+      }
+
+      const user =
+        response?.data?.user ||
+        response?.data?.data ||
+        response?.data ||
+        null;
+
+      dispatch(
+        setAuth({
+          user,
+          token: token || null,
+        })
+      );
+
+      setLoginSuccess(true);
+      closeSignup();
+    } catch (error) {
+      setLoginSuccess(false);
+      setLoginError(error?.message || "Login failed. Please try again.");
+    } finally {
+      setIsLoginSubmitting(false);
     }
   };
 
@@ -290,84 +359,146 @@ export const Header = () => {
             </div>
 
             <div className="signup-body">
-              <h3>Sign Up to view your profile</h3>
-              {/* <div className="signup-fields"> */}
-                <div className="phone-input">
-                  <label htmlFor="signup-email">Email</label>
-                  <input
-                    id="signup-email"
-                    type="email"
-                    value={email}
-                    onChange={(event) => setEmail(event.target.value)}
-                    placeholder="Enter email address"
-                  />
-                </div>
-              {/* </div> */}
-
-              <button className="signup-continue" onClick={handleContinue} disabled={isSubmitting}>
-                {isSubmitting ? "Sending..." : otpSent ? "Resend OTP" : "Continue"}
-              </button>
-              <p className="signup-login-hint">
-                Already have an account?{" "}
-                <button
-                  type="button"
-                  className="signup-login-hint-btn"
-                  onClick={() => setShowLoginHint((prev) => !prev)}
-                >
-                  Try to login
-                </button>
-              </p>
-
-              
-
-              {signupError && <p className="signup-error">{signupError}</p>}
-
-              {otpSent && (
-                <div className="otp-section">
-                  <label htmlFor="signup-otp">Enter OTP</label>
-                  <div className="otp-row">
+              {isLoginMode ? (
+                <>
+                  <h3>Log In to view your profile</h3>
+                  <div className="phone-input">
+                    <label htmlFor="login-username">Username</label>
                     <input
-                      id="signup-otp"
+                      id="login-username"
                       type="text"
-                      inputMode="numeric"
-                      maxLength={6}
-                      value={otpInput}
-                      onChange={(event) => setOtpInput(event.target.value)}
-                      placeholder="6-digit OTP"
+                      value={loginUsername}
+                      onChange={(event) => setLoginUsername(event.target.value)}
+                      placeholder="Enter username"
                     />
-                    <button className="otp-verify" onClick={handleVerify} disabled={isSubmitting}>
-                      {isSubmitting ? "Verifying..." : "Verify"}
+                  </div>
+                  <div className="phone-input" style={{ marginTop: "10px" }}>
+                    <label htmlFor="login-password">Password</label>
+                    <div className="password-field">
+                      <input
+                        id="login-password"
+                        type={showLoginPassword ? "text" : "password"}
+                        value={loginPassword}
+                        onChange={(event) => setLoginPassword(event.target.value)}
+                        placeholder="Enter password"
+                      />
+                      <button
+                        type="button"
+                        className="password-toggle"
+                        onClick={() => setShowLoginPassword((prev) => !prev)}
+                        aria-label={showLoginPassword ? "Hide password" : "Show password"}
+                      >
+                        {showLoginPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                      </button>
+                    </div>
+                  </div>
+
+                  <button className="signup-continue" onClick={handleLogin} disabled={isLoginSubmitting}>
+                    {isLoginSubmitting ? "Logging in..." : "Login"}
+                  </button>
+
+                  {loginError && <p className="signup-error">{loginError}</p>}
+                  {loginSuccess && <p className="signup-success">Login successful.</p>}
+
+                  <p className="signup-login-hint">
+                    Don't have an account?{" "}
+                    <button
+                      type="button"
+                      className="signup-login-hint-btn"
+                      onClick={() => setIsLoginMode(false)}
+                    >
+                      Sign up
                     </button>
-                  </div>
-                  <p className="otp-helper">
-                    OTP sent to {email}.
                   </p>
-                  <div className="otp-row" style={{ marginTop: "12px" }}>
+                </>
+              ) : (
+                <>
+                  <h3>Sign Up to view your profile</h3>
+                  <div className="phone-input">
+                    <label htmlFor="signup-email">Email</label>
                     <input
-                      id="signup-name"
-                      type="text"
-                      value={fullName}
-                      onChange={(event) => setFullName(event.target.value)}
-                      placeholder="Full name"
+                      id="signup-email"
+                      type="email"
+                      value={email}
+                      onChange={(event) => setEmail(event.target.value)}
+                      placeholder="Enter email address"
                     />
                   </div>
-                  <div className="otp-row" style={{ marginTop: "10px" }}>
-                    <input
-                      id="signup-password"
-                      type="password"
-                      value={password}
-                      onChange={(event) => setPassword(event.target.value)}
-                      placeholder="Create password"
-                    />
-                  </div>
-                </div>
+
+                  <button className="signup-continue" onClick={handleContinue} disabled={isSubmitting}>
+                    {isSubmitting ? "Sending..." : otpSent ? "Resend OTP" : "Continue"}
+                  </button>
+                  <p className="signup-login-hint">
+                    Already have an account?{" "}
+                    <button
+                      type="button"
+                      className="signup-login-hint-btn"
+                      onClick={() => setIsLoginMode(true)}
+                    >
+                      Try to login
+                    </button>
+                  </p>
+
+                  {signupError && <p className="signup-error">{signupError}</p>}
+
+                  {otpSent && (
+                    <div className="otp-section">
+                      <label htmlFor="signup-otp">Enter OTP</label>
+                      <div className="otp-row">
+                        <input
+                          id="signup-otp"
+                          type="text"
+                          inputMode="numeric"
+                          maxLength={6}
+                          value={otpInput}
+                          onChange={(event) => setOtpInput(event.target.value)}
+                          placeholder="6-digit OTP"
+                        />
+                        <button className="otp-verify" onClick={handleVerify} disabled={isSubmitting}>
+                          {isSubmitting ? "Verifying..." : "Verify"}
+                        </button>
+                      </div>
+                      <p className="otp-helper">
+                        OTP sent to {email}.
+                      </p>
+                      <div className="otp-row" style={{ marginTop: "12px" }}>
+                        <input
+                          id="signup-name"
+                          type="text"
+                          value={fullName}
+                          onChange={(event) => setFullName(event.target.value)}
+                          placeholder="Full name"
+                        />
+                      </div>
+                      <div className="otp-row" style={{ marginTop: "10px" }}>
+                        <div className="password-field">
+                          <input
+                            id="signup-password"
+                            type={showSignupPassword ? "text" : "password"}
+                            value={password}
+                            onChange={(event) => setPassword(event.target.value)}
+                            placeholder="Create password"
+                          />
+                          <button
+                            type="button"
+                            className="password-toggle"
+                            onClick={() => setShowSignupPassword((prev) => !prev)}
+                            aria-label={showSignupPassword ? "Hide password" : "Show password"}
+                          >
+                            {showSignupPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {otpVerified && <p className="signup-success">OTP verified successfully.</p>}
+
+                  <p className="signup-terms">
+                    By continuing, you agree to Ebizz's Terms &amp; Conditions and Privacy Policy.
+                  </p>
+                </>
               )}
-
-              {otpVerified && <p className="signup-success">OTP verified successfully.</p>}
-
-              <p className="signup-terms">
-                By continuing, you agree to Ebizz's Terms &amp; Conditions and Privacy Policy.
-              </p>
             </div>
           </div>
         </div>
