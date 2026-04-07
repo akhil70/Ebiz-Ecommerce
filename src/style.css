@@ -38,6 +38,23 @@ ul {
   height: 36px;
 }
 
+.navbar-brand {
+  display: inline-flex;
+  align-items: center;
+}
+
+.brand-text {
+  font-size: 28px;
+  line-height: 1;
+  font-weight: 700;
+  color: #333;
+  letter-spacing: 0.2px;
+  transform: scale(0.5, 1);
+  transform-origin: left center;
+  display: inline-block;
+  white-space: nowrap;
+}
+
 
 .navbar-nav {
   display: flex;

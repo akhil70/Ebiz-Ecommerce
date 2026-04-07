@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./style.css";
 import { ShoppingCart, Search, Menu, X, LogIn, User, ClipboardList, Eye, EyeOff } from "lucide-react";
-import loginIllustration from "./images/fammmlogo.png";
 import signupProduct1 from "./images/p1.png";
 import signupProduct2 from "./images/p2.png";
 import signupProduct3 from "./images/p3.png";
@@ -12,6 +11,8 @@ import HomePage from "./Homepage";
 import { PublicAPI } from "./Utils/AxiosConfig";
 import { useDispatch } from "react-redux";
 import { setAuth } from "./store/authSlice";
+
+const loginIllustration = "/Logo.png";
 
 export const Header = () => {
   const dispatch = useDispatch();
@@ -148,25 +149,47 @@ export const Header = () => {
         password: loginPassword.trim(),
       });
 
+      const data = response?.data || {};
       const token =
-        response?.data?.token ||
-        response?.data?.accessToken ||
-        response?.data?.authToken ||
+        data.access_token ||
+        data.token ||
+        data.accessToken ||
+        data.authToken ||
+        data.jwtToken ||
+        data.jwt ||
+        data.data?.access_token ||
+        data.data?.token ||
+        data.data?.accessToken ||
         "";
-      if (token) {
-        localStorage.setItem("token", token);
+
+      if (!token) {
+        setLoginSuccess(false);
+        setLoginError("Login succeeded but token was not returned.");
+        return;
       }
 
       const user =
-        response?.data?.user ||
-        response?.data?.data ||
-        response?.data ||
-        null;
+        data.user ||
+        data.data?.user ||
+        {
+          username: data.preferred_username || loginUsername.trim(),
+          email: data.email || "",
+          name: data.name || "",
+          role: data.role || data.data?.role || "",
+        };
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("authToken", token);
+      localStorage.setItem("accessToken", token);
+      localStorage.setItem("refreshToken", data.refresh_token || data.refreshToken || "");
+      localStorage.setItem("tokenType", data.token_type || data.tokenType || "Bearer");
+      localStorage.setItem("expiresIn", String(data.expires_in || data.expiresIn || ""));
+      localStorage.setItem("user", JSON.stringify(user));
 
       dispatch(
         setAuth({
           user,
-          token: token || null,
+          token,
         })
       );
 
@@ -174,7 +197,12 @@ export const Header = () => {
       closeSignup();
     } catch (error) {
       setLoginSuccess(false);
-      setLoginError(error?.message || "Login failed. Please try again.");
+      const message =
+        error?.response?.data?.message ||
+        error?.response?.data?.error ||
+        error?.message ||
+        "Login failed. Please try again.";
+      setLoginError(message);
     } finally {
       setIsLoginSubmitting(false);
     }
@@ -188,9 +216,10 @@ export const Header = () => {
           <a className="navbar-brand" href="#">
             <img
               src={loginIllustration}
-              alt="Famms Logo"
-              style={{ height: "40px", marginRight: "5px" }}
+              alt="TOTAL EBIZ LLC"
+              style={{ height: "40px", marginRight: "8px" }}
             />
+            <span className="brand-text">TOTAL EBIZ LLC</span>
           </a>
 
 

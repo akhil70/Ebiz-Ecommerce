@@ -16,7 +16,9 @@ import { NavLink } from "react-router-dom";
 export default function AdminSidebar({ isOpen }) {
   return (
     <aside className={`sidebar ${isOpen ? "open" : "closed"}`}>
-      <div className="sidebar-title">FAMMS</div>
+      <div className="sidebar-title">
+        <img src="/Logo.png" alt="TOTAL EBIZ LLC" className="sidebar-brand-logo" />
+      </div>
 
       <ul className="menu-list">
         <li>
@@ -36,7 +38,7 @@ export default function AdminSidebar({ isOpen }) {
         </li>
         <li>
           <NavLink to="/Users" className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}>
-            <Users size={18} /> <span>Users</span>
+            <Users size={18} /> <span>Admins</span>
           </NavLink>
         </li>
         <li>
