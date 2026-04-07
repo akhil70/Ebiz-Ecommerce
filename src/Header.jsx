@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./style.css";
 import { ShoppingCart, Search, Menu, X, LogIn, User, ClipboardList, Eye, EyeOff } from "lucide-react";
 import signupProduct1 from "./images/p1.png";
@@ -35,6 +35,8 @@ export const Header = () => {
   const [isLoginSubmitting, setIsLoginSubmitting] = useState(false);
   const [showLoginPassword, setShowLoginPassword] = useState(false);
   const [showSignupPassword, setShowSignupPassword] = useState(false);
+  const [profilePopupPinned, setProfilePopupPinned] = useState(false);
+  const profileNavRef = useRef(null);
 
   const SEND_OTP_URL = "auth/signup/send-otp";
   const VERIFY_SIGNUP_URL = "auth/signup/verify-otp";
@@ -46,6 +48,7 @@ export const Header = () => {
   };
 
   const openSignup = () => {
+    setProfilePopupPinned(false);
     setIsSignupOpen(true);
     setIsLoginMode(false);
     setEmail("");
@@ -310,7 +313,10 @@ export const Header = () => {
 
 
               <li className="nav-item">
-                <div className="profile-nav-container">
+                <div
+                  ref={profileNavRef}
+                  className={`profile-nav-container${profilePopupPinned ? " profile-popup-visible" : ""}`}
+                >
                   <div className="nav-icon-group">
                     <User size={20} stroke="black" />
                     <span>Profile</span>

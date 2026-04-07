@@ -1,8 +1,8 @@
 import axios from 'axios';
 const swagger_url = 'https://figures-default-aids-understanding.trycloudflare.com/swagger-ui/index.html';
-const API_BASE = 'https://figures-default-aids-understanding.trycloudflare.com';
+const API_BASE = 'https://tulsa-examples-jail-epinions.trycloudflare.com';
 
-const getAuthToken = () => {
+export const getAuthToken = () => {
   return (
     localStorage.getItem('token') ||
     localStorage.getItem('authToken') ||
@@ -27,7 +27,27 @@ export const PublicAPI = axios.create({
   },
 });
 
+/** Relative paths that must not send Authorization (public auth, public lists). */
+const shouldSkipAuth = (config) => {
+  if (config.skipAuth) return true;
+  const raw = config.url || '';
+  const path = (raw.startsWith('/') ? raw : `/${raw}`).split('?')[0];
+
+  if (path === '/auth/login') return true;
+
+  const method = (config.method || 'get').toLowerCase();
+  if (method !== 'get') return false;
+  return (
+    path === '/categories' ||
+    path.startsWith('/categories/with-subcategories')
+  );
+};
+
 const attachAuth = (config) => {
+  if (shouldSkipAuth(config)) {
+    delete config.headers.Authorization;
+    return config;
+  }
   const token = getAuthToken();
   if (token && !config.headers.Authorization) {
     config.headers.Authorization = `Bearer ${token}`;

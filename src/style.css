@@ -190,7 +190,8 @@ ul {
   transform: translateY(10px);
 }
 
-.profile-nav-container:hover .profile-popup {
+.profile-nav-container:hover .profile-popup,
+.profile-nav-container.profile-popup-visible .profile-popup {
   visibility: visible;
   opacity: 1;
   transform: translateY(0);
