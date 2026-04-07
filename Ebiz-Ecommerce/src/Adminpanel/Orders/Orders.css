@@ -1,0 +1,150 @@
+.orders-page {
+  background: #fff;
+  border: 1px solid #e8ebf0;
+  border-radius: 10px;
+  padding: 14px;
+}
+
+.orders-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.orders-export-btn,
+.orders-add-btn {
+  border: 1px solid #dfe3ea;
+  background: #fff;
+  border-radius: 8px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #4b5563;
+  cursor: pointer;
+  padding: 0 12px;
+}
+
+.orders-add-btn {
+  background: #356df3;
+  border-color: #356df3;
+  color: #fff;
+  min-width: 125px;
+}
+
+.orders-table-wrap {
+  overflow-x: auto;
+}
+
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 980px;
+}
+
+.orders-table th,
+.orders-table td {
+  border-bottom: 1px solid #eef1f5;
+  padding: 13px 10px;
+  text-align: left;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.orders-table th {
+  color: #7b8597;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.orders-link {
+  color: #4f6fc8;
+  font-weight: 600;
+}
+
+.orders-customer-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.orders-customer-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.orders-customer-text > span:first-child {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
+
+.orders-customer-email {
+  font-size: 12px;
+  font-weight: 500;
+  color: #6b7280;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
+
+.orders-customer-cell img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.orders-pill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 5px;
+  padding: 3px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  border: 1px solid;
+}
+
+.orders-pill.success {
+  background: #d9f2da;
+  border-color: #a3d9a7;
+  color: #2b7a2f;
+}
+
+.orders-pill.gray {
+  background: #f2f3f5;
+  border-color: #d9dde3;
+  color: #6b7280;
+}
+
+.orders-pill.blue {
+  background: #d6eef8;
+  border-color: #9fd5ea;
+  color: #256782;
+}
+
+.orders-pill.amber {
+  background: #fbeecb;
+  border-color: #f0d89a;
+  color: #8a5a18;
+}
+
+.orders-pill.red {
+  background: #fce3e3;
+  border-color: #f1bdbd;
+  color: #a43737;
+}
+
+.orders-muted {
+  color: #6b7280;
+}

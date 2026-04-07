@@ -1,6 +1,8 @@
 import {
   LayoutDashboard,
   Users,
+  User,
+  ClipboardList,
   Tag,
   Layers,
   Box,
@@ -14,7 +16,9 @@ import { NavLink } from "react-router-dom";
 export default function AdminSidebar({ isOpen }) {
   return (
     <aside className={`sidebar ${isOpen ? "open" : "closed"}`}>
-      <div className="sidebar-title">FAMMS</div>
+      <div className="sidebar-title">
+        <img src="/Logo.png" alt="TOTAL EBIZ LLC" className="sidebar-brand-logo" />
+      </div>
 
       <ul className="menu-list">
         <li>
@@ -23,8 +27,18 @@ export default function AdminSidebar({ isOpen }) {
           </NavLink>
         </li>
         <li>
+          <NavLink to="/Customers" className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}>
+            <User size={18} /> <span>Customers</span>
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/Orders" className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}>
+            <ClipboardList size={18} /> <span>Orders</span>
+          </NavLink>
+        </li>
+        <li>
           <NavLink to="/Users" className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}>
-            <Users size={18} /> <span>Users</span>
+            <Users size={18} /> <span>Admins</span>
           </NavLink>
         </li>
         <li>

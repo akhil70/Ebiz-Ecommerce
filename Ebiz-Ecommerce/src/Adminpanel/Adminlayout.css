@@ -36,9 +36,18 @@
   font-weight: 800;
   padding: 25px 25px;
   margin-bottom: 5px;
-  color: #4f46e5;
-  letter-spacing: -0.5px;
-  white-space: nowrap;
+  display: flex;
+  align-items: center;
+}
+
+.sidebar-brand-logo {
+  width: 80px;
+  max-width: 100%;
+  height: auto;
+}
+
+.sidebar.closed .sidebar-brand-logo {
+  width: 28px;
 }
 
 .menu-list {

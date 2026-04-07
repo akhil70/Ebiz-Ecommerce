@@ -1,6 +1,5 @@
 import React from "react";
 import "./footer.css";
-import logo from "../images/fammmlogo.png";
 
 const Footer = () => {
   return (
@@ -11,7 +10,7 @@ const Footer = () => {
           <div className="col-md-4">
             <div className="full">
               <div className="logo_footer">
-                <a href="#"><img src={logo} alt="Logo" width="210" /></a>
+                <a href="#"><img src="/Logo.png" alt="Logo" width="210" /></a>
               </div>
               <div className="information_f">
                 <p><strong>ADDRESS:</strong> 28 White tower, Street Name New York City, USA</p>
