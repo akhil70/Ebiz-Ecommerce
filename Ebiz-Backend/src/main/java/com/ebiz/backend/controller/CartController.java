@@ -2,8 +2,6 @@ package com.ebiz.backend.controller;
 
 import com.ebiz.backend.dto.CartRequest;
 import com.ebiz.backend.entity.Cart;
-import com.ebiz.backend.entity.User;
-import com.ebiz.backend.repository.UserRepository;
 import com.ebiz.backend.service.CartService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,26 +9,21 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 @RestController
 @RequestMapping("/api/cart")
 public class CartController {
 
     private final CartService cartService;
-    private final UserRepository userRepository;
 
-    public CartController(CartService cartService, UserRepository userRepository) {
+    public CartController(CartService cartService) {
         this.cartService = cartService;
-        this.userRepository = userRepository;
     }
 
+    // Extract Keycloak sub (UUID) directly from token — no DB lookup needed
     private String getUserId(Jwt jwt) {
         if (jwt == null)
             return null;
-        String email = jwt.getSubject();
-        Optional<User> userOpt = userRepository.findByEmail(email);
-        return userOpt.map(User::getId).orElse(null);
+        return jwt.getSubject(); // e.g. "a3f7c2d1-4b5e-6789-abcd-ef0123456789"
     }
 
     @GetMapping

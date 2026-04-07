@@ -18,6 +18,7 @@ import com.ebiz.backend.service.ImageService;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.ebiz.backend.dto.CategoryWithSubcategoriesDto;
 import java.util.List;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 @RestController
 @RequestMapping("/api/admin/categories")
@@ -33,6 +34,7 @@ public class AdminCategoryController extends BaseController<Category, String> {
     }
 
     @PostMapping("/with-image")
+    @PreAuthorize("hasRole('admin')")
     public ResponseEntity<Category> createWithImage(
             @ModelAttribute Category entity,
             @RequestParam(value = "image", required = false) MultipartFile image) {
@@ -44,6 +46,7 @@ public class AdminCategoryController extends BaseController<Category, String> {
     }
 
     @PutMapping("/{id}/with-image")
+    @PreAuthorize("hasRole('admin')")
     public ResponseEntity<Category> updateWithImage(
             @PathVariable String id,
             @ModelAttribute Category entity,

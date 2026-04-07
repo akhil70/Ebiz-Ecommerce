@@ -59,6 +59,7 @@ public class CartService {
                     .selectedColor(request.getSelectedColor())
                     .quantity(request.getQuantity())
                     .price(product.getPrice())
+                    .imageId(product.getThumbnail())
                     .build();
             cart.getItems().add(newItem);
         }

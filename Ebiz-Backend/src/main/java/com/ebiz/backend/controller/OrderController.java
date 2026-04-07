@@ -57,8 +57,10 @@ public class OrderController {
 
         Order order = new Order();
         order.setUserId(userOpt.get().getId());
-        order.setTotalAmount(orderDto.getTotalAmount());
+        order.setShippingAddress(orderDto.getShippingAddress());
         // createdAt is set by @Builder.Default
+
+        java.math.BigDecimal computedTotal = java.math.BigDecimal.ZERO;
 
         for (OrderItemDto itemDto : orderDto.getItems()) {
             // Need to change DTO productId from Long to String, assume it's String or parse
@@ -75,7 +77,13 @@ public class OrderController {
             orderItem.setQuantity(itemDto.getQuantity());
             orderItem.setPrice(product.getPrice());
             order.addItem(orderItem);
+
+            if (product.getPrice() != null && itemDto.getQuantity() != null) {
+                computedTotal = computedTotal.add(product.getPrice().multiply(java.math.BigDecimal.valueOf(itemDto.getQuantity())));
+            }
         }
+
+        order.setTotalAmount(computedTotal);
 
         Order savedOrder = orderRepository.save(order);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedOrder);

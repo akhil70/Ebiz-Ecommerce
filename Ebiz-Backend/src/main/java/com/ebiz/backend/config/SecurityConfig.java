@@ -39,7 +39,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authz -> authz
                         // Define basic access rules, more specific rules go on controllers via
                         // @PreAuthorize
-                        .requestMatchers("/api/admin/**").hasRole("admin")
+                        .requestMatchers("/api/admin/**").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/categories/**").permitAll()
                         // Allow all by default or default to authenticated,

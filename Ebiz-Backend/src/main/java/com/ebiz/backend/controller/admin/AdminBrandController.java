@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import com.ebiz.backend.service.ImageService;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 @RestController
 @RequestMapping("/api/admin/brands")
@@ -30,6 +31,7 @@ public class AdminBrandController extends BaseController<Brand, String> {
     }
 
     @PostMapping("/with-image")
+    @PreAuthorize("hasRole('admin')")
     public ResponseEntity<Brand> createWithImage(
             @ModelAttribute Brand entity,
             @RequestParam(value = "image", required = false) MultipartFile image) {
@@ -41,6 +43,7 @@ public class AdminBrandController extends BaseController<Brand, String> {
     }
 
     @PutMapping("/{id}/with-image")
+    @PreAuthorize("hasRole('admin')")
     public ResponseEntity<Brand> updateWithImage(
             @PathVariable String id,
             @ModelAttribute Brand entity,

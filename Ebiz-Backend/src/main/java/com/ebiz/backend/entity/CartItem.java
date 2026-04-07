@@ -17,6 +17,7 @@ public class CartItem {
     private String selectedColor;
     private int quantity;
     private BigDecimal price;
+    private String imageId;
 
     public boolean isSameItem(String productId, String selectedSize, String selectedColor) {
         return Objects.equals(this.productId, productId) &&
