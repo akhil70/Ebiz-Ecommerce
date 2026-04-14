@@ -11,8 +11,16 @@ const SubHeader = () => {
         const fetchCategoriesWithSub = async () => {
             try {
                 const response = await API.get('/categories/with-subcategories');
-                console.log("Categories with Subcategories:", response.data);
-                setCategories(response.data);
+                const raw = Array.isArray(response.data)
+                    ? response.data
+                    : response.data?.data ?? [];
+                const activeOnly = raw
+                    .filter((c) => c.status === 1)
+                    .map((c) => ({
+                        ...c,
+                        subcategory: (c.subcategory || []).filter((s) => s.status === 1),
+                    }));
+                setCategories(activeOnly);
             } catch (error) {
                 console.error("Error fetching categories with subcategories:", error);
             }

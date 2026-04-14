@@ -1,6 +1,6 @@
 import axios from 'axios';
-const swagger_url = 'https://figures-default-aids-understanding.trycloudflare.com/swagger-ui/index.html';
-const API_BASE = 'https://tulsa-examples-jail-epinions.trycloudflare.com';
+const swagger_url = 'https://testing-direction-travis-loose.trycloudflare.com/swagger-ui/index.html';
+const API_BASE = 'https://testing-direction-travis-loose.trycloudflare.com';
 
 export const getAuthToken = () => {
   return (
