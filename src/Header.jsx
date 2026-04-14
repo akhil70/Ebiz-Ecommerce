@@ -336,7 +336,7 @@ export const Header = () => {
                       <h3>
                         {user && profileLabel !== "Profile"
                           ? `Hello, ${profileLabel}`
-                          : "Hello User"}
+                          : "Hello User"} 
                       </h3>
                       <p>To access your Ebizz account</p>
                     </div>
