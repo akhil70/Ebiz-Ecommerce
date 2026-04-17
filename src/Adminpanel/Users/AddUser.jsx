@@ -7,6 +7,7 @@ const AddUser = ({ isOpen, onClose, onSave }) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    password: "",
     phone: "",
     role: "",
     status: "Active",
@@ -18,6 +19,7 @@ const AddUser = ({ isOpen, onClose, onSave }) => {
       setFormData({
         name: "",
         email: "",
+        password: "",
         phone: "",
         role: "",
         status: "Active",
@@ -37,10 +39,18 @@ const AddUser = ({ isOpen, onClose, onSave }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("User submitted:", formData);
+    
+    // Construct payload as per API requirement
+    const payload = {
+      name: formData.name,
+      email: formData.email,
+      password: formData.password
+    };
+
+    console.log("Submitting user payload:", payload);
 
     try {
-      const response = await API.post('/users', formData);
+      const response = await API.post('/users', payload);
       console.log("Response:", response.data);
       alert("User details submitted successfully!");
       if (onSave) onSave(response.data);
@@ -94,6 +104,20 @@ const AddUser = ({ isOpen, onClose, onSave }) => {
                 name="email"
                 placeholder="Enter email"
                 value={formData.email}
+                onChange={handleChange}
+                required
+                className="form-input"
+              />
+            </div>
+
+            {/* Password */}
+            <div className="form-group">
+              <label className="form-label">Password *</label>
+              <input
+                type="password"
+                name="password"
+                placeholder="Enter password"
+                value={formData.password}
                 onChange={handleChange}
                 required
                 className="form-input"

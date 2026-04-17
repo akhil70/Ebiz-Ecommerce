@@ -344,10 +344,10 @@ export const Header = () => {
                     <div className="popup-divider"></div>
                     <ul className="popup-menu">
                       <li>
-                        <a>
+                        <NavLink to="/my-orders" onClick={() => setMenuOpen(false)}>
                           <ClipboardList size={18} />
                           My Orders
-                        </a>
+                        </NavLink>
                       </li>
                     </ul>
                     <div className="popup-divider"></div>

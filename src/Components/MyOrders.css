@@ -1,0 +1,364 @@
+.my-orders-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 0 20px;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: #333;
+}
+
+.orders-header {
+    margin-bottom: 30px;
+}
+
+.orders-header h1 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 28px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+}
+
+.orders-header p {
+    color: #666;
+    font-size: 15px;
+}
+
+.orders-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.order-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.order-card:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+}
+
+.order-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    background: #fdfdfd;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.order-id-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.order-label {
+    font-weight: 600;
+    font-size: 16px;
+    color: #111;
+}
+
+.order-number {
+    background: #f3f4f6;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+    color: #2563eb;
+    font-size: 14px;
+}
+
+.order-date-label {
+    color: #9ca3af;
+    font-size: 14px;
+}
+
+.track-order-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 24px;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3);
+}
+
+.track-order-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(245, 158, 11, 0.4);
+    filter: brightness(1.05);
+}
+
+.order-items {
+    padding: 0 24px;
+}
+
+.order-item {
+    display: flex;
+    padding: 24px 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.order-item:last-child {
+    border-bottom: none;
+}
+
+.item-image-container {
+    width: 100px;
+    height: 120px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #f9fafb;
+    border: 1px solid #f0f0f0;
+}
+
+.item-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.item-details {
+    flex-grow: 1;
+    margin-left: 24px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.item-main-info {
+    flex: 1;
+}
+
+.item-main-info h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0 0 6px 0;
+}
+
+.item-brand {
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 12px;
+}
+
+.item-params {
+    display: flex;
+    gap: 20px;
+    font-size: 14px;
+    color: #4b5563;
+}
+
+.item-price {
+    font-weight: 700;
+    color: #111;
+}
+
+.item-status-section {
+    display: flex;
+    flex-direction: row;
+    gap: 60px;
+    align-items: flex-start;
+    padding-top: 4px;
+}
+
+.status-badge {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.status-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #9ca3af;
+}
+
+.status-value {
+    font-weight: 700;
+    color: #f59e0b;
+    font-size: 15px;
+}
+
+.delivery-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.delivery-label {
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+.delivery-date {
+    font-weight: 700;
+    color: #111;
+    font-size: 15px;
+}
+
+.order-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    background: #fff;
+    border-top: 1px solid #f3f4f6;
+}
+
+.cancel-order-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    color: #6b7280;
+    border: none;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.cancel-order-btn:hover {
+    color: #ef4444;
+}
+
+.footer-middle {
+    flex-grow: 1;
+    text-align: center;
+    color: #9ca3af;
+    font-size: 14px;
+}
+
+.total-section {
+    font-size: 18px;
+    font-weight: 700;
+    color: #111;
+}
+
+@media (max-width: 992px) {
+    .item-status-section {
+        gap: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .my-orders-container {
+        margin: 20px auto;
+        padding: 0 12px;
+    }
+
+    .orders-header h1 {
+        font-size: 24px;
+    }
+
+    .order-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+        padding: 16px;
+    }
+
+    .order-id-section {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .track-order-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .order-item {
+        padding: 20px 0;
+    }
+
+    .item-details {
+        margin-left: 16px;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .item-status-section {
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+        padding-top: 12px;
+        border-top: 1px dashed #eee;
+    }
+
+    .order-card-footer {
+        flex-direction: column;
+        gap: 12px;
+        padding: 16px;
+        align-items: flex-start;
+    }
+
+    .footer-middle {
+        text-align: left;
+        order: 3;
+    }
+
+    .total-section {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #f3f4f6;
+        padding-bottom: 12px;
+    }
+
+    .total-section::before {
+        content: "Total Amount:";
+        font-size: 14px;
+        font-weight: 600;
+        color: #6b7280;
+    }
+}
+
+@media (max-width: 480px) {
+    .order-item {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .item-details {
+        margin-left: 0;
+        margin-top: 16px;
+        align-items: center;
+    }
+
+    .item-params {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .item-status-section {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        text-align: center;
+    }
+
+    .status-badge, .delivery-info {
+        align-items: center;
+    }
+}
