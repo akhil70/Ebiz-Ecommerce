@@ -1,0 +1,283 @@
+
+.supplier-container {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Hero Section */
+.supplier-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 60px 10%;
+  background: linear-gradient(135deg, #fff 0%, #fff0f5 100%);
+  position: relative;
+  min-height: 500px;
+}
+
+.hero-content {
+  flex: 1;
+  max-width: 600px;
+  z-index: 2;
+}
+
+.hero-content h1 {
+  font-size: 48px;
+  line-height: 1.2;
+  font-weight: 800;
+  color: #1a1a1a;
+  margin-bottom: 10px;
+}
+
+.hero-content h1 span {
+  color: #ff4fa3;
+}
+
+.hero-subtext {
+  font-size: 18px;
+  color: #666;
+  margin-bottom: 30px;
+}
+
+.new-badge-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.badge-new {
+  background: #ff4fa3;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.badge-text {
+  font-size: 14px;
+  color: #444;
+}
+
+.badge-text span {
+  color: #9f2089;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.start-selling-btn {
+  background: #3e31d6;
+  color: white;
+  padding: 15px 40px;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(62, 49, 214, 0.3);
+}
+
+.start-selling-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(62, 49, 214, 0.4);
+}
+
+.hero-image {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+}
+
+.hero-image img {
+  max-width: 100%;
+  height: auto;
+  z-index: 2;
+}
+
+/* How It Works Section */
+.how-it-works {
+  padding: 80px 10%;
+  text-align: center;
+}
+
+.how-it-works h2 {
+  font-size: 36px;
+  font-weight: 800;
+  margin-bottom: 60px;
+  color: #1a1a1a;
+}
+
+.steps-container {
+  background: #fdfdfd;
+  border-radius: 20px;
+  padding: 50px 40px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.step-card {
+  flex: 1;
+  text-align: left;
+  position: relative;
+}
+
+.step-number {
+  width: 40px;
+  height: 40px;
+  background: #ff4fa3;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  margin-bottom: 25px;
+  position: relative;
+  z-index: 1;
+}
+
+.step-card:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 50px;
+  right: -20px;
+  height: 2px;
+  background: #ff4fa320;
+  z-index: 0;
+}
+
+.step-card h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  color: #1a1a1a;
+}
+
+.step-card p {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.6;
+}
+
+.step-card ul {
+  padding: 0;
+  margin: 10px 0 0 0;
+  list-style: none;
+}
+
+.step-card ul li {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 8px;
+  padding-left: 15px;
+  position: relative;
+}
+
+.step-card ul li::before {
+  content: '•';
+  color: #ff4fa3;
+  position: absolute;
+  left: 0;
+  font-weight: bold;
+}
+
+/* Support Section */
+.supplier-support {
+  padding: 60px 10%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fafafa;
+  margin-bottom: 40px;
+}
+
+.support-left h2 {
+  font-size: 32px;
+  font-weight: 800;
+  color: #1a1a1a;
+  max-width: 400px;
+}
+
+.support-right {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 500px;
+}
+
+.support-text {
+  font-size: 16px;
+  color: #666;
+  line-height: 1.6;
+}
+
+.contact-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.mail-icon {
+  width: 50px;
+  height: 50px;
+  background: #ff4fa3;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.mail-info p {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.mail-info a {
+  color: #ff4fa3;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+@media (max-width: 992px) {
+  .supplier-hero {
+    flex-direction: column;
+    text-align: center;
+    padding: 60px 5%;
+  }
+  
+  .hero-content {
+    margin-bottom: 40px;
+  }
+  
+  .hero-image {
+    justify-content: center;
+  }
+  
+  .steps-container {
+    flex-direction: column;
+    gap: 40px;
+  }
+  
+  .step-card:not(:last-child)::after {
+    display: none;
+  }
+  
+  .supplier-support {
+    flex-direction: column;
+    text-align: center;
+    gap: 30px;
+  }
+  
+  .contact-card {
+    justify-content: center;
+  }
+}

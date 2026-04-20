@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./style.css";
-import { ShoppingCart, Search, Menu, X, LogIn, User, ClipboardList, Eye, EyeOff } from "lucide-react";
+import { ShoppingCart, Search, Menu, X, LogIn, User, ClipboardList, Eye, EyeOff, Store } from "lucide-react";
 import signupProduct1 from "./images/p1.png";
 import signupProduct2 from "./images/p2.png";
 import signupProduct3 from "./images/p3.png";
@@ -318,6 +318,19 @@ export const Header = () => {
                 </a>
               </li>
 
+
+              <li className="nav-item">
+                <NavLink
+                  to="/supplier"
+                  className={`nav-link ${activeLink === "supplier" ? "active" : ""}`}
+                  onClick={() => handleLinkClick("supplier")}
+                >
+                  <div className="nav-icon-group">
+                    <Store size={20} stroke="black" />
+                    <span>Supplier</span>
+                  </div>
+                </NavLink>
+              </li>
 
               <li className="nav-item">
                 <div

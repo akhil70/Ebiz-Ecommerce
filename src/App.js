@@ -8,6 +8,7 @@ import ProductDetail from './Components/ProductDetail';
 import ShoppingCart from './Components/ShoppingCart';
 import ProductListing from './Components/ProductListing';
 import MyOrders from './Components/MyOrders';
+import Supplier from './Components/Supplier';
 
 
 import AdminLayout from "./Adminpanel/Adminlayout";
@@ -43,6 +44,7 @@ function App() {
           <Route path="/cart" element={<ShoppingCart />} />
           <Route path="/shop" element={<ProductListing />} />
           <Route path="/my-orders" element={<MyOrders />} />
+          <Route path="/supplier" element={<Supplier />} />
 
 
           {/* ============= ADMIN PANEL ================ */}
