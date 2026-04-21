@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Supplier.css';
 import { Header } from '../Header';
 import Footer from './Footer';
@@ -7,6 +8,7 @@ import supplierHero from '../images/supplier-hero.png';
 import { Mail } from 'lucide-react';
 
 const Supplier = () => {
+  const navigate = useNavigate();
   return (
     <div className="supplier-container">
       <Header />
@@ -22,7 +24,7 @@ const Supplier = () => {
             <p className="badge-text">Don't have a GSTIN? You can still sell on Ebizz. <span>Know more</span></p>
           </div>
           
-          <button className="start-selling-btn">Start Selling</button>
+          <button className="start-selling-btn" onClick={() => navigate('/supplier/register')}>Start Selling</button>
         </div>
         
         <div className="hero-image">

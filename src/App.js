@@ -9,6 +9,7 @@ import ShoppingCart from './Components/ShoppingCart';
 import ProductListing from './Components/ProductListing';
 import MyOrders from './Components/MyOrders';
 import Supplier from './Components/Supplier';
+import SupplierRegistration from './Components/SupplierRegistration';
 
 
 import AdminLayout from "./Adminpanel/Adminlayout";
@@ -45,6 +46,7 @@ function App() {
           <Route path="/shop" element={<ProductListing />} />
           <Route path="/my-orders" element={<MyOrders />} />
           <Route path="/supplier" element={<Supplier />} />
+          <Route path="/supplier/register" element={<SupplierRegistration />} />
 
 
           {/* ============= ADMIN PANEL ================ */}
