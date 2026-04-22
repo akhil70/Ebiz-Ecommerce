@@ -33,12 +33,10 @@ public class AdminCustomerController {
     @GetMapping("/purchased")
     @PreAuthorize("hasRole('admin')")
     public ResponseEntity<List<CustomerDto>> getPurchasedCustomers() {
-        Query query = new Query();
-        query.addCriteria(Criteria.where("userId").ne(null));
+        // Fetch all users with role 'USER'
+        List<User> users = userRepository.findByRole("USER");
         
-        List<String> userIds = mongoTemplate.findDistinct(query, "userId", "orders", String.class);
-        
-        List<User> users = userRepository.findAllById(userIds);
+        List<String> userIds = users.stream().map(User::getId).collect(Collectors.toList());
         
         // Fetch all orders for these users to calculate stats
         Query ordersQuery = new Query(Criteria.where("userId").in(userIds));
