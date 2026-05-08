@@ -7,6 +7,7 @@ import com.ebiz.backend.repository.OrderRepository;
 import com.ebiz.backend.repository.ProductRepository;
 import com.ebiz.backend.repository.SellerProfileRepository;
 import com.ebiz.backend.service.StripeService;
+import com.ebiz.backend.service.RazorpayService;
 import com.stripe.param.checkout.SessionCreateParams;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,7 @@ public class SocialCheckoutController {
     private final OrderRepository orderRepository;
     private final SellerProfileRepository sellerProfileRepository;
     private final StripeService stripeService;
+    private final RazorpayService razorpayService;
 
     /**
      * Fetch lightweight product details for the social media landing page.
@@ -58,9 +60,12 @@ public class SocialCheckoutController {
             SellerProfile sellerProfile = sellerProfileRepository.findByUserId(product.getSellerId())
                     .orElseThrow(() -> new RuntimeException("Seller profile not found for product"));
 
-            if (sellerProfile.getStripeAccountId() == null) {
+            String country = request.getShippingAddress() != null ? request.getShippingAddress().getCountry() : "";
+            boolean isIndia = "IN".equalsIgnoreCase(country) || "India".equalsIgnoreCase(country);
+
+            if (!isIndia && sellerProfile.getStripeAccountId() == null) {
                 return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
-                        .body("Seller is not ready to receive payments yet. Missing Stripe account.");
+                        .body("Seller is not ready to receive international payments yet. Missing Stripe account.");
             }
 
             // 2. Save or update GuestBuyer logging info
@@ -114,19 +119,22 @@ public class SocialCheckoutController {
             order.setTotalAmount(totalAmount);
             order = orderRepository.save(order);
 
-            // 4. Initiate payment session (e.g., Stripe)
-            // Example: 10% platform fee
-            java.math.BigDecimal applicationFeeAmountCent = totalAmount.multiply(java.math.BigDecimal.valueOf(100))
-                    .multiply(java.math.BigDecimal.valueOf(0.10));
+            // 4. Initiate payment session
+            if (isIndia) {
+                String razorpayOrderId = razorpayService.createCheckoutOrder(totalAmount, order.getId(), sellerProfile.getRazorpayAccountId());
+                return ResponseEntity.ok().body(java.util.Map.of("gateway", "razorpay", "orderId", razorpayOrderId));
+            } else {
+                java.math.BigDecimal applicationFeeAmountCent = totalAmount.multiply(java.math.BigDecimal.valueOf(100))
+                        .multiply(java.math.BigDecimal.valueOf(0.10));
 
-            String checkoutUrl = stripeService.createCheckoutSession(
-                    stripeLineItems,
-                    sellerProfile.getStripeAccountId(),
-                    applicationFeeAmountCent,
-                    order.getId());
+                String checkoutUrl = stripeService.createCheckoutSession(
+                        stripeLineItems,
+                        sellerProfile.getStripeAccountId(),
+                        applicationFeeAmountCent,
+                        order.getId());
 
-            // Return checkout URL to the frontend redirect logic
-            return ResponseEntity.ok().body(java.util.Map.of("url", checkoutUrl));
+                return ResponseEntity.ok().body(java.util.Map.of("gateway", "stripe", "url", checkoutUrl));
+            }
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

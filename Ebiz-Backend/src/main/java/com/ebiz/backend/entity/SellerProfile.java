@@ -30,6 +30,9 @@ public class SellerProfile {
     private String stripeAccountId;
     private Boolean isStripeOnboardingComplete;
 
+    private String razorpayAccountId;
+    private Boolean isRazorpayOnboardingComplete;
+
     // Optional: Seller-specific commission rate, overrides platform default
     private BigDecimal commissionRate;
 

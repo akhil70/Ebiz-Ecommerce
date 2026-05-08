@@ -8,14 +8,32 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@lombok.extern.slf4j.Slf4j
 public class ProductService extends BaseService<Product, String> {
 
     private final ProductRepository productRepository;
     private final org.springframework.data.mongodb.core.MongoTemplate mongoTemplate;
+    private final org.springframework.amqp.rabbit.core.RabbitTemplate rabbitTemplate;
 
     @Override
     protected MongoRepository<Product, String> getRepository() {
         return productRepository;
+    }
+
+    @Override
+    public Product save(Product product) {
+        Product savedProduct = super.save(product);
+        try {
+            rabbitTemplate.convertAndSend(
+                    com.ebiz.backend.config.RabbitMQConfig.SOCIAL_SYNC_EXCHANGE,
+                    com.ebiz.backend.config.RabbitMQConfig.SOCIAL_SYNC_ROUTING_KEY,
+                    savedProduct.getId()
+            );
+            log.info("Enqueued social sync message for product: {}", savedProduct.getId());
+        } catch (Exception e) {
+            log.error("Failed to enqueue social sync message for product: {}", savedProduct.getId(), e);
+        }
+        return savedProduct;
     }
 
     public java.util.List<Product> fetchProducts(java.util.Map<String, String> filters) {
