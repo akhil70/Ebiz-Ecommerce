@@ -45,61 +45,88 @@ const ClientSection = () => {
   return (
     <section className="client_section" aria-labelledby="testimonials-heading">
       <div className="client_section_bg" aria-hidden />
+      <Quote className="bg_quote bg_quote_one" aria-hidden size={260} />
+      <Quote className="bg_quote bg_quote_two" aria-hidden size={200} />
+
       <div className="container client_section_inner">
         <header className="client_heading">
-          <span className="client_kicker">Reviews</span>
-          <h2 id="testimonials-heading">What our customers say</h2>
+          <span className="client_kicker">
+            <span className="kicker_dot" /> Testimonials
+          </span>
+          <h2 id="testimonials-heading">
+            Loved by <span className="gradient_text">customers</span> worldwide
+          </h2>
           <p className="client_subtitle">
-            Real feedback from shoppers who love TOTAL EBIZ LLC
+            Real stories from shoppers who trust TOTAL EBIZ LLC
           </p>
-          <div className="heading_underline" />
+
+          <div className="rating_pill" aria-label="5 out of 5 rating">
+            <div className="rating_stars">
+              {[1, 2, 3, 4, 5].map((n) => (
+                <Star key={n} size={16} fill="currentColor" strokeWidth={0} />
+              ))}
+            </div>
+            <span className="rating_text">
+              <strong>4.9</strong> / 5 · Trusted by happy customers
+            </span>
+          </div>
         </header>
 
-        <div className="testimonial_layout">
+        <article key={testimonial.id} className="testimonial_card fade">
+          <aside className="card_left">
+            <div className="left_glow" aria-hidden />
+            <div className="avatar_ring">
+              <img src={testimonial.img} alt="" />
+              <span className="avatar_badge" aria-hidden>
+                <Star size={12} fill="currentColor" strokeWidth={0} />
+              </span>
+            </div>
+            <cite className="author_name">{testimonial.name}</cite>
+            <span className="author_role">{testimonial.role}</span>
+            <div className="left_stars" aria-label="5 stars">
+              {[1, 2, 3, 4, 5].map((n) => (
+                <Star key={n} size={14} fill="currentColor" strokeWidth={0} />
+              ))}
+            </div>
+          </aside>
+
+          <div className="card_right">
+            <Quote className="quote_mark" size={48} strokeWidth={1.5} aria-hidden />
+            <blockquote className="testimonial_quote">
+              <p>{testimonial.text}</p>
+            </blockquote>
+          </div>
+        </article>
+
+        <div className="testimonial_controls">
           <button
             type="button"
             className="arrow_btn"
             onClick={goPrev}
             aria-label="Previous testimonial"
           >
-            <ChevronLeft size={24} strokeWidth={2.25} />
+            <ChevronLeft size={22} strokeWidth={2.25} />
           </button>
 
-          <article
-            key={testimonial.id}
-            className="testimonial_card fade"
+          <div
+            className="thumb_nav"
+            role="tablist"
+            aria-label="Choose testimonial"
           >
-            <div className="testimonial_card_top">
-              <span className="quote_icon_wrap" aria-hidden>
-                <Quote size={28} strokeWidth={1.5} />
-              </span>
-              <div className="stars_row" aria-label="5 out of 5 stars">
-                {[1, 2, 3, 4, 5].map((n) => (
-                  <Star
-                    key={n}
-                    size={18}
-                    className="star_filled"
-                    fill="currentColor"
-                    strokeWidth={0}
-                  />
-                ))}
-              </div>
-            </div>
-
-            <blockquote className="testimonial_quote">
-              <p>{testimonial.text}</p>
-            </blockquote>
-
-            <footer className="testimonial_author">
-              <div className="avatar_ring">
-                <img src={testimonial.img} alt="" />
-              </div>
-              <div className="author_meta">
-                <cite className="author_name" style={{color: 'white'}}>{testimonial.name}</cite>
-                <span className="author_role">{testimonial.role}</span>
-              </div>
-            </footer>
-          </article>
+            {testimonials.map((t, i) => (
+              <button
+                key={t.id}
+                type="button"
+                role="tab"
+                aria-selected={i === slideIndex}
+                aria-label={`Show testimonial from ${t.name}`}
+                className={`thumb ${i === slideIndex ? "active" : ""}`}
+                onClick={() => setSlideIndex(i)}
+              >
+                <img src={t.img} alt="" />
+              </button>
+            ))}
+          </div>
 
           <button
             type="button"
@@ -107,26 +134,17 @@ const ClientSection = () => {
             onClick={goNext}
             aria-label="Next testimonial"
           >
-            <ChevronRight size={24} strokeWidth={2.25} />
+            <ChevronRight size={22} strokeWidth={2.25} />
           </button>
         </div>
 
-        <div
-          className="testimonial_dots"
-          role="tablist"
-          aria-label="Choose testimonial"
-        >
-          {testimonials.map((t, i) => (
-            <button
-              key={t.id}
-              type="button"
-              role="tab"
-              aria-selected={i === slideIndex}
-              aria-label={`Show testimonial ${i + 1}`}
-              className={`dot ${i === slideIndex ? "active" : ""}`}
-              onClick={() => setSlideIndex(i)}
-            />
-          ))}
+        <div className="progress_track" aria-hidden>
+          <div
+            className="progress_fill"
+            style={{
+              width: `${((slideIndex + 1) / testimonials.length) * 100}%`,
+            }}
+          />
         </div>
       </div>
     </section>
