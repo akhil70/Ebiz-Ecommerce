@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./style.css";
-import { ShoppingCart, Search, Menu, X, LogIn, User, ClipboardList, Eye, EyeOff } from "lucide-react";
+import { ShoppingCart, Search, Menu, X, LogIn, User, ClipboardList, Eye, EyeOff, Store } from "lucide-react";
 import signupProduct1 from "./images/p1.png";
 import signupProduct2 from "./images/p2.png";
 import signupProduct3 from "./images/p3.png";
@@ -9,13 +9,20 @@ import signupProduct4 from "./images/p6.png";
 import { NavLink } from "react-router-dom";
 import HomePage from "./Homepage";
 import { PublicAPI } from "./Utils/AxiosConfig";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setAuth } from "./store/authSlice";
 
 const loginIllustration = "/Logo.png";
 
 export const Header = () => {
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
+  const profileLabel = user
+    ? user.name?.trim() ||
+      user.username?.trim() ||
+      user.email?.trim() ||
+      "Profile"
+    : "Profile";
   const [activeLink, setActiveLink] = useState("home");
   const [menuOpen, setMenuOpen] = useState(false);
   const [isSignupOpen, setIsSignupOpen] = useState(false);
@@ -313,28 +320,47 @@ export const Header = () => {
 
 
               <li className="nav-item">
+                <NavLink
+                  to="/supplier"
+                  className={`nav-link ${activeLink === "supplier" ? "active" : ""}`}
+                  onClick={() => handleLinkClick("supplier")}
+                >
+                  <div className="nav-icon-group">
+                    <Store size={20} stroke="black" />
+                    <span>Supplier</span>
+                  </div>
+                </NavLink>
+              </li>
+
+              <li className="nav-item">
                 <div
                   ref={profileNavRef}
                   className={`profile-nav-container${profilePopupPinned ? " profile-popup-visible" : ""}`}
                 >
                   <div className="nav-icon-group">
                     <User size={20} stroke="black" />
-                    <span>Profile</span>
+                    <span className="profile-nav-label" title={profileLabel}>
+                      {profileLabel}
+                    </span>
                   </div>
 
                   <div className="profile-popup">
                     <div className="popup-header">
-                      <h3>Hello User</h3>
+                      <h3>
+                        {user && profileLabel !== "Profile"
+                          ? `Hello, ${profileLabel}`
+                          : "Hello User"} 
+                      </h3>
                       <p>To access your Ebizz account</p>
                     </div>
                     <button className="signup-btn" onClick={openSignup}>Sign Up</button>
                     <div className="popup-divider"></div>
                     <ul className="popup-menu">
                       <li>
-                        <a href="/orders">
+                        <NavLink to="/my-orders" onClick={() => setMenuOpen(false)}>
                           <ClipboardList size={18} />
                           My Orders
-                        </a>
+                        </NavLink>
                       </li>
                     </ul>
                     <div className="popup-divider"></div>

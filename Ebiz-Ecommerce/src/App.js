@@ -7,6 +7,10 @@ import LoginForm from './LoginAcess/LoginForm';
 import ProductDetail from './Components/ProductDetail';
 import ShoppingCart from './Components/ShoppingCart';
 import ProductListing from './Components/ProductListing';
+import MyOrders from './Components/MyOrders';
+import Supplier from './Components/Supplier';
+import SupplierRegistration from './Components/SupplierRegistration';
+
 
 import AdminLayout from "./Adminpanel/Adminlayout";
 import Dashboard from "./Adminpanel/dashboard";
@@ -41,6 +45,10 @@ function App() {
           <Route path="/product" element={<ProductDetail />} />
           <Route path="/cart" element={<ShoppingCart />} />
           <Route path="/shop" element={<ProductListing />} />
+          <Route path="/my-orders" element={<MyOrders />} />
+          <Route path="/supplier" element={<Supplier />} />
+          <Route path="/supplier/register" element={<SupplierRegistration />} />
+
 
           {/* ============= ADMIN PANEL ================ */}
           <Route path="/Dashboard" element={<AdminLayout />}>
