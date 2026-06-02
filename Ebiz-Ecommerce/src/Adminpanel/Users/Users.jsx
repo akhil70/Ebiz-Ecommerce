@@ -5,6 +5,7 @@ import AddUser from './AddUser'; // Import the form component
 import API from "../../Utils/AxiosConfig";
 import { useEffect } from "react";
 import NoData from '../Components/NoData';
+import { useSelector } from "react-redux";
 
 
 /* Initial placeholder users removed - now fetching from API */
@@ -24,6 +25,7 @@ const Users = () => {
   const [isAddUserOpen, setIsAddUserOpen] = useState(false); // State for modal
   const [userList, setUserList] = useState([]); // State for fetched users
   const [loading, setLoading] = useState(true);
+  const auth = useSelector((state) => state.auth);
 
   // Fetch users from API
   const fetchUsers = async () => {
@@ -42,6 +44,10 @@ const Users = () => {
   useEffect(() => {
     fetchUsers();
   }, []);
+
+  useEffect(() => {
+    console.log("Redux auth state in Admin Users page:", auth);
+  }, [auth]);
 
   return (
     <div className="recent-purchases-card">

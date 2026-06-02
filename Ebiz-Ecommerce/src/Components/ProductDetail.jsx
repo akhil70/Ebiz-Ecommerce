@@ -5,7 +5,8 @@ import { Header } from '../Header';
 import Footer from './Footer';
 import LastFooter from './LastFooter';
 import { useNavigate, useSearchParams } from "react-router-dom";
-import API, { PublicAPI } from '../Utils/AxiosConfig';
+import API, { PublicAPI, getAuthToken } from '../Utils/AxiosConfig';
+import { addToGuestCart } from '../Utils/guestCart';
 import toast from 'react-hot-toast';
 
 const COLOR_CODES = {
@@ -71,21 +72,49 @@ export default function ProductDetail() {
     };
 
     const handleAddToCart = async () => {
-        if (!productId) return;
-        try {
-            const payload = {
-                productId: String(productId),
-                quantity,
-                selectedSize: selectedSize || '',
-                selectedColor: selectedColor || ''
-            };
-            await PublicAPI.post('/cart/add', payload);
-            toast.success('Added to cart!');
-            navigate("/cart");
-        } catch (error) {
-            console.error('Error adding to cart:', error);
-            toast.error(error.response?.data?.message || 'Failed to add to cart');
+        if (!productId || !product) return;
+        const payload = {
+            productId: String(productId),
+            quantity,
+            selectedSize: selectedSize || '',
+            selectedColor: selectedColor || '',
+        };
+        const token = getAuthToken();
+
+        if (token) {
+            try {
+                await PublicAPI.post('/cart/add', payload);
+                toast.success('Added to cart!');
+                navigate('/cart');
+            } catch (error) {
+                console.error('Error adding to cart:', error);
+                toast.error(
+                    error.response?.data?.message ||
+                        error.response?.data?.error ||
+                        'Failed to add to cart'
+                );
+            }
+            return;
         }
+
+        const unitPrice =
+            product.discountPrice > 0 ? product.discountPrice : product.price;
+        const img =
+            mainImage ||
+            product.thumbnail ||
+            (product.images && product.images[0]) ||
+            '';
+        addToGuestCart({
+            productId: String(productId),
+            quantity,
+            selectedSize: selectedSize || '',
+            selectedColor: selectedColor || '',
+            name: product.name,
+            price: Number(unitPrice) || 0,
+            image: img,
+        });
+        toast.success('Added to cart!');
+        navigate('/cart');
     };
 
     if (loading) {

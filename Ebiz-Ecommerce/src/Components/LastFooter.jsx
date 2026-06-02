@@ -5,12 +5,8 @@ export default function LastFooter() {
     <footer>
       <div>
         <p>
-          © 2025 All Rights Reserved By {""}
-          <a href="#">Templates</a>
-        </p>
-        <p>
-          Distributed By {""}
-          <a href="#">ThemeWagon</a>
+          © 2025 All Rights Reserved By{" "}
+          <strong>TOTAL EBIZ LLC</strong>
         </p>
       </div>
     </footer>

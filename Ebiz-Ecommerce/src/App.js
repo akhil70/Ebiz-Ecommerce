@@ -7,10 +7,16 @@ import LoginForm from './LoginAcess/LoginForm';
 import ProductDetail from './Components/ProductDetail';
 import ShoppingCart from './Components/ShoppingCart';
 import ProductListing from './Components/ProductListing';
+import MyOrders from './Components/MyOrders';
+import Supplier from './Components/Supplier';
+import SupplierRegistration from './Components/SupplierRegistration';
+
 
 import AdminLayout from "./Adminpanel/Adminlayout";
 import Dashboard from "./Adminpanel/dashboard";
 import Users from './Adminpanel/Users/Users';
+import Customers from './Adminpanel/Customers/Customers';
+import Orders from './Adminpanel/Orders/Orders';
 import AddUser from './Adminpanel/Users/AddUser';
 import Category from './Adminpanel/Category/Category';
 import AddCategory from './Adminpanel/Category/AddCategory';
@@ -38,6 +44,10 @@ function App() {
           <Route path="/product" element={<ProductDetail />} />
           <Route path="/cart" element={<ShoppingCart />} />
           <Route path="/shop" element={<ProductListing />} />
+          <Route path="/my-orders" element={<MyOrders />} />
+          <Route path="/supplier" element={<Supplier />} />
+          <Route path="/supplier/register" element={<SupplierRegistration />} />
+
 
           {/* ============= ADMIN PANEL ================ */}
           <Route path="/Dashboard" element={<AdminLayout />}>
@@ -45,6 +55,12 @@ function App() {
           </Route>
           <Route path="/Users" element={<AdminLayout />}>
             <Route index element={<Users />} />
+          </Route>
+          <Route path="/Customers" element={<AdminLayout />}>
+            <Route index element={<Customers />} />
+          </Route>
+          <Route path="/Orders" element={<AdminLayout />}>
+            <Route index element={<Orders />} />
           </Route>
 
           <Route path="/AddUser" element={<AdminLayout />}>
