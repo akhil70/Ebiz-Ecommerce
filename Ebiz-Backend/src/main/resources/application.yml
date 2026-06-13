@@ -27,7 +27,7 @@ keycloak:
   realm: ebiz
   admin:
     client-id: ebiz-backend
-    secret: M3Geq0GBqJi0IRxW5wVQN2H34tRZXjb0
+    secret: AC8oIJiDsMki3yKK4abAx5cIJtNbdiN5
 
 server:
   port: 9000

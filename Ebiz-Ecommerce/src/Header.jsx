@@ -79,6 +79,12 @@ export const Header = () => {
     setIsSignupOpen(false);
   };
 
+  const handleLogout = () => {
+    localStorage.clear();
+    dispatch(setAuth({ user: null, token: "" }));
+    setProfilePopupPinned(false);
+  };
+
   const handleContinue = async () => {
     if (!email.trim()) {
       setSignupError("Enter your email address.");
@@ -353,7 +359,11 @@ export const Header = () => {
                       </h3>
                       <p>To access your Ebizz account</p>
                     </div>
-                    <button className="signup-btn" onClick={openSignup}>Sign Up</button>
+                    {user ? (
+                      <button className="signup-btn" onClick={handleLogout} style={{ backgroundColor: '#ef4444' }}>Log Out</button>
+                    ) : (
+                      <button className="signup-btn" onClick={openSignup}>Sign Up / Log In</button>
+                    )}
                     <div className="popup-divider"></div>
                     <ul className="popup-menu">
                       <li>
@@ -363,10 +373,6 @@ export const Header = () => {
                         </NavLink>
                       </li>
                     </ul>
-                    <div className="popup-divider"></div>
-                    <div className="popup-footer">
-                      <a href="/delete-account" className="delete-link">Delete Account</a>
-                    </div>
                   </div>
                 </div>
               </li>

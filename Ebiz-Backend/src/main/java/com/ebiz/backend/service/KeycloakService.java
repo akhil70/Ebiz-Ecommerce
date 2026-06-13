@@ -168,4 +168,30 @@ public class KeycloakService {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid credentials"));
         }
     }
+
+    public void updatePassword(String email, String newPassword) {
+        Keycloak keycloak = getKeycloakConfig();
+        RealmResource realmResource = keycloak.realm(realm);
+        UsersResource usersResource = realmResource.users();
+
+        try {
+            List<UserRepresentation> users = usersResource.searchByEmail(email, true);
+            if (users.isEmpty()) {
+                throw new RuntimeException("User not found in Keycloak with email: " + email);
+            }
+
+            String userId = users.get(0).getId();
+            CredentialRepresentation credential = new CredentialRepresentation();
+            credential.setTemporary(false);
+            credential.setType(CredentialRepresentation.PASSWORD);
+            credential.setValue(newPassword);
+            usersResource.get(userId).resetPassword(credential);
+
+            log.info("Successfully updated password in Keycloak for user: {}", email);
+        } finally {
+            if (keycloak != null) {
+                keycloak.close();
+            }
+        }
+    }
 }

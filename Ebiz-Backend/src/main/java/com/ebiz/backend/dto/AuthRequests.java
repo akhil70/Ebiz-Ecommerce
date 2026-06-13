@@ -24,4 +24,9 @@ public class AuthRequests {
         private String username;
         private String password;
     }
+
+    @Data
+    public static class ChangePasswordRequest {
+        private String newPassword;
+    }
 }

@@ -9,7 +9,8 @@ import {
   ShoppingBag,
   MessageSquare,
   ChevronRight,
-  Filter
+  Filter,
+  UserCheck
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
@@ -39,6 +40,11 @@ export default function AdminSidebar({ isOpen }) {
         <li>
           <NavLink to="/Users" className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}>
             <Users size={18} /> <span>Admins</span>
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/Approvals" className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}>
+            <UserCheck size={18} /> <span>Approvals</span>
           </NavLink>
         </li>
         <li>

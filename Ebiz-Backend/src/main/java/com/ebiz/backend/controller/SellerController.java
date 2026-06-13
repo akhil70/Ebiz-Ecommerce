@@ -15,10 +15,23 @@ public class SellerController {
 
     private final SellerService sellerService;
 
+    private String getEmail(Jwt jwt) {
+        if (jwt == null) return null;
+        String email = jwt.getClaimAsString("email");
+        if (email == null) {
+            email = jwt.getClaimAsString("preferred_username");
+        }
+        if (email == null) {
+            email = jwt.getSubject();
+        }
+        return email;
+    }
+
     @PostMapping("/onboard")
     public ResponseEntity<String> onboardSeller(@AuthenticationPrincipal Jwt jwt) {
         try {
-            String onboardingUrl = sellerService.onboardUserAsSeller(jwt.getSubject());
+            String email = getEmail(jwt);
+            String onboardingUrl = sellerService.onboardUserAsSeller(email);
             return ResponseEntity.ok(onboardingUrl);
         } catch (StripeException e) {
             return ResponseEntity.internalServerError().body("Stripe error: " + e.getMessage());
@@ -29,16 +42,19 @@ public class SellerController {
 
     @GetMapping("/profile")
     public ResponseEntity<?> getSellerProfile(@AuthenticationPrincipal Jwt jwt) {
-        return ResponseEntity.ok(sellerService.getProfile(jwt.getSubject()));
+        String email = getEmail(jwt);
+        return ResponseEntity.ok(sellerService.getProfile(email));
     }
 
     @GetMapping("/products")
     public ResponseEntity<?> getSellerProducts(@AuthenticationPrincipal Jwt jwt) {
-        return ResponseEntity.ok(sellerService.getSellerProducts(jwt.getSubject()));
+        String email = getEmail(jwt);
+        return ResponseEntity.ok(sellerService.getSellerProducts(email));
     }
 
     @GetMapping("/orders")
     public ResponseEntity<?> getSellerOrders(@AuthenticationPrincipal Jwt jwt) {
-        return ResponseEntity.ok(sellerService.getSellerOrders(jwt.getSubject()));
+        String email = getEmail(jwt);
+        return ResponseEntity.ok(sellerService.getSellerOrders(email));
     }
 }

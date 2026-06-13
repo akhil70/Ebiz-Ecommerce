@@ -26,6 +26,9 @@ public class User {
     private Boolean isActive = true;
 
     @Builder.Default
+    private Boolean needsPasswordReset = false;
+
+    @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @Builder.Default
