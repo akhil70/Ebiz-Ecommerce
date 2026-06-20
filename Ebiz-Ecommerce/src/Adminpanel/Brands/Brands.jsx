@@ -154,8 +154,9 @@ const Brands = () => {
                                                     border: '1px solid #eee'
                                                 }}
                                                 onError={(e) => {
-                                                    e.target.onerror = null;
-                                                    e.target.src = "https://via.placeholder.com/40?text=Error";
+                                                    if (e.target.src !== "https://via.placeholder.com/40?text=Error") {
+                                                        e.target.src = "https://via.placeholder.com/40?text=Error";
+                                                    }
                                                 }}
                                             />
                                         ) : (

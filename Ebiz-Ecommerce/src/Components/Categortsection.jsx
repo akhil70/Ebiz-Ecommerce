@@ -53,7 +53,11 @@ const CategorySection = () => {
                   <img
                     src={category.image || "https://via.placeholder.com/150?text=Category"}
                     alt={category.name}
-                    onError={(e) => { e.target.src = "https://via.placeholder.com/150?text=Category"; }}
+                    onError={(e) => {
+                      if (e.target.src !== "https://via.placeholder.com/150?text=Category") {
+                        e.target.src = "https://via.placeholder.com/150?text=Category";
+                      }
+                    }}
                   />
                 </div>
 

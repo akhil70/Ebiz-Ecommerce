@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { setAuth } from "../store/authSlice";
 import { PublicAPI } from "../Utils/AxiosConfig";
+import { decodeToken } from "../Utils/tokenDecoder";
 
 export default function Login() {
   const [username, setUsername] = useState('');
@@ -63,14 +64,26 @@ export default function Login() {
         return;
       }
 
+      const decoded = decodeToken(token);
+      const tokenRoles = decoded?.realm_access?.roles || [];
+      let mappedRole = data.role || data.data?.role || "";
+
+      if (tokenRoles.includes("admin")) {
+        mappedRole = "ADMIN";
+      } else if (tokenRoles.includes("seller")) {
+        mappedRole = "SELLER";
+      } else if (tokenRoles.includes("staff")) {
+        mappedRole = "STAFF";
+      }
+
       const user =
         data.user ||
         data.data?.user ||
         {
-          username: data.preferred_username || data.username || username.trim(),
-          email: data.email || "",
-          name: data.name || "",
-          role: data.role || data.data?.role || "",
+          username: decoded?.preferred_username || data.preferred_username || data.username || username.trim(),
+          email: decoded?.email || data.email || "",
+          name: decoded?.name || data.name || "",
+          role: mappedRole || "",
         };
 
       // Check if user is forced to change their password
@@ -102,7 +115,13 @@ export default function Login() {
       localStorage.setItem("user", JSON.stringify(user));
 
       dispatch(setAuth({ user, token }));
-      navigate("/Dashboard");
+      if (user.role === "ADMIN" || user.role === "STAFF") {
+        navigate("/Users");
+      } else if (user.role === "SELLER") {
+        navigate("/Dashboard");
+      } else {
+        navigate("/");
+      }
     } catch (err) {
       const message =
         err?.response?.data?.message ||
@@ -144,7 +163,13 @@ export default function Login() {
 
       dispatch(setAuth({ user: tempUser, token: tempToken }));
       toast.success("Password updated successfully!");
-      navigate("/Dashboard");
+      if (tempUser?.role === "ADMIN" || tempUser?.role === "STAFF") {
+        navigate("/Users");
+      } else if (tempUser?.role === "SELLER") {
+        navigate("/Dashboard");
+      } else {
+        navigate("/");
+      }
     } catch (err) {
       // Clean up localStorage if update failed
       localStorage.removeItem("token");

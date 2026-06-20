@@ -6,16 +6,18 @@ import signupProduct2 from "./images/p2.png";
 import signupProduct3 from "./images/p3.png";
 import signupProduct4 from "./images/p6.png";
 
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import HomePage from "./Homepage";
 import { PublicAPI } from "./Utils/AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
 import { setAuth } from "./store/authSlice";
+import { decodeToken } from "./Utils/tokenDecoder";
 
 const loginIllustration = "/Logo.png";
 
 export const Header = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
   const profileLabel = user
     ? user.name?.trim() ||
@@ -83,6 +85,8 @@ export const Header = () => {
     localStorage.clear();
     dispatch(setAuth({ user: null, token: "" }));
     setProfilePopupPinned(false);
+    setMenuOpen(false);
+    navigate("/");
   };
 
   const handleContinue = async () => {
@@ -184,14 +188,26 @@ export const Header = () => {
         return;
       }
 
+      const decoded = decodeToken(token);
+      const tokenRoles = decoded?.realm_access?.roles || [];
+      let mappedRole = data.role || data.data?.role || "";
+
+      if (tokenRoles.includes("admin")) {
+        mappedRole = "ADMIN";
+      } else if (tokenRoles.includes("seller")) {
+        mappedRole = "SELLER";
+      } else if (tokenRoles.includes("staff")) {
+        mappedRole = "STAFF";
+      }
+
       const user =
         data.user ||
         data.data?.user ||
         {
-          username: data.preferred_username || loginUsername.trim(),
-          email: data.email || "",
-          name: data.name || "",
-          role: data.role || data.data?.role || "",
+          username: decoded?.preferred_username || data.preferred_username || loginUsername.trim(),
+          email: decoded?.email || data.email || "",
+          name: decoded?.name || data.name || "",
+          role: mappedRole || "",
         };
 
       localStorage.setItem("token", token);
@@ -211,6 +227,14 @@ export const Header = () => {
 
       setLoginSuccess(true);
       closeSignup();
+
+      if (user.role === "ADMIN" || user.role === "STAFF") {
+        navigate("/Users");
+      } else if (user.role === "SELLER") {
+        navigate("/Dashboard");
+      } else {
+        navigate("/");
+      }
     } catch (error) {
       setLoginSuccess(false);
       const message =

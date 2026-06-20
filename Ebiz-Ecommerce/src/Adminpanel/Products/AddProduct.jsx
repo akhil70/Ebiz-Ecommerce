@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { X, Upload, Trash2, Plus } from "lucide-react";
 import "../AdminForm.css"; // Import the common CSS
-import API from "../../Utils/AxiosConfig";
+import API, { PublicAPI } from "../../Utils/AxiosConfig";
+import { useSelector } from "react-redux";
 import toast from 'react-hot-toast';
 
 const AddProduct = ({ isOpen, onClose, onSave, productId }) => {
+    const user = useSelector((state) => state.auth.user);
     const [formData, setFormData] = useState({
         name: "",
         description: "",
@@ -54,7 +56,7 @@ const AddProduct = ({ isOpen, onClose, onSave, productId }) => {
             const fetchProductDetails = async () => {
                 const loadingToast = toast.loading('Fetching product details...');
                 try {
-                    const response = await API.get(`/products/${productId}`);
+                    const response = await PublicAPI.get(`/products/${productId}`);
                     const data = response.data;
                     setFormData({
                         name: data.name || "",
@@ -200,10 +202,18 @@ const AddProduct = ({ isOpen, onClose, onSave, productId }) => {
             };
 
             let response;
-            if (productId) {
-                response = await API.put(`/products/${productId}`, payload);
+            if (user?.role === "SELLER") {
+                if (productId) {
+                    response = await PublicAPI.put(`/v1/seller/products/${productId}`, payload);
+                } else {
+                    response = await PublicAPI.post('/v1/seller/products', payload);
+                }
             } else {
-                response = await API.post('/products', payload);
+                if (productId) {
+                    response = await API.put(`/products/${productId}`, payload);
+                } else {
+                    response = await API.post('/products', payload);
+                }
             }
 
             toast.success(`Product ${productId ? 'updated' : 'created'} successfully!`, { id: loadingToast });

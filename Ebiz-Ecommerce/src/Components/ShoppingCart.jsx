@@ -1,10 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useSelector } from 'react-redux';
 import './ShoppingCart.css';
 import { X } from 'lucide-react';
 import { Header } from '../Header';
 import Footer from './Footer';
 import LastFooter from './LastFooter';
-import { PublicAPI, getAuthToken } from '../Utils/AxiosConfig';
+import { PublicAPI } from '../Utils/AxiosConfig';
 import toast from 'react-hot-toast';
 import {
     readGuestCart,
@@ -85,6 +86,7 @@ const SHIPPING_LABELS = {
 };
 
 export default function ShoppingCart() {
+    const token = useSelector((state) => state.auth.token);
     const [cartItems, setCartItems] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
@@ -98,8 +100,13 @@ export default function ShoppingCart() {
     }, []);
 
     useEffect(() => {
+        if (!token) {
+            setCheckoutOpen(false);
+        }
+    }, [token]);
+
+    useEffect(() => {
         const fetchCart = async () => {
-            const token = getAuthToken();
             if (!token) {
                 setLoading(true);
                 loadGuestCart();
@@ -128,10 +135,10 @@ export default function ShoppingCart() {
             }
         };
         fetchCart();
-    }, [loadGuestCart]);
+    }, [token, loadGuestCart]);
 
     const refreshAuthenticatedCart = useCallback(async () => {
-        if (!getAuthToken()) return;
+        if (!token) return;
         try {
             const response = await PublicAPI.get('/cart');
             const data = Array.isArray(response.data)
@@ -141,7 +148,7 @@ export default function ShoppingCart() {
         } catch (err) {
             console.error('Error refreshing cart:', err);
         }
-    }, []);
+    }, [token]);
 
     const openCheckoutModal = () => {
         let fullName = '';
@@ -248,7 +255,7 @@ export default function ShoppingCart() {
             if (type === 'increment') newQty += 1;
             else if (type === 'decrement' && item.quantity > 1) newQty -= 1;
             else return prev;
-            if (!getAuthToken()) setGuestItemQuantity(id, newQty);
+            if (!token) setGuestItemQuantity(id, newQty);
             return prev.map((i) =>
                 i.id === id ? { ...i, quantity: newQty } : i
             );
@@ -257,7 +264,7 @@ export default function ShoppingCart() {
 
     const removeItem = (id) => {
         setCartItems((prev) => prev.filter((item) => item.id !== id));
-        if (!getAuthToken()) removeGuestCartItem(id);
+        if (!token) removeGuestCartItem(id);
     };
 
     const calculateSubtotal = (price, quantity) => {
@@ -273,7 +280,7 @@ export default function ShoppingCart() {
             toast.error('Your cart is empty.');
             return;
         }
-        if (!getAuthToken()) {
+        if (!token) {
             toast('Please sign up or log in to continue to checkout.', {
                 duration: 4500,
             });
