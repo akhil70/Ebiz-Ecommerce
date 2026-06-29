@@ -22,11 +22,29 @@ public class SecurityConfig {
 
     private final KeycloakRealmRoleConverter keycloakRealmRoleConverter;
 
+    @org.springframework.beans.factory.annotation.Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
+    private String issuerUri;
+
     public SecurityConfig(KeycloakRealmRoleConverter keycloakRealmRoleConverter) {
         this.keycloakRealmRoleConverter = keycloakRealmRoleConverter;
     }
 
     @Bean
+    public org.springframework.security.oauth2.jwt.JwtDecoder jwtDecoder() {
+        org.springframework.security.oauth2.jwt.NimbusJwtDecoder jwtDecoder = 
+                org.springframework.security.oauth2.jwt.NimbusJwtDecoder.withIssuerLocation(issuerUri).build();
+
+        org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator<org.springframework.security.oauth2.jwt.Jwt> validator = 
+                new org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator<>(
+                        new org.springframework.security.oauth2.jwt.JwtIssuerValidator(issuerUri),
+                        new org.springframework.security.oauth2.jwt.JwtTimestampValidator(java.time.Duration.ofDays(30)) // Tolerates expiration up to 30 days
+                );
+        jwtDecoder.setJwtValidator(validator);
+        return jwtDecoder;
+    }
+
+    @Bean
+
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         // Connect our custom role converter
@@ -39,9 +57,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authz -> authz
                         // Define basic access rules, more specific rules go on controllers via
                         // @PreAuthorize
-                        .requestMatchers("/api/admin/**").hasRole("admin")
+                        .requestMatchers("/api/admin/**").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/categories/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/brands/**").permitAll()
+
                         // Allow all by default or default to authenticated,
                         // but let's leave it open since method-level security handles specifics
                         .anyRequest().permitAll())

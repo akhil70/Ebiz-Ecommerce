@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S3 Upload Demo (Temporary)</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            display: block;
+        }
+
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+
+        .status.loading {
+            background: #e2e3e5;
+            color: #383d41;
+            display: block;
+        }
+
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        #imagePreview {
+            max-width: 200px;
+            max-height: 200px;
+            margin-top: 15px;
+            display: none;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>AWS S3 Upload Demo</h2>
+        <p>This is a temporary UI to test the presigned URL upload flow without touching the main UI code.</p>
+
+        <div class="form-group">
+            <input type="file" id="fileInput" accept="image/*">
+        </div>
+
+        <img id="imagePreview" alt="Preview">
+
+        <div class="form-group">
+            <button id="uploadBtn" disabled>Upload to S3</button>
+        </div>
+
+        <div id="statusMsg" class="status"></div>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const statusMsg = document.getElementById('statusMsg');
+        const imagePreview = document.getElementById('imagePreview');
+
+        const BACKEND_URL = 'http://localhost:9000'; // Adjust if backend runs on a different port
+
+        fileInput.addEventListener('change', function (e) {
+            if (this.files && this.files[0]) {
+                const file = this.files[0];
+                uploadBtn.disabled = false;
+
+                // Show preview
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    imagePreview.src = e.target.result;
+                    imagePreview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+
+                // Reset status
+                statusMsg.className = 'status';
+                statusMsg.textContent = '';
+            } else {
+                uploadBtn.disabled = true;
+                imagePreview.style.display = 'none';
+            }
+        });
+
+        uploadBtn.addEventListener('click', async function () {
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            try {
+                uploadBtn.disabled = true;
+                statusMsg.className = 'status loading';
+                statusMsg.textContent = 'Step 1: Getting presigned URL from backend...';
+
+                // 1. Get Presigned URL from our backend
+                // Appending random string to prevent filename collisions
+                const uniqueFileName = `${Date.now()}-${file.name}`;
+                const encodedFileName = encodeURIComponent(uniqueFileName);
+                const encodedContentType = encodeURIComponent(file.type);
+
+                const response = await fetch(`${BACKEND_URL}/api/s3/presigned-url?fileName=${encodedFileName}&contentType=${encodedContentType}`);
+
+                if (!response.ok) {
+                    throw new Error(`Failed to get presigned URL. Status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                const uploadUrl = data.uploadUrl;
+                const publicUrl = data.publicUrl;
+
+                statusMsg.textContent = 'Step 2: Uploading directly to AWS S3...';
+
+                // 2. Upload file directly to S3
+                const s3Response = await fetch(uploadUrl, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': file.type
+                    },
+                    body: file
+                });
+
+                if (!s3Response.ok) {
+                    throw new Error(`S3 upload failed. Status: ${s3Response.status}`);
+                }
+
+                // Upload successful
+                statusMsg.className = 'status success';
+                statusMsg.innerHTML = `<strong>Upload Successful!</strong><br><br>
+                                     <a href="${publicUrl}" target="_blank">View Image Publicly</a><br><br>
+                                     (You can save this URL in your database or pass it to to the parent form)`;
+
+            } catch (error) {
+                console.error(error);
+                statusMsg.className = 'status error';
+                statusMsg.textContent = `Error: ${error.message}`;
+                uploadBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+
+</html>

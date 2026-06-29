@@ -168,7 +168,11 @@ export default function ProductDetail() {
                                 src={mainImage || 'https://via.placeholder.com/400?text=Product'}
                                 alt={product.name}
                                 className="main-image"
-                                onError={(e) => { e.target.src = 'https://via.placeholder.com/400?text=Product'; }}
+                                onError={(e) => { 
+                                    if (e.target.src !== 'https://via.placeholder.com/400?text=Product') {
+                                        e.target.src = 'https://via.placeholder.com/400?text=Product';
+                                    }
+                                }}
                             />
                         </div>
 

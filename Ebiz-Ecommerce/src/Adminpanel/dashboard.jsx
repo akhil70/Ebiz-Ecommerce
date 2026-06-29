@@ -1,13 +1,101 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { PublicAPI } from '../Utils/AxiosConfig';
+import toast from 'react-hot-toast';
+import { CreditCard, ExternalLink, RefreshCw } from 'lucide-react';
 import './Dashboard.css';
 
 const Dashboard = () => {
+  const [user, setUser] = useState(null);
+  const [profile, setProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [onboardingLoading, setOnboardingLoading] = useState(false);
+
+  useEffect(() => {
+    const userStr = localStorage.getItem("user");
+    if (userStr) {
+      const parsedUser = JSON.parse(userStr);
+      setUser(parsedUser);
+      
+      if (parsedUser.role === 'SELLER') {
+        fetchProfile();
+      } else {
+        setLoading(false);
+      }
+    } else {
+      setLoading(false);
+    }
+  }, []);
+
+  const fetchProfile = async () => {
+    try {
+      const response = await PublicAPI.get('/v1/seller/profile');
+      setProfile(response.data);
+    } catch (error) {
+      console.error("Error fetching seller profile:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleStripeOnboard = async () => {
+    setOnboardingLoading(true);
+    const loadToast = toast.loading("Generating Stripe onboarding link...");
+    try {
+      const response = await PublicAPI.post('/v1/seller/onboard');
+      if (response.data) {
+        toast.success("Redirecting to Stripe...", { id: loadToast });
+        window.location.href = response.data; // Redirect to Stripe Express onboarding
+      } else {
+        toast.error("Failed to generate onboarding URL.", { id: loadToast });
+      }
+    } catch (error) {
+      console.error("Error starting Stripe onboarding:", error);
+      toast.error(error.response?.data || "Stripe onboarding failed.", { id: loadToast });
+    } finally {
+      setOnboardingLoading(false);
+    }
+  };
+
+  const greetingName = user ? user.name || user.username : 'Jonathan';
+
   return (
     <div className="dashboard-container">
+      {/* Stripe Onboarding Alert for Sellers */}
+      {user && user.role === 'SELLER' && !loading && (!profile || !profile.isStripeOnboardingComplete) && (
+        <div className="stripe-onboarding-banner">
+          <div className="banner-left">
+            <div className="banner-icon-container">
+              <CreditCard size={24} className="banner-icon" />
+            </div>
+            <div className="banner-text">
+              <h3>Set Up Stripe Payments</h3>
+              <p>To start receiving international payments, please complete your Stripe merchant profile onboarding.</p>
+            </div>
+          </div>
+          <button 
+            className="stripe-onboard-btn" 
+            onClick={handleStripeOnboard}
+            disabled={onboardingLoading}
+          >
+            {onboardingLoading ? (
+              <>
+                <RefreshCw size={16} className="spinner" />
+                <span>Loading...</span>
+              </>
+            ) : (
+              <>
+                <span>Configure Payments</span>
+                <ExternalLink size={16} />
+              </>
+            )}
+          </button>
+        </div>
+      )}
+
       {/* Header Section */}
       <div className="dashboard-header">
         <div className="header-content">
-          <h1 className="greeting">Good Afternoon, Jonathan!</h1>
+          <h1 className="greeting">Good Afternoon, {greetingName}!</h1>
           <p className="subtitle">Here's what happening with your store today</p>
           
           <div className="stats-row">

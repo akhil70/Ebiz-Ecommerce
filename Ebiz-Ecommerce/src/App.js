@@ -10,6 +10,7 @@ import ProductListing from './Components/ProductListing';
 import MyOrders from './Components/MyOrders';
 import Supplier from './Components/Supplier';
 import SupplierRegistration from './Components/SupplierRegistration';
+import AffiliateRegistration from './Components/AffiliateRegistration';
 
 
 import AdminLayout from "./Adminpanel/Adminlayout";
@@ -29,6 +30,7 @@ import AddSubcategory from './Adminpanel/Subcategory/AddSubcategory';
 import Products from './Adminpanel/Products/Products';
 import AddProduct from './Adminpanel/Products/AddProduct';
 import Filters from './Adminpanel/Filters/Filters';
+import Approvals from './Adminpanel/Users/Approvals';
 
 import { Toaster } from 'react-hot-toast';
 
@@ -47,6 +49,7 @@ function App() {
           <Route path="/my-orders" element={<MyOrders />} />
           <Route path="/supplier" element={<Supplier />} />
           <Route path="/supplier/register" element={<SupplierRegistration />} />
+          <Route path="/affiliate/register" element={<AffiliateRegistration />} />
 
 
           {/* ============= ADMIN PANEL ================ */}
@@ -95,6 +98,9 @@ function App() {
           </Route>
           <Route path="/Filters" element={<AdminLayout />}>
             <Route index element={<Filters />} />
+          </Route>
+          <Route path="/Approvals" element={<AdminLayout />}>
+            <Route index element={<Approvals />} />
           </Route>
 
         </Routes>

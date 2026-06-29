@@ -1,15 +1,19 @@
 import { useState } from "react";
 import { Menu, User, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setAuth } from "../store/authSlice";
 
 export default function AdminTopbar({ toggleSidebar }) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const goToProfile = () => navigate("/profile");
   const logoutUser = () => {
     localStorage.clear();
-    navigate("/");
+    dispatch(setAuth({ user: null, token: "" }));
+    navigate("/login");
   };
 
   return (

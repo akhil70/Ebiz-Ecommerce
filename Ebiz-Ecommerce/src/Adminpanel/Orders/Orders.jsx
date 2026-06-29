@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Download, Plus } from "lucide-react";
 import toast from "react-hot-toast";
-import API from "../../Utils/AxiosConfig";
+import API, { PublicAPI } from "../../Utils/AxiosConfig";
+import { useSelector } from "react-redux";
 import NoData from "../Components/NoData";
 import "./Orders.css";
 
@@ -62,12 +63,18 @@ const StatusPill = ({ text, tone }) => {
 export default function Orders() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
         setLoading(true);
-        const response = await API.get("/orders");
+        let response;
+        if (user?.role === "SELLER") {
+          response = await PublicAPI.get("/v1/seller/orders");
+        } else {
+          response = await API.get("/orders");
+        }
         const data = Array.isArray(response.data)
           ? response.data
           : response.data?.data ?? [];
@@ -84,8 +91,10 @@ export default function Orders() {
         setLoading(false);
       }
     };
-    fetchOrders();
-  }, []);
+    if (user) {
+      fetchOrders();
+    }
+  }, [user]);
 
   return (
     <div className="orders-page">

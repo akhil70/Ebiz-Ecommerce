@@ -1,7 +1,6 @@
 import axios from "axios";
-const swagger_url =
-  "https://testing-direction-travis-loose.trycloudflare.com/swagger-ui/index.html";
-const API_BASE = "https://picks-census-animal-upc.trycloudflare.com";
+const swagger_url = "http://localhost:9000/swagger-ui/index.html";
+const API_BASE = "http://localhost:9000";
 
 export const getAuthToken = () => {
   return (

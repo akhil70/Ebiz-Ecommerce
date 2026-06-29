@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { Edit2, Trash2 } from "lucide-react";
 import '../Users/Users.css'; // Reusing Users CSS for consistency
 import AddProduct from './AddProduct';
-import API from "../../Utils/AxiosConfig";
+import API, { PublicAPI } from "../../Utils/AxiosConfig";
+import { useSelector } from "react-redux";
 import toast from 'react-hot-toast';
 import { showDeleteConfirmation, showStatusConfirmation } from '../../Utils/confirmActions';
 import NoData from '../Components/NoData';
@@ -21,11 +22,17 @@ const Products = () => {
     const [productList, setProductList] = useState([]);
     const [loading, setLoading] = useState(true);
     const [editingId, setEditingId] = useState(null);
+    const user = useSelector((state) => state.auth.user);
 
     const fetchProducts = async () => {
         try {
             setLoading(true);
-            const response = await API.get('/products');
+            let response;
+            if (user?.role === 'SELLER') {
+                response = await PublicAPI.get('/v1/seller/products');
+            } else {
+                response = await API.get('/products');
+            }
             setProductList(response.data);
         } catch (error) {
             console.error("Error fetching products:", error);
@@ -35,8 +42,10 @@ const Products = () => {
     };
 
     useEffect(() => {
-        fetchProducts();
-    }, []);
+        if (user) {
+            fetchProducts();
+        }
+    }, [user]);
 
     const handleSave = () => {
         fetchProducts();
@@ -63,7 +72,11 @@ const Products = () => {
     const executeDelete = async (id) => {
         const loadingToast = toast.loading('Deleting product...');
         try {
-            await API.delete(`/products/${id}/hard`);
+            if (user?.role === 'SELLER') {
+                await PublicAPI.delete(`/v1/seller/products/${id}/hard`);
+            } else {
+                await API.delete(`/products/${id}/hard`);
+            }
             toast.success('Product permanently deleted.', { id: loadingToast });
             setProductList(prev => prev.filter(item => item.id !== id));
         } catch (error) {
@@ -82,7 +95,11 @@ const Products = () => {
     const executeStatusToggle = async (id) => {
         const loadingToast = toast.loading('Updating status...');
         try {
-            await API.delete(`/products/${id}/soft`);
+            if (user?.role === 'SELLER') {
+                await PublicAPI.delete(`/v1/seller/products/${id}/soft`);
+            } else {
+                await API.delete(`/products/${id}/soft`);
+            }
             toast.success('Status updated successfully.', { id: loadingToast });
             setProductList(prev => prev.map(item =>
                 item.id === id ? { ...item, status: item.status === 1 ? 0 : 1 } : item
@@ -119,15 +136,16 @@ const Products = () => {
                             <th>Price</th>
                             <th>Stock</th>
                             <th>Status</th>
+                            {user?.role !== 'SELLER' && <th>Seller</th>}
                             <th className="dots-col">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {loading ? (
-                            <tr><td colSpan="7" style={{ textAlign: "center", padding: "20px" }}>Loading products...</td></tr>
+                            <tr><td colSpan={user?.role !== 'SELLER' ? 8 : 7} style={{ textAlign: "center", padding: "20px" }}>Loading products...</td></tr>
                         ) : productList.length === 0 ? (
                             <tr>
-                                <td colSpan="7" style={{ padding: "0" }}>
+                                <td colSpan={user?.role !== 'SELLER' ? 8 : 7} style={{ padding: "0" }}>
                                     <NoData message="No products found." />
                                 </td>
                             </tr>
@@ -150,6 +168,12 @@ const Products = () => {
                                     <td>{item.price}</td>
                                     <td>{item.stock}</td>
                                     <td><StatusPill status={item.status} /></td>
+                                    {user?.role !== 'SELLER' && (
+                                        <td style={{ fontSize: '13px', color: '#4b5563' }} title={`Email: ${item.sellerEmail || 'N/A'}\nID: ${item.sellerId || 'N/A'}`}>
+                                            {item.sellerName || item.sellerEmail || (item.sellerId ? 'Unknown' : 'Admin')}
+                                        </td>
+                                    )}
+
                                     <td className="dots-col">
                                         <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
                                             <label className="switch">

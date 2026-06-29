@@ -265,8 +265,9 @@ const ProductListing = () => {
                       src={product.img}
                       alt={product.name}
                       onError={(e) => {
-                        e.target.src =
-                          "https://via.placeholder.com/200?text=Product";
+                        if (e.target.src !== "https://via.placeholder.com/200?text=Product") {
+                          e.target.src = "https://via.placeholder.com/200?text=Product";
+                        }
                       }}
                     />
                     <div className="card-option-overlay">

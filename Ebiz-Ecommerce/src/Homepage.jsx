@@ -12,6 +12,8 @@ import CategorySection from "./Components/Categortsection";
 import LastFooter from "./Components/LastFooter";
 import ProductCollections from "./Components/ProductCollections";
 import SocialMediaGallery from "./Components/SocialMediaGallery";
+import BrandSection from "./Components/BrandSection";
+
 const HomePage = () => {
   return (
     <div className="font-sans text-gray-800">
@@ -23,6 +25,7 @@ const HomePage = () => {
       <ProductCollections />
       <ArrivalSection />
       <CategorySection />
+      <BrandSection />
       <SubscribeSection />
       <ClientSection />
       <SocialMediaGallery />
@@ -34,3 +37,4 @@ const HomePage = () => {
 };
 
 export default HomePage;
+

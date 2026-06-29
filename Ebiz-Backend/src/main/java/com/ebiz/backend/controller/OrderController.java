@@ -9,6 +9,9 @@ import com.ebiz.backend.entity.User;
 import com.ebiz.backend.repository.OrderRepository;
 import com.ebiz.backend.repository.ProductRepository;
 import com.ebiz.backend.repository.UserRepository;
+
+import lombok.AllArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,22 +23,16 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/orders")
+@AllArgsConstructor
 public class OrderController {
 
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
 
-    public OrderController(OrderRepository orderRepository, ProductRepository productRepository,
-            UserRepository userRepository) {
-        this.orderRepository = orderRepository;
-        this.productRepository = productRepository;
-        this.userRepository = userRepository;
-    }
-
     @GetMapping
     public List<Order> getUserOrders(@AuthenticationPrincipal Jwt jwt) {
-        String email = jwt.getSubject(); // Assuming JWT subject is email
+        String email = jwt.getClaimAsString("email");
 
         // In reality, you'd look up the user first to get their ID, but let's assume we
         // do that
@@ -48,7 +45,7 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<?> createOrder(@AuthenticationPrincipal Jwt jwt, @RequestBody OrderDto orderDto) {
-        String email = jwt.getSubject();
+        String email = jwt.getClaimAsString("email");
 
         Optional<User> userOpt = userRepository.findByEmail(email);
         if (userOpt.isEmpty()) {
@@ -57,8 +54,10 @@ public class OrderController {
 
         Order order = new Order();
         order.setUserId(userOpt.get().getId());
-        order.setTotalAmount(orderDto.getTotalAmount());
+        order.setShippingAddress(orderDto.getShippingAddress());
         // createdAt is set by @Builder.Default
+
+        java.math.BigDecimal computedTotal = java.math.BigDecimal.ZERO;
 
         for (OrderItemDto itemDto : orderDto.getItems()) {
             // Need to change DTO productId from Long to String, assume it's String or parse
@@ -75,7 +74,14 @@ public class OrderController {
             orderItem.setQuantity(itemDto.getQuantity());
             orderItem.setPrice(product.getPrice());
             order.addItem(orderItem);
+
+            if (product.getPrice() != null && itemDto.getQuantity() != null) {
+                computedTotal = computedTotal
+                        .add(product.getPrice().multiply(java.math.BigDecimal.valueOf(itemDto.getQuantity())));
+            }
         }
+
+        order.setTotalAmount(computedTotal);
 
         Order savedOrder = orderRepository.save(order);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedOrder);
