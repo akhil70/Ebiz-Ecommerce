@@ -8,6 +8,8 @@ public interface UserRepository extends MongoRepository<User, String> {
     Optional<User> findByEmail(String email);
 
     java.util.List<User> findByRole(String role);
+    java.util.List<User> findByRoleAndIsActiveTrue(String role);
     java.util.List<User> findByRoleAndIsActiveFalse(String role);
     java.util.List<User> findByRoleInAndIsActiveFalse(java.util.Collection<String> roles);
 }
+

@@ -29,6 +29,12 @@ public class Product extends BaseEntity {
     private String categoryId;
     private String subcategoryId;
     private String sellerId; // Link product to a specific seller
+    
+    @org.springframework.data.annotation.Transient
+    private String sellerName;
+
+    @org.springframework.data.annotation.Transient
+    private String sellerEmail;
 
     private Integer stock;
     private String sku;

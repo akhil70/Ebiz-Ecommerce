@@ -23,18 +23,26 @@ public class ProductController {
 
     @GetMapping
     public List<Product> getAllProducts(@RequestParam(required = false) Map<String, String> filters) {
+        List<Product> products;
         if (filters == null || filters.isEmpty()) {
-            return productRepository.findAll();
+            products = productRepository.findAll();
+        } else {
+            products = productService.fetchProducts(filters);
         }
-        return productService.fetchProducts(filters);
+        productService.populateSellerInfo(products);
+        return products;
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable String id) {
         return productRepository.findById(id)
-                .map(ResponseEntity::ok)
+                .map(product -> {
+                    productService.populateSellerInfo(product);
+                    return ResponseEntity.ok(product);
+                })
                 .orElse(ResponseEntity.notFound().build());
     }
+
 
     @GetMapping("/{id}/stock")
     public ResponseEntity<?> checkStock(

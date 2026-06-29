@@ -23,6 +23,32 @@ public class AdminProductController extends BaseController<Product, String> {
         return productService;
     }
 
+    @Override
+    @org.springframework.web.bind.annotation.GetMapping
+    public org.springframework.http.ResponseEntity<java.util.List<Product>> getAllActive() {
+        java.util.List<Product> products = productService.findAllActive();
+        productService.populateSellerInfo(products);
+        return org.springframework.http.ResponseEntity.ok(products);
+    }
+
+    @Override
+    @org.springframework.web.bind.annotation.GetMapping("/all")
+    public org.springframework.http.ResponseEntity<java.util.List<Product>> getAll() {
+        java.util.List<Product> products = productService.findAll();
+        productService.populateSellerInfo(products);
+        return org.springframework.http.ResponseEntity.ok(products);
+    }
+
+    @Override
+    @org.springframework.web.bind.annotation.GetMapping("/{id}")
+    public org.springframework.http.ResponseEntity<Product> getById(@org.springframework.web.bind.annotation.PathVariable String id) {
+        java.util.Optional<Product> entity = productService.findById(id);
+        entity.ifPresent(productService::populateSellerInfo);
+        return entity.map(org.springframework.http.ResponseEntity::ok)
+                .orElseGet(() -> org.springframework.http.ResponseEntity.notFound().build());
+    }
+
+
     @PutMapping("/{id}/stock")
 
     @PreAuthorize("hasRole('admin')")

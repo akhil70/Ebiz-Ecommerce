@@ -136,7 +136,7 @@ const Products = () => {
                             <th>Price</th>
                             <th>Stock</th>
                             <th>Status</th>
-                            {user?.role !== 'SELLER' && <th>Seller ID</th>}
+                            {user?.role !== 'SELLER' && <th>Seller</th>}
                             <th className="dots-col">Actions</th>
                         </tr>
                     </thead>
@@ -169,10 +169,11 @@ const Products = () => {
                                     <td>{item.stock}</td>
                                     <td><StatusPill status={item.status} /></td>
                                     {user?.role !== 'SELLER' && (
-                                        <td style={{ fontSize: '13px', color: '#6b7280' }} title={item.sellerId || 'Admin'}>
-                                            {item.sellerId ? (item.sellerId.length > 10 ? `${item.sellerId.substring(0, 10)}...` : item.sellerId) : 'Admin'}
+                                        <td style={{ fontSize: '13px', color: '#4b5563' }} title={`Email: ${item.sellerEmail || 'N/A'}\nID: ${item.sellerId || 'N/A'}`}>
+                                            {item.sellerName || item.sellerEmail || (item.sellerId ? 'Unknown' : 'Admin')}
                                         </td>
                                     )}
+
                                     <td className="dots-col">
                                         <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
                                             <label className="switch">
