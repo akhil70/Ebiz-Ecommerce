@@ -1,0 +1,82 @@
+[2026-05-31 15:01:16] INFO [database_connection:8] - Connecting to database: sqlite:///:memory:
+[2026-05-31 15:01:34] INFO [database_connection:8] - Connecting to database: sqlite:///:memory:
+[2026-05-31 15:01:34] INFO [discovery_aggregator:19] - Initializing Trend Discovery Aggregator Pipeline...
+[2026-05-31 15:01:34] INFO [discovery_aggregator:24] - Database tables initialized successfully.
+[2026-05-31 15:01:34] INFO [google_trends:10] - Scanning Google Trends for keywords related to: tech gadgets
+[2026-05-31 15:01:37] INFO [google_trends:38] - Executing mock data generation for Google Trends...
+[2026-05-31 15:01:37] INFO [google_trends:64] - Generated 5 fallback trends from Google Trends mockup.
+[2026-05-31 15:01:37] INFO [amazon_scrapers:13] - Scanning Amazon Best Sellers for niche: tech gadgets
+[2026-05-31 15:01:37] INFO [amazon_scrapers:50] - Using curated Amazon Best Sellers mock fallback...
+[2026-05-31 15:01:37] INFO [amazon_scrapers:79] - Generated 5 bestsellers from Amazon mock list.
+[2026-05-31 15:01:37] INFO [tiktok_creative:10] - Scanning TikTok Creative Center trends for: tech gadgets
+[2026-05-31 15:01:37] INFO [tiktok_creative:43] - Generated 5 viral product trends from TikTok Creative Center mockup.
+[2026-05-31 15:01:37] INFO [reddit_radar:11] - Scanning Reddit (r/deals) for discussion matching keyword: tech gadgets
+[2026-05-31 15:01:37] INFO [reddit_radar:23] - Accessing Reddit hot deals JSON feed...
+[2026-05-31 15:01:39] WARNING [reddit_radar:69] - Reddit JSON feed returned status code: 403
+[2026-05-31 15:01:39] INFO [reddit_radar:75] - Using pre-filtered Reddit trends mock list...
+[2026-05-31 15:01:39] INFO [reddit_radar:102] - Generated 3 deals from Reddit mock fallback list.
+[2026-05-31 15:01:39] INFO [discovery_aggregator:38] - Aggregated 18 total raw candidates from all feeds.
+[2026-05-31 15:01:39] INFO [discovery_aggregator:65] - Database commit completed. Added 18 new trend opportunities to DB.
+[2026-05-31 15:01:39] ERROR [discovery_aggregator:104] - Aggregator pipeline execution failed: [Errno 2] No such file or directory: 'C:\\Users\\shafe\\Documents\\code\\ebiz_ecommerce\\affiliate_hub\\affiliate_hub\\content_queue.json'
+[2026-05-31 15:01:39] INFO [amazon_scrapers:13] - Scanning Amazon Best Sellers for niche: tech gadgets
+[2026-05-31 15:01:39] INFO [amazon_scrapers:50] - Using curated Amazon Best Sellers mock fallback...
+[2026-05-31 15:01:39] INFO [amazon_scrapers:79] - Generated 5 bestsellers from Amazon mock list.
+[2026-05-31 15:01:39] INFO [google_trends:10] - Scanning Google Trends for keywords related to: tech gadgets
+[2026-05-31 15:01:42] INFO [google_trends:32] - Gathered 5 items from Google Trends API.
+[2026-05-31 15:01:42] INFO [reddit_radar:11] - Scanning Reddit (r/deals) for discussion matching keyword: tech gadgets
+[2026-05-31 15:01:42] INFO [reddit_radar:23] - Accessing Reddit hot deals JSON feed...
+[2026-05-31 15:01:43] WARNING [reddit_radar:69] - Reddit JSON feed returned status code: 403
+[2026-05-31 15:01:43] INFO [reddit_radar:75] - Using pre-filtered Reddit trends mock list...
+[2026-05-31 15:01:43] INFO [reddit_radar:102] - Generated 3 deals from Reddit mock fallback list.
+[2026-05-31 15:01:43] INFO [tiktok_creative:10] - Scanning TikTok Creative Center trends for: tech gadgets
+[2026-05-31 15:01:43] INFO [tiktok_creative:43] - Generated 5 viral product trends from TikTok Creative Center mockup.
+[2026-05-31 15:03:32] INFO [database_connection:8] - Connecting to database: sqlite:///:memory:
+[2026-05-31 15:03:32] INFO [discovery_aggregator:19] - Initializing Trend Discovery Aggregator Pipeline...
+[2026-05-31 15:03:32] INFO [discovery_aggregator:24] - Database tables initialized successfully.
+[2026-05-31 15:03:32] INFO [google_trends:10] - Scanning Google Trends for keywords related to: tech gadgets
+[2026-05-31 15:03:35] INFO [google_trends:32] - Gathered 1 items from Google Trends API.
+[2026-05-31 15:03:35] INFO [amazon_scrapers:13] - Scanning Amazon Best Sellers for niche: tech gadgets
+[2026-05-31 15:03:35] INFO [amazon_scrapers:50] - Using curated Amazon Best Sellers mock fallback...
+[2026-05-31 15:03:35] INFO [amazon_scrapers:79] - Generated 5 bestsellers from Amazon mock list.
+[2026-05-31 15:03:35] INFO [tiktok_creative:10] - Scanning TikTok Creative Center trends for: tech gadgets
+[2026-05-31 15:03:35] INFO [tiktok_creative:43] - Generated 5 viral product trends from TikTok Creative Center mockup.
+[2026-05-31 15:03:35] INFO [reddit_radar:11] - Scanning Reddit (r/deals) for discussion matching keyword: tech gadgets
+[2026-05-31 15:03:35] INFO [reddit_radar:23] - Accessing Reddit hot deals JSON feed...
+[2026-05-31 15:03:36] WARNING [reddit_radar:69] - Reddit JSON feed returned status code: 403
+[2026-05-31 15:03:36] INFO [reddit_radar:75] - Using pre-filtered Reddit trends mock list...
+[2026-05-31 15:03:36] INFO [reddit_radar:102] - Generated 3 deals from Reddit mock fallback list.
+[2026-05-31 15:03:36] INFO [discovery_aggregator:38] - Aggregated 14 total raw candidates from all feeds.
+[2026-05-31 15:03:36] INFO [discovery_aggregator:65] - Database commit completed. Added 14 new trend opportunities to DB.
+[2026-05-31 15:03:36] INFO [discovery_aggregator:99] - Content queue exported successfully to: C:\Users\shafe\Documents\code\ebiz_ecommerce\affiliate_hub\content_queue.json
+[2026-05-31 15:03:36] INFO [amazon_scrapers:13] - Scanning Amazon Best Sellers for niche: tech gadgets
+[2026-05-31 15:03:36] INFO [amazon_scrapers:50] - Using curated Amazon Best Sellers mock fallback...
+[2026-05-31 15:03:36] INFO [amazon_scrapers:79] - Generated 5 bestsellers from Amazon mock list.
+[2026-05-31 15:03:36] INFO [google_trends:10] - Scanning Google Trends for keywords related to: tech gadgets
+[2026-05-31 15:03:40] INFO [google_trends:32] - Gathered 5 items from Google Trends API.
+[2026-05-31 15:03:40] INFO [reddit_radar:11] - Scanning Reddit (r/deals) for discussion matching keyword: tech gadgets
+[2026-05-31 15:03:40] INFO [reddit_radar:23] - Accessing Reddit hot deals JSON feed...
+[2026-05-31 15:03:41] WARNING [reddit_radar:69] - Reddit JSON feed returned status code: 403
+[2026-05-31 15:03:41] INFO [reddit_radar:75] - Using pre-filtered Reddit trends mock list...
+[2026-05-31 15:03:41] INFO [reddit_radar:102] - Generated 3 deals from Reddit mock fallback list.
+[2026-05-31 15:03:41] INFO [tiktok_creative:10] - Scanning TikTok Creative Center trends for: tech gadgets
+[2026-05-31 15:03:41] INFO [tiktok_creative:43] - Generated 5 viral product trends from TikTok Creative Center mockup.
+[2026-06-01 12:04:12] INFO [database_connection:8] - Connecting to database: sqlite:///affiliate_hub.db
+[2026-06-01 12:04:17] INFO [discovery_aggregator:19] - Initializing Trend Discovery Aggregator Pipeline...
+[2026-06-01 12:04:17] INFO [discovery_aggregator:24] - Database tables initialized successfully.
+[2026-06-01 12:04:17] INFO [google_trends:10] - Scanning Google Trends for keywords related to: tech gadgets
+[2026-06-01 12:04:21] WARNING [google_trends:35] - Google Trends API fetch failed or rate-limited: The request failed: Google returned a response with code 429. Falling back to mock data.
+[2026-06-01 12:04:21] INFO [google_trends:38] - Executing mock data generation for Google Trends...
+[2026-06-01 12:04:21] INFO [google_trends:64] - Generated 5 fallback trends from Google Trends mockup.
+[2026-06-01 12:04:21] INFO [amazon_scrapers:13] - Scanning Amazon Best Sellers for niche: tech gadgets
+[2026-06-01 12:04:21] INFO [amazon_scrapers:50] - Using curated Amazon Best Sellers mock fallback...
+[2026-06-01 12:04:21] INFO [amazon_scrapers:79] - Generated 5 bestsellers from Amazon mock list.
+[2026-06-01 12:04:21] INFO [tiktok_creative:10] - Scanning TikTok Creative Center trends for: tech gadgets
+[2026-06-01 12:04:21] INFO [tiktok_creative:43] - Generated 5 viral product trends from TikTok Creative Center mockup.
+[2026-06-01 12:04:21] INFO [reddit_radar:11] - Scanning Reddit (r/deals) for discussion matching keyword: tech gadgets
+[2026-06-01 12:04:21] INFO [reddit_radar:23] - Accessing Reddit hot deals JSON feed...
+[2026-06-01 12:04:22] WARNING [reddit_radar:69] - Reddit JSON feed returned status code: 403
+[2026-06-01 12:04:22] INFO [reddit_radar:75] - Using pre-filtered Reddit trends mock list...
+[2026-06-01 12:04:22] INFO [reddit_radar:102] - Generated 3 deals from Reddit mock fallback list.
+[2026-06-01 12:04:22] INFO [discovery_aggregator:38] - Aggregated 18 total raw candidates from all feeds.
+[2026-06-01 12:04:22] INFO [discovery_aggregator:65] - Database commit completed. Added 18 new trend opportunities to DB.
+[2026-06-01 12:04:22] INFO [discovery_aggregator:99] - Content queue exported successfully to: C:\Users\shafe\Documents\code\ebiz_ecommerce\affiliate_hub\content_queue.json
