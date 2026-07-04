@@ -1,32 +1,37 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import sliderImg from "../images/slider-bgecomm.jpg"; 
+import sliderImg from "../images/slider-img-new.png";
 import "./slidersection.css";
+
+const bgGradient = "linear-gradient(135deg, #a855f7 0%, #ec4899 50%, #f59e0b 100%)";
 
 const slides = [
   {
-    badge: "Sale 20% Off",
-    title: "On Everything",
+    price: "From $49.90",
+    title: "Summer Collection",
+    subtitle: "2024",
     description:
-      "Refresh your wardrobe for less. Hand-picked styles across clothing, footwear, and accessories—same quality you love, prices you will notice at checkout.",
+      "Discover this season’s hottest trends. Premium quality clothing designed for style and comfort.",
     to: "/shop",
     cta: "Shop Now",
   },
   {
-    badge: "New Arrivals",
-    title: "Just Landed",
+    price: "From $39.99",
+    title: "Spring Vibes",
+    subtitle: "2024",
     description:
-      "Discover this season’s latest drops before they sell out. Trend-led pieces, everyday essentials, and statement finds—curated for you and updated weekly.",
+      "Fresh styles for the new season. Comfortable and trendy pieces for every occasion.",
     to: "/shop?isNewArrival=true",
-    cta: "Explore New In",
+    cta: "Explore Collection",
   },
   {
-    badge: "Free Shipping",
-    title: "On Orders Over ₹999",
+    price: "From $59.99",
+    title: "Winter Warmth",
+    subtitle: "2024",
     description:
-      "Shop with confidence: easy returns, secure checkout, and reliable delivery. Stock up on favorites or try something new—your order is in good hands.",
+      "Stay cozy and stylish. Premium collection designed for comfort in cold weather.",
     to: "/shop",
-    cta: "Start Shopping",
+    cta: "Discover More",
   },
 ];
 
@@ -37,32 +42,30 @@ const SliderSection = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrent((prev) => (prev + 1) % slides.length);
-    }, 5000);
+    }, 6000);
     return () => clearInterval(timer);
   }, []);
 
   return (
-    <section className="slider_section">
-      {/* FULL IMAGE BACKGROUND (sharp & full quality) */}
-      <div className="slider_bg_box">
-        <img src={sliderImg} alt="Slider Background" />
-      </div>
+    <section className="slider_section" style={{ background: bgGradient }}>
+      <div className="slider_container">
+        {/* Left Image */}
+        <div className="slider_image_side slide_effect">
+          <div className="image_frame">
+            <img src={sliderImg} alt={slide.title} className="slider_product_img" />
+          </div>
+        </div>
 
-      {/* Light overlay */}
-      <div className="overlay"></div>
-
-      {/* Content */}
-      <div className="content_wrapper">
-        <div key={current} className="detail_box slide_effect">
-          <h1>
-            <span>{slide.badge}</span>
-            <br />
-            {slide.title}
-          </h1>
-          <p>{slide.description}</p>
-          <Link to={slide.to} className="btn1">
-            {slide.cta}
-          </Link>
+        {/* Right Content */}
+        <div className="slider_content_side slide_effect">
+          <div className="content_box">
+            <p className="price_label">{slide.price}</p>
+            <h1 className="slider_title">{slide.title}</h1>
+            <p className="slider_description">{slide.description}</p>
+            <Link to={slide.to} className="btn1">
+              {slide.cta}
+            </Link>
+          </div>
         </div>
 
         {/* Dots */}
