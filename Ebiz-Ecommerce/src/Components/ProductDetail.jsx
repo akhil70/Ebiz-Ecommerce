@@ -27,6 +27,14 @@ export default function ProductDetail() {
     const [quantity, setQuantity] = useState(1);
 
     useEffect(() => {
+        const affId = searchParams.get('affiliateId');
+        if (affId) {
+            sessionStorage.setItem('affiliateId', affId);
+            console.log("Captured affiliateId from link:", affId);
+        }
+    }, [searchParams]);
+
+    useEffect(() => {
         if (!productId) {
             setLoading(false);
             return;

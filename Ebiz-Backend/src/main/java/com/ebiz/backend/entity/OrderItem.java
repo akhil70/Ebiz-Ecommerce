@@ -15,6 +15,9 @@ public class OrderItem {
     private String productId;
     private String productName;
     private String sellerId; // Track which seller fulfills this item
+    private String affiliateId; // Track referring affiliate
     private Integer quantity;
     private BigDecimal price;
+    private String image;
+
 }

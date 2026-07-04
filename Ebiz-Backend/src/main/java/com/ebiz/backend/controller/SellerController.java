@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -75,6 +76,7 @@ public class SellerController {
     }
 
     @PostMapping("/products")
+    @PreAuthorize("hasRole('seller')")
     public ResponseEntity<?> createProduct(@AuthenticationPrincipal Jwt jwt, @RequestBody Product product) {
         try {
             String userId = getUserId(jwt);
@@ -87,6 +89,7 @@ public class SellerController {
     }
 
     @PutMapping("/products/{id}")
+    @PreAuthorize("hasRole('seller')")
     public ResponseEntity<?> updateProduct(@AuthenticationPrincipal Jwt jwt, @PathVariable String id, @RequestBody Product product) {
         try {
             String userId = getUserId(jwt);
@@ -109,6 +112,7 @@ public class SellerController {
     }
 
     @DeleteMapping("/products/{id}/soft")
+    @PreAuthorize("hasRole('seller')")
     public ResponseEntity<?> softDeleteProduct(@AuthenticationPrincipal Jwt jwt, @PathVariable String id) {
         try {
             String userId = getUserId(jwt);
@@ -129,6 +133,7 @@ public class SellerController {
     }
 
     @DeleteMapping("/products/{id}/hard")
+    @PreAuthorize("hasRole('seller')")
     public ResponseEntity<?> hardDeleteProduct(@AuthenticationPrincipal Jwt jwt, @PathVariable String id) {
         try {
             String userId = getUserId(jwt);

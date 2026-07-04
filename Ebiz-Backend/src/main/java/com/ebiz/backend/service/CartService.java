@@ -22,12 +22,28 @@ public class CartService {
     }
 
     public Cart getCart(String userId) {
-        return cartRepository.findByUserId(userId)
+        Cart cart = cartRepository.findByUserId(userId)
                 .orElseGet(() -> {
                     Cart newCart = new Cart();
                     newCart.setUserId(userId);
                     return cartRepository.save(newCart);
                 });
+
+        if (cart.getItems() != null && !cart.getItems().isEmpty()) {
+            for (CartItem item : cart.getItems()) {
+                productRepository.findById(item.getProductId()).ifPresent(product -> {
+                    String img = (product.getThumbnail() != null && !product.getThumbnail().isEmpty())
+                            ? product.getThumbnail()
+                            : (product.getImages() != null && !product.getImages().isEmpty() ? product.getImages().get(0) : "");
+                    item.setName(product.getName());
+                    item.setImage(img);
+                    item.setPrice(product.getPrice());
+                });
+            }
+            cart.calculateTotalPrice();
+        }
+
+        return cart;
     }
 
     public Cart addToCart(String userId, CartRequest request) {
@@ -53,8 +69,14 @@ public class CartService {
             // Update price in case it changed
             existingItem.setPrice(product.getPrice());
         } else {
+            String img = (product.getThumbnail() != null && !product.getThumbnail().isEmpty())
+                    ? product.getThumbnail()
+                    : (product.getImages() != null && !product.getImages().isEmpty() ? product.getImages().get(0) : "");
+
             CartItem newItem = CartItem.builder()
                     .productId(product.getId())
+                    .name(product.getName())
+                    .image(img)
                     .selectedSize(request.getSelectedSize())
                     .selectedColor(request.getSelectedColor())
                     .quantity(request.getQuantity())

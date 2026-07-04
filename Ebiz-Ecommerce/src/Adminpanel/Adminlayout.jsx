@@ -36,6 +36,12 @@ export default function AdminLayout() {
       if (adminOnlyPaths.includes(path)) {
         navigate("/Dashboard");
       }
+    } else if (role === "AFFILIATE") {
+      // Affiliates can only access /affiliatedashboard and /products
+      const allowedPaths = ["/affiliatedashboard", "/products"];
+      if (!allowedPaths.includes(path)) {
+        navigate("/AffiliateDashboard");
+      }
     } else {
       // Regular customers/users have no access to the Admin panel layout
       navigate("/");
@@ -54,6 +60,9 @@ export default function AdminLayout() {
   } else if (role === "SELLER") {
     const adminOnlyPaths = ["/users", "/approvals", "/adduser", "/category", "/subcategory", "/addcategory", "/addsubcategory", "/brands", "/addbrand", "/customers"];
     if (adminOnlyPaths.includes(path)) return null;
+  } else if (role === "AFFILIATE") {
+    const allowedPaths = ["/affiliatedashboard", "/products"];
+    if (!allowedPaths.includes(path)) return null;
   } else {
     return null;
   }

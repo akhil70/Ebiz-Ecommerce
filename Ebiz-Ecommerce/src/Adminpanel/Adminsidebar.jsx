@@ -20,6 +20,7 @@ export default function AdminSidebar({ isOpen }) {
   const role = user?.role;
   const isAdminOrStaff = role === "ADMIN" || role === "STAFF";
   const isSeller = role === "SELLER";
+  const isAffiliate = role === "AFFILIATE";
 
   return (
     <aside className={`sidebar ${isOpen ? "open" : "closed"}`}>
@@ -35,6 +36,14 @@ export default function AdminSidebar({ isOpen }) {
             </NavLink>
           </li>
         )}
+        {isAffiliate && (
+          <li>
+            <NavLink to="/AffiliateDashboard" className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}>
+              <LayoutDashboard size={18} /> <span>Affiliate Portal</span>
+            </NavLink>
+          </li>
+        )}
+
         {isAdminOrStaff && (
           <li>
             <NavLink to="/Customers" className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}>
@@ -84,21 +93,21 @@ export default function AdminSidebar({ isOpen }) {
             </NavLink>
           </li>
         )}
-        {(isAdminOrStaff || isSeller) && (
+        {(isAdminOrStaff || isSeller || isAffiliate) && (
           <li>
             <NavLink to="/Products" className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}>
               <ShoppingBag size={18} /> <span>Product</span>
             </NavLink>
           </li>
         )}
-        {(isAdminOrStaff || isSeller) && (
+        {isAdminOrStaff && (
           <li>
             <NavLink to="/Filters" className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}>
               <Filter size={18} /> <span>Filters</span>
             </NavLink>
           </li>
         )}
-        {(isAdminOrStaff || isSeller) && (
+        {isAdminOrStaff && (
           <li>
             <NavLink to="/Testimonials" className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}>
               <MessageSquare size={18} /> <span>Testimonial</span>

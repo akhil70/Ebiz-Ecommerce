@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './MyOrders.css';
 import { ClipboardList, Package, Truck, Clock, XCircle, MapPin } from 'lucide-react';
 import { Header } from '../Header';
@@ -6,39 +6,44 @@ import SubHeader from '../SubHeader';
 import Footer from './Footer';
 import LastFooter from './LastFooter';
 
+import { PublicAPI } from '../Utils/AxiosConfig';
+import toast from 'react-hot-toast';
+
 const MyOrders = () => {
-    const orders = [
-        {
-            orderId: "#R0374915036",
-            orderDate: "Thu, 17th Nov'16",
-            items: [
-                {
-                    id: 1,
-                    name: "Netting Mykonos Tunic Dress",
-                    brand: "Milly Thomas",
-                    size: "S",
-                    qty: 1,
-                    price: 1250,
-                    status: "In - Transit",
-                    expectedDelivery: "24 December 2016",
-                    image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1000&auto=format&fit=crop"
-                },
-                {
-                    id: 2,
-                    name: "Embroidered Sequin Mini Dress",
-                    brand: "Sonia Agrawal",
-                    size: "S",
-                    qty: 1,
-                    price: 1760,
-                    status: "In - Transit",
-                    expectedDelivery: "24 December 2016",
-                    image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=1000&auto=format&fit=crop"
-                }
-            ],
-            total: 3010,
-            paymentInfo: "Paid using credit card ending with 7343"
-        }
-    ];
+    const [orders, setOrders] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchOrders = async () => {
+            try {
+                setLoading(true);
+                const response = await PublicAPI.get('/orders');
+                setOrders(response.data);
+                setError(null);
+            } catch (err) {
+                console.error('Error fetching orders:', err);
+                setError(err.response?.data?.message || err.response?.data?.error || 'Failed to fetch orders');
+                toast.error('Failed to load your orders.');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchOrders();
+    }, []);
+
+    // Format date string
+    const formatDate = (dateString) => {
+        if (!dateString) return 'N/A';
+        const d = new Date(dateString);
+        return d.toLocaleDateString('en-US', {
+            weekday: 'short',
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric'
+        });
+    };
 
     return (
         <div className="my-orders-page">
@@ -51,65 +56,68 @@ const MyOrders = () => {
                 </div>
 
                 <div className="orders-list">
-                    {orders.map((order, index) => (
-                        <div key={index} className="order-card">
-                            <div className="order-card-header">
-                                <div className="order-id-section">
-                                    <span className="order-label">Order</span>
-                                    <span className="order-number">{order.orderId}</span>
-                                    <span className="order-date-label">Order Placed: {order.orderDate}</span>
-                                </div>
-                                <button className="track-order-btn">
-                                    <MapPin size={16} />
-                                    TRACK ORDER
-                                </button>
-                            </div>
-
-                            <div className="order-items">
-                                {order.items.map((item) => (
-                                    <div key={item.id} className="order-item">
-                                        <div className="item-image-container">
-                                            <img src={item.image} alt={item.name} />
-                                        </div>
-                                        <div className="item-details">
-                                            <div className="item-main-info">
-                                                <h3>{item.name}</h3>
-                                                <p className="item-brand">By: {item.brand}</p>
-                                                <div className="item-params">
-                                                    <span>Size: {item.size}</span>
-                                                    <span>Qty: {item.qty}</span>
-                                                    <span className="item-price">Rs. {item.price}</span>
-                                                </div>
-                                            </div>
-                                            <div className="item-status-section">
-                                                <div className="status-badge">
-                                                    <span className="status-label">Status</span>
-                                                    <span className="status-value">{item.status}</span>
-                                                </div>
-                                                <div className="delivery-info">
-                                                    <span className="delivery-label">Delivery Expected by:</span>
-                                                    <span className="delivery-date">{item.expectedDelivery}</span>
-                                                </div>
-                                            </div>
-                                        </div>
+                    {loading ? (
+                        <div style={{ textAlign: 'center', padding: '40px' }}>Loading your orders...</div>
+                    ) : error ? (
+                        <div style={{ textAlign: 'center', padding: '40px', color: 'red' }}>{error}</div>
+                    ) : orders.length === 0 ? (
+                        <div style={{ textAlign: 'center', padding: '40px' }}>You haven't placed any orders yet.</div>
+                    ) : (
+                        orders.map((order, index) => (
+                            <div key={order.id || index} className="order-card">
+                                <div className="order-card-header">
+                                    <div className="order-id-section">
+                                        <span className="order-label">Order</span>
+                                        <span className="order-number">#{order.id?.substring(order.id.length - 8).toUpperCase() || order.id}</span>
+                                        <span className="order-date-label">Order Placed: {formatDate(order.createdAt)}</span>
                                     </div>
-                                ))}
-                            </div>
+                                    <button className="track-order-btn">
+                                        <MapPin size={16} />
+                                        TRACK ORDER
+                                    </button>
+                                </div>
 
-                            <div className="order-card-footer">
-                                <button className="cancel-order-btn">
-                                    <XCircle size={16} />
-                                    CANCEL ORDER
-                                </button>
-                                <div className="footer-middle">
-                                    <p>{order.paymentInfo}</p>
+                                <div className="order-items">
+                                    {order.items?.map((item, itemIdx) => (
+                                        <div key={itemIdx} className="order-item">
+                                            <div className="item-image-container">
+                                                <img src={item.image || '/polo-tshirt-green.jpg'} alt={item.productName} />
+                                            </div>
+                                            <div className="item-details">
+                                                <div className="item-main-info">
+                                                    <h3>{item.productName}</h3>
+                                                    <p className="item-brand">Seller ID: {item.sellerId || 'N/A'}</p>
+                                                    <div className="item-params">
+                                                        <span>Qty: {item.quantity}</span>
+                                                        <span className="item-price">Rs. {item.price}</span>
+                                                    </div>
+                                                </div>
+                                                <div className="item-status-section">
+                                                    <div className="status-badge">
+                                                        <span className="status-label">Status</span>
+                                                        <span className="status-value">{order.status}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
-                                <div className="total-section">
-                                    <span className="total-label">Rs. {order.total.toLocaleString()}</span>
+
+                                <div className="order-card-footer">
+                                    <button className="cancel-order-btn">
+                                        <XCircle size={16} />
+                                        CANCEL ORDER
+                                    </button>
+                                    <div className="footer-middle">
+                                        <p>Payment upon delivery / standard terms</p>
+                                    </div>
+                                    <div className="total-section">
+                                        <span className="total-label">Rs. {order.totalAmount ? order.totalAmount.toLocaleString() : '0'}</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        ))
+                    )}
                 </div>
             </div>
             <Footer />

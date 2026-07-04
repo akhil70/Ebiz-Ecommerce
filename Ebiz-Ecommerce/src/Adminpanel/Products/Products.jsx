@@ -121,9 +121,11 @@ const Products = () => {
 
             <div className="card-header">
                 <h2>Product List</h2>
-                <div className="header-actions">
-                    <button className="action-button new-button" onClick={() => setIsAddOpen(true)}>+ New Product</button>
-                </div>
+                {user?.role !== 'AFFILIATE' && (
+                    <div className="header-actions">
+                        <button className="action-button new-button" onClick={() => setIsAddOpen(true)}>+ New Product</button>
+                    </div>
+                )}
             </div>
 
             <div className="table-container">
@@ -136,16 +138,16 @@ const Products = () => {
                             <th>Price</th>
                             <th>Stock</th>
                             <th>Status</th>
-                            {user?.role !== 'SELLER' && <th>Seller</th>}
-                            <th className="dots-col">Actions</th>
+                            {user?.role !== 'SELLER' && user?.role !== 'AFFILIATE' && <th>Seller</th>}
+                            {user?.role !== 'AFFILIATE' && <th className="dots-col">Actions</th>}
                         </tr>
                     </thead>
                     <tbody>
                         {loading ? (
-                            <tr><td colSpan={user?.role !== 'SELLER' ? 8 : 7} style={{ textAlign: "center", padding: "20px" }}>Loading products...</td></tr>
+                            <tr><td colSpan={user?.role === 'AFFILIATE' ? 6 : (user?.role !== 'SELLER' ? 8 : 7)} style={{ textAlign: "center", padding: "20px" }}>Loading products...</td></tr>
                         ) : productList.length === 0 ? (
                             <tr>
-                                <td colSpan={user?.role !== 'SELLER' ? 8 : 7} style={{ padding: "0" }}>
+                                <td colSpan={user?.role === 'AFFILIATE' ? 6 : (user?.role !== 'SELLER' ? 8 : 7)} style={{ padding: "0" }}>
                                     <NoData message="No products found." />
                                 </td>
                             </tr>
@@ -168,34 +170,36 @@ const Products = () => {
                                     <td>{item.price}</td>
                                     <td>{item.stock}</td>
                                     <td><StatusPill status={item.status} /></td>
-                                    {user?.role !== 'SELLER' && (
+                                    {user?.role !== 'SELLER' && user?.role !== 'AFFILIATE' && (
                                         <td style={{ fontSize: '13px', color: '#4b5563' }} title={`Email: ${item.sellerEmail || 'N/A'}\nID: ${item.sellerId || 'N/A'}`}>
                                             {item.sellerName || item.sellerEmail || (item.sellerId ? 'Unknown' : 'Admin')}
                                         </td>
                                     )}
 
-                                    <td className="dots-col">
-                                        <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
-                                            <label className="switch">
-                                                <input
-                                                    type="checkbox"
-                                                    checked={item.status === 1}
-                                                    onChange={() => handleStatusToggle(item.id)}
+                                    {user?.role !== 'AFFILIATE' && (
+                                        <td className="dots-col">
+                                            <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
+                                                <label className="switch">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={item.status === 1}
+                                                        onChange={() => handleStatusToggle(item.id)}
+                                                    />
+                                                    <span className="slider round"></span>
+                                                </label>
+                                                <Edit2
+                                                    size={16}
+                                                    style={{ cursor: 'pointer', color: '#4f46e5' }}
+                                                    onClick={() => handleEditClick(item.id)}
                                                 />
-                                                <span className="slider round"></span>
-                                            </label>
-                                            <Edit2
-                                                size={16}
-                                                style={{ cursor: 'pointer', color: '#4f46e5' }}
-                                                onClick={() => handleEditClick(item.id)}
-                                            />
-                                            <Trash2
-                                                size={16}
-                                                style={{ cursor: 'pointer', color: '#ef4444' }}
-                                                onClick={() => confirmDelete(item.id)}
-                                            />
-                                        </div>
-                                    </td>
+                                                <Trash2
+                                                    size={16}
+                                                    style={{ cursor: 'pointer', color: '#ef4444' }}
+                                                    onClick={() => confirmDelete(item.id)}
+                                                />
+                                            </div>
+                                        </td>
+                                    )}
                                 </tr>
                             ))
                         )}

@@ -31,6 +31,7 @@ import Products from './Adminpanel/Products/Products';
 import AddProduct from './Adminpanel/Products/AddProduct';
 import Filters from './Adminpanel/Filters/Filters';
 import Approvals from './Adminpanel/Users/Approvals';
+import AffiliateDashboard from './Adminpanel/Affiliate/AffiliateDashboard';
 
 import { Toaster } from 'react-hot-toast';
 
@@ -55,6 +56,9 @@ function App() {
           {/* ============= ADMIN PANEL ================ */}
           <Route path="/Dashboard" element={<AdminLayout />}>
             <Route index element={<Dashboard />} />
+          </Route>
+          <Route path="/AffiliateDashboard" element={<AdminLayout />}>
+            <Route index element={<AffiliateDashboard />} />
           </Route>
           <Route path="/Users" element={<AdminLayout />}>
             <Route index element={<Users />} />

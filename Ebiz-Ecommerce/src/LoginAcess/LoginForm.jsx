@@ -74,6 +74,8 @@ export default function Login() {
         mappedRole = "SELLER";
       } else if (tokenRoles.includes("staff")) {
         mappedRole = "STAFF";
+      } else if (tokenRoles.includes("affiliate")) {
+        mappedRole = "AFFILIATE";
       }
 
       const user =
@@ -119,6 +121,8 @@ export default function Login() {
         navigate("/Users");
       } else if (user.role === "SELLER") {
         navigate("/Dashboard");
+      } else if (user.role === "AFFILIATE") {
+        navigate("/AffiliateDashboard");
       } else {
         navigate("/");
       }
@@ -167,6 +171,8 @@ export default function Login() {
         navigate("/Users");
       } else if (tempUser?.role === "SELLER") {
         navigate("/Dashboard");
+      } else if (tempUser?.role === "AFFILIATE") {
+        navigate("/AffiliateDashboard");
       } else {
         navigate("/");
       }
