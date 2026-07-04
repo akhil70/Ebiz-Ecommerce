@@ -1,17 +1,18 @@
 package com.ebiz.backend.dto;
 
 public class OrderItemDto {
-    private Long productId;
+    private String productId;
     private Integer quantity;
+    private String affiliateId;
 
     public OrderItemDto() {
     }
 
-    public Long getProductId() {
+    public String getProductId() {
         return productId;
     }
 
-    public void setProductId(Long productId) {
+    public void setProductId(String productId) {
         this.productId = productId;
     }
 
@@ -21,5 +22,13 @@ public class OrderItemDto {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public String getAffiliateId() {
+        return affiliateId;
+    }
+
+    public void setAffiliateId(String affiliateId) {
+        this.affiliateId = affiliateId;
     }
 }

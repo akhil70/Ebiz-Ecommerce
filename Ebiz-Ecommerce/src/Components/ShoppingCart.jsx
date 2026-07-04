@@ -12,6 +12,7 @@ import {
     setGuestItemQuantity,
     removeGuestCartItem,
 } from '../Utils/guestCart';
+import { useNavigate } from 'react-router-dom';
 
 const emptyShipping = () => ({
     fullName: '',
@@ -60,6 +61,8 @@ const mapCartItem = (item) => {
             product.thumbnail ||
             (product.images && product.images[0]) ||
             '/polo-tshirt-green.jpg',
+        selectedSize: size,
+        selectedColor: color,
     };
 };
 
@@ -73,6 +76,8 @@ const mapGuestRow = (g) => {
         price: Number(g.price) || 0,
         quantity: Number(g.quantity) || 1,
         image: g.image || '/polo-tshirt-green.jpg',
+        selectedSize: g.selectedSize || '',
+        selectedColor: g.selectedColor || '',
     };
 };
 
@@ -93,6 +98,7 @@ export default function ShoppingCart() {
     const [checkoutOpen, setCheckoutOpen] = useState(false);
     const [shipping, setShipping] = useState(emptyShipping);
     const [orderSubmitting, setOrderSubmitting] = useState(false);
+    const navigate = useNavigate();
 
     const loadGuestCart = useCallback(() => {
         setCartItems(readGuestCart().map(mapGuestRow));
@@ -204,6 +210,7 @@ export default function ShoppingCart() {
             return {
                 productId: toApiProductId(rawId),
                 quantity: item.quantity,
+                affiliateId: sessionStorage.getItem('affiliateId') || null,
             };
         });
 
@@ -231,10 +238,19 @@ export default function ShoppingCart() {
         try {
             setOrderSubmitting(true);
             await PublicAPI.post('/orders', payload);
+            
+            try {
+                await PublicAPI.delete('/cart/clear');
+            } catch (clearErr) {
+                console.error('Failed to clear cart:', clearErr);
+            }
+
             toast.success('Order placed successfully!');
             setCheckoutOpen(false);
             setShipping(emptyShipping());
             await refreshAuthenticatedCart();
+            
+            navigate('/my-orders');
         } catch (err) {
             console.error('Order failed:', err);
             toast.error(
@@ -247,24 +263,72 @@ export default function ShoppingCart() {
         }
     };
 
-    const updateQuantity = (id, type) => {
-        setCartItems((prev) => {
-            const item = prev.find((i) => i.id === id);
-            if (!item) return prev;
-            let newQty = item.quantity;
-            if (type === 'increment') newQty += 1;
-            else if (type === 'decrement' && item.quantity > 1) newQty -= 1;
-            else return prev;
-            if (!token) setGuestItemQuantity(id, newQty);
-            return prev.map((i) =>
-                i.id === id ? { ...i, quantity: newQty } : i
-            );
-        });
+    const updateQuantity = async (id, type) => {
+        const item = cartItems.find((i) => i.id === id);
+        if (!item) return;
+
+        let newQty = item.quantity;
+        if (type === 'increment') newQty += 1;
+        else if (type === 'decrement') newQty -= 1;
+        else return;
+
+        if (newQty <= 0) {
+            return removeItem(id);
+        }
+
+        // Optimistic UI update
+        setCartItems((prev) =>
+            prev.map((i) => (i.id === id ? { ...i, quantity: newQty } : i))
+        );
+
+        if (!token) {
+            setGuestItemQuantity(id, newQty);
+        } else {
+            try {
+                await PublicAPI.put('/cart/update', {
+                    productId: item.productId,
+                    quantity: newQty,
+                    selectedSize: item.selectedSize || '',
+                    selectedColor: item.selectedColor || '',
+                });
+                await refreshAuthenticatedCart();
+            } catch (err) {
+                console.error('Error updating cart quantity:', err);
+                toast.error('Failed to update quantity on server.');
+                // Revert to old quantity
+                setCartItems((prev) =>
+                    prev.map((i) => (i.id === id ? { ...i, quantity: item.quantity } : i))
+                );
+            }
+        }
     };
 
-    const removeItem = (id) => {
-        setCartItems((prev) => prev.filter((item) => item.id !== id));
-        if (!token) removeGuestCartItem(id);
+    const removeItem = async (id) => {
+        const item = cartItems.find((i) => i.id === id);
+        if (!item) return;
+
+        // Optimistic UI update
+        setCartItems((prev) => prev.filter((i) => i.id !== id));
+
+        if (!token) {
+            removeGuestCartItem(id);
+        } else {
+            try {
+                await PublicAPI.delete('/cart/remove', {
+                    params: {
+                        productId: item.productId,
+                        selectedSize: item.selectedSize || '',
+                        selectedColor: item.selectedColor || '',
+                    }
+                });
+                await refreshAuthenticatedCart();
+                toast.success('Item removed from cart');
+            } catch (err) {
+                console.error('Error removing cart item:', err);
+                toast.error('Failed to remove item on server.');
+                refreshAuthenticatedCart(); // Revert by refreshing
+            }
+        }
     };
 
     const calculateSubtotal = (price, quantity) => {

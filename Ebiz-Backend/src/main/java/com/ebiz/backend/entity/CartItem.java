@@ -13,6 +13,8 @@ import java.util.Objects;
 @Builder
 public class CartItem {
     private String productId;
+    private String name;
+    private String image;
     private String selectedSize;
     private String selectedColor;
     private int quantity;

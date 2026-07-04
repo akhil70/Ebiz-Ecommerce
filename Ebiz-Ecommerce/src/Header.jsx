@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./style.css";
-import { ShoppingCart, Search, Menu, X, LogIn, User, ClipboardList, Eye, EyeOff, Store } from "lucide-react";
+import { ShoppingCart, Search, Menu, X, LogIn, User, ClipboardList, Eye, EyeOff, Store, Handshake } from "lucide-react";
 import signupProduct1 from "./images/p1.png";
 import signupProduct2 from "./images/p2.png";
 import signupProduct3 from "./images/p3.png";
@@ -363,6 +363,20 @@ export const Header = () => {
               </li>
 
               <li className="nav-item">
+                <NavLink
+                  to="/affiliate/register"
+                  className={`nav-link ${activeLink === "affiliate" ? "active" : ""}`}
+                  onClick={() => handleLinkClick("affiliate")}
+                >
+                  <div className="nav-icon-group">
+                    <Handshake size={20} stroke="black" />
+                    <span>Affiliate</span>
+                  </div>
+                </NavLink>
+              </li>
+
+
+              <li className="nav-item">
                 <div
                   ref={profileNavRef}
                   className={`profile-nav-container${profilePopupPinned ? " profile-popup-visible" : ""}`}
@@ -400,6 +414,21 @@ export const Header = () => {
                   </div>
                 </div>
               </li>
+
+              {user && (
+                <li className="nav-item">
+                  <NavLink
+                    to="/my-orders"
+                    className={`nav-link ${activeLink === "orders" ? "active" : ""}`}
+                    onClick={() => handleLinkClick("orders")}
+                  >
+                    <div className="nav-icon-group">
+                      <ClipboardList size={20} stroke="black" />
+                      <span>Orders</span>
+                    </div>
+                  </NavLink>
+                </li>
+              )}
 
               <li className="nav-item">
                 <a
