@@ -1,0 +1,11 @@
+python-dotenv>=1.0.0
+sqlalchemy>=2.0.0
+requests>=2.31.0
+pytrends>=4.9.0
+openai>=1.12.0
+flask>=3.0.0
+schedule>=1.2.0
+google-api-python-client>=2.118.0
+google-auth-oauthlib>=1.2.0
+tweepy>=4.14.0
+cloudinary>=1.38.0

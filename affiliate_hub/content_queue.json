@@ -1,0 +1,57 @@
+{
+  "generated_at": "2026-06-01T06:34:22.371618",
+  "niche": "tech gadgets",
+  "count": 5,
+  "items": [
+    {
+      "id": 16,
+      "title": "[Amazon] Anker 3-in-1 Charging Cube MagSafe - $109.99 (Save 25%)",
+      "source": "reddit/r/deals",
+      "score": 480.0,
+      "external_id": "rd_t1",
+      "payload": "{\"url\": \"https://reddit.com/r/deals/anker_cube\", \"ups\": 480, \"comments_count\": 48}",
+      "processed": false,
+      "discovered_at": "2026-06-01T06:34:22.356686"
+    },
+    {
+      "id": 17,
+      "title": "[Walmart] Logitech MX Master 3S Wireless Mouse - $72.00 (Save 28%)",
+      "source": "reddit/r/deals",
+      "score": 350.0,
+      "external_id": "rd_t2",
+      "payload": "{\"url\": \"https://reddit.com/r/deals/logitech_mx\", \"ups\": 350, \"comments_count\": 35}",
+      "processed": false,
+      "discovered_at": "2026-06-01T06:34:22.356688"
+    },
+    {
+      "id": 18,
+      "title": "[Amazon] Kasa Smart Plug Power Strip HS300 - $44.99 (Save 40%)",
+      "source": "reddit/r/deals",
+      "score": 280.0,
+      "external_id": "rd_t3",
+      "payload": "{\"url\": \"https://reddit.com/r/deals/kasa_strip\", \"ups\": 280, \"comments_count\": 28}",
+      "processed": false,
+      "discovered_at": "2026-06-01T06:34:22.356690"
+    },
+    {
+      "id": 1,
+      "title": "best pocket camera 2026",
+      "source": "google_trends",
+      "score": 100.0,
+      "external_id": "mock_gt_0",
+      "payload": "Mocked rising Google Trend for development testing",
+      "processed": false,
+      "discovered_at": "2026-06-01T06:34:22.356648"
+    },
+    {
+      "id": 11,
+      "title": "Mini Portable Projector 4K Support",
+      "source": "tiktok",
+      "score": 98.4,
+      "external_id": "tiktok_trend_0",
+      "payload": "{\"hashtag\": \"#miniprojector\", \"viral_score\": \"98.4% growth\", \"cta_type\": \"TikTok Shop / Link in Bio\"}",
+      "processed": false,
+      "discovered_at": "2026-06-01T06:34:22.356676"
+    }
+  ]
+}
